@@ -1,9 +1,10 @@
+/*
 buildscript {
    dependencies {
       classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:1.0.10")
    }
 }
-
+*/
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.1'
@@ -11,7 +12,7 @@ plugins {
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
-apply plugin: "com.ewerk.gradle.plugins.querydsl"
+//apply plugin: "com.ewerk.gradle.plugins.querydsl"
 
 group = 'com.example'
 version = '0.0.1-SNACK'
@@ -29,7 +30,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	
-	implementation 'jakarta.persistence:jakarta.persistence-api:2.2.3'
+	implementation 'jakarta.persistence:jakarta.persistence-api'
 	
 	// devtools
 	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
@@ -47,7 +48,7 @@ dependencies {
   	
   	// WebSocket and stomp
   	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    //implementation 'org.springframework.boot:spring-boot-starter-messaging'
+    implementation 'org.springframework.boot:spring-boot-starter-messaging'
     implementation 'org.springframework:spring-messaging'
     implementation 'org.springframework:spring-websocket'
     implementation 'org.webjars:webjars-locator-core'
@@ -59,14 +60,15 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
     
     // querydsl
-    implementation "com.querydsl:querydsl-jpa"
-   	implementation "com.querydsl:querydsl-apt"
+    //implementation "com.querydsl:querydsl-jpa"
+   	//implementation "com.querydsl:querydsl-apt"
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
 
+/*
 def querydslDir = "src/main/generated/queryDsl"
 
 querydsl {
@@ -86,3 +88,4 @@ compileQuerydsl {
 configurations {
 	querydsl.extendsFrom compileClasspath
 }
+*/ 
