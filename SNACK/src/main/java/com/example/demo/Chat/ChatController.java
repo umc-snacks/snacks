@@ -32,11 +32,11 @@ public class ChatController {
 	 * Exception
 	 */ 
 	@GetMapping("/chat")
-	public ResponseEntity<List<ChatRoomDTO.Get>> connect(Principal principal) {
+	public ResponseEntity<List<ChatRoomDTO.Get>> connect(/*Principal principal*/) {
 		log.info("request chatlist");
 		
-		List<ChatRoomDTO.Get> chatList = chatService.getChatList(Long.parseLong(principal.getName()));
-		
+//		List<ChatRoomDTO.Get> chatList = chatService.getChatList(Long.parseLong(principal.getName()));
+		List<ChatRoomDTO.Get> chatList = chatService.getChatList(1L);
 		return new ResponseEntity<>(chatList, HttpStatus.OK);
 	}
 	
