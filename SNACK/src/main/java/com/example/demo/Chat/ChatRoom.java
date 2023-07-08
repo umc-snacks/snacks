@@ -1,4 +1,4 @@
-package com.example.demo.Member;
+package com.example.demo.Chat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,13 +8,11 @@ import javax.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 
-@Entity(name="member")
+@Entity
 @Getter
 @Builder
-public class MemberEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long member_id;
-	
-	private String nickname;
+public class ChatRoom {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long room_id;
 }
