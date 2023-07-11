@@ -25,6 +25,10 @@ dependencies {
   
   	// MySQL Connector
   	implementation 'mysql:mysql-connector-java:8.0.30'
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
