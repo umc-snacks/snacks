@@ -2,7 +2,9 @@ package com.example.demo.board;
 
 import com.example.demo.Member.Member;
 import com.example.demo.Member.MemberService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +21,7 @@ public class BoardController {
     }
 
     @PostMapping
-    public String create(@RequestBody Board board) {
+    public String create(@Valid @RequestBody Board board) {
 
         Member member = board.getMembers().get(0);
         boardService.saveBoard(board);
