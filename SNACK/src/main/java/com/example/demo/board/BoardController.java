@@ -1,43 +1,34 @@
 package com.example.demo.board;
 
-
-import com.example.demo.Member.MemberDTO;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.demo.Member.Member;
+import com.example.demo.Member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/board/")
 public class BoardController {
 
     private final BoardService boardService;
+    private final MemberService memberService;
 
     @Autowired
-    public BoardController(BoardService boardService) {
+    public BoardController(BoardService boardService, MemberService memberService) {
         this.boardService = boardService;
+        this.memberService = memberService;
     }
 
     @PostMapping
-    public String create(@RequestBody String body) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            Map<String, Object> dataMap = objectMapper.readValue(body, new TypeReference<Map<String, Object>>() {});
-            dataMap.get()
+    public String create(@RequestBody Board board) {
 
-            return "Success";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error";
-        }
-    }
+        Member member = board.getMembers().get(0);
+        boardService.saveBoard(board);
 
-    @PostMapping("/11")
-    public String test() {
+        member.setBoard(board);
+        System.out.println(member.getName());
+        memberService.saveMember(member);
+
         return "ok";
     }
+
 }

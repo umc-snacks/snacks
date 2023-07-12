@@ -1,7 +1,8 @@
 package com.example.demo.board;
 
 
-import com.example.demo.Member.MemberDTO;
+import com.example.demo.Member.Member;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,14 +30,17 @@ public class Board {
     private String gameTitle;
 
     @OneToMany(mappedBy = "board")
-    private List<MemberDTO> members = new ArrayList<>();
+    private List<Member> members = new ArrayList<>();
 
     @Column(name = "DATE")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate date;
 
     @Column(name = "NOTICE")
     private String notice;
 
     private int memberCount;
+
+
 
 }
