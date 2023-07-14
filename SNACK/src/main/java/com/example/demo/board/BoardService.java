@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class BoardService {
@@ -18,7 +19,6 @@ public class BoardService {
 
     // 생성 로직
     public void saveBoard(Board board) {
-
         boardRepository.save(board);
     }
 
@@ -40,6 +40,11 @@ public class BoardService {
         ArrayList<Member> members = new ArrayList<>();
         members.add(member);
         return members;
+    }
+
+    public Board getBoard(Long boardId) {
+        return boardRepository.findById(boardId).orElseGet(Board::new);
+
     }
 
 
