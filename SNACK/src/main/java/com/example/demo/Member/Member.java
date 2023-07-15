@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -21,7 +23,17 @@ public class Member {
 
     private String email;
 
-    @ManyToOne
+    @ManyToOne( cascade = CascadeType.ALL)
     @JoinColumn(name = "BOARD_ID")
     private Board board;
+
+
+    /**
+     * 연관관계 메서드
+     * @param board
+     */
+    public void setBoard(Board board) {
+        this.board = board;
+        board.getMembers().add(this);
+    }
 }

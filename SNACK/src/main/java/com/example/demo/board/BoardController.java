@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.function.Consumer;
+
 @RestController
 @RequestMapping("/api/board/")
 public class BoardController {
@@ -23,22 +25,28 @@ public class BoardController {
     @PostMapping
     public String create(@Valid @RequestBody Board board) {
 
-        Member member = board.getMembers().get(0);
-        boardService.saveBoard(board);
-
-        member.setBoard(board);
-        System.out.println(member.getName());
-        memberService.saveMember(member);
+        board.getMembers().iterator().forEachRemaining(
+                member -> {
+                    member.setBoard(board);
+                    memberService.saveMember(member);
+                }
+        );
 
         return "ok";
     }
 
     @GetMapping("{boardId}")
     public Board read(@PathVariable Long boardId) {
-        Board board = boardService.getBoard(boardId);
-        return board;
+        return boardService.getBoard(boardId);
     }
 
+    @PutMapping("{boardId}")
+    public void update(@Valid @RequestBody Board board, @PathVariable Long boardId) {
+        boardService.updateBoard(boardId, board);
+    }
 
-
+    @DeleteMapping("{boardId}")
+    public void delete(@PathVariable Long boardId) {
+        boardService.deleteBoard(boardId);
+    }
 }

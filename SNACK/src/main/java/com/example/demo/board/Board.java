@@ -49,5 +49,4 @@ public class Board {
     private int memberCount;
 
 
-
 }

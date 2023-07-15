@@ -22,30 +22,25 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    public Board createBoard(Member member, String title, String gameTitle, String notice) {
-        Board board = new Board();
-        board.setTitle(title);
-        board.setGameTitle(gameTitle);
-        board.setDate(LocalDate.now());
-
-        ArrayList<Member> members = getMemberList(member);
-        board.setMembers(members);
-
-        board.setNotice(notice);
-        board.setMemberCount(1);
-        return board;
-    }
-
-    private static ArrayList<Member> getMemberList(Member member) {
-        ArrayList<Member> members = new ArrayList<>();
-        members.add(member);
-        return members;
-    }
-
     public Board getBoard(Long boardId) {
         return boardRepository.findById(boardId).orElseGet(Board::new);
 
     }
 
 
+    public void updateBoard(Long boardId, Board updatedBoard) {
+        Board existingBoard = boardRepository.findById(boardId).orElseGet(Board::new);
+
+        existingBoard.setTitle(updatedBoard.getTitle());
+        existingBoard.setGameTitle(updatedBoard.getGameTitle());
+        existingBoard.setDate(updatedBoard.getDate());
+        existingBoard.setNotice(updatedBoard.getNotice());
+
+        // Save the updated board
+        boardRepository.save(existingBoard);
+    }
+
+    public void deleteBoard(Long boardId) {
+        boardRepository.deleteById(boardId);
+    }
 }
