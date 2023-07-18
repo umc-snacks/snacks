@@ -1,23 +1,22 @@
 package com.example.demo.board;
 
 
+import com.example.demo.Games;
 import com.example.demo.Member.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.antlr.v4.runtime.misc.NotNull;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 //제목, 게임 종류, 게임 아이콘, 인원, 날자, 시간 공지사항, 참가 신청 옵션
@@ -28,14 +27,17 @@ public class Board {
     private Long id;
 
     @Column(name = "TITLE")
-    @NotBlank(message = "제목은 공백이 될 수 없습니다.")
     private String title;
 
     @Column(name = "GAME_TITLE")
-    @NotBlank
-    private String gameTitle;
+    @Enumerated(EnumType.STRING)
+    private Games gameTitle;
+
+    @Column(name = "ETC_TITLE")
+    private String etcTitle;
 
     @OneToMany(mappedBy = "board")
+    @JsonIgnoreProperties({"board"})
     private List<Member> members = new ArrayList<>();
 
     @Column(name = "DATE")
@@ -45,8 +47,33 @@ public class Board {
     @Column(name = "NOTICE")
     private String notice;
 
-    @Transient
-    private int memberCount;
+    @Column(name = "MAX_COUNT")
+    private Integer maxCount;
 
+    @Transient
+    private Integer memberCount;
+
+
+    public static Optional<Board> createBoard(BoardDTO boardDTO) {
+        Integer memberLen = boardDTO.getMembers().size();
+        Integer maxCount = boardDTO.getMaxCount();
+
+        return maxCount > memberLen ? Optional.of(buildBoard(boardDTO)) : Optional.empty();
+
+    }
+
+    private static Board buildBoard(BoardDTO boardDTO) {
+        List<Member> members = boardDTO.getMembers();
+        Integer memberLen = members.size();
+
+        return Board.builder()
+                .title(boardDTO.getTitle())
+                .gameTitle(boardDTO.getGameTitle())
+                .members(members)
+                .date(boardDTO.getDate())
+                .notice(boardDTO.getNotice())
+                .maxCount(boardDTO.getMaxCount())
+                .memberCount(memberLen).build();
+    }
 
 }

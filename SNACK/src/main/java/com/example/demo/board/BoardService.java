@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,17 +18,25 @@ public class BoardService {
         this.boardRepository = boardRepository;
     }
 
+
+
     // 생성 로직
-    public void saveBoard(Board board) {
+
+    public Long saveBoard(Board board) {
         boardRepository.save(board);
+        return board.getId();
     }
 
     public Board getBoard(Long boardId) {
         return boardRepository.findById(boardId).orElseGet(Board::new);
+    }
 
+    public List<Board> getBoards() {
+        return boardRepository.findAll();
     }
 
 
+    // 취약 부분 -> Board에 너무 관여하는 메서드 (set...)
     public void updateBoard(Long boardId, Board updatedBoard) {
         Board existingBoard = boardRepository.findById(boardId).orElseGet(Board::new);
 

@@ -32,7 +32,7 @@ public class Member {
      * 연관관계 메서드
      * @param board
      */
-    public void setBoard(Board board) {
+    public void addBoard(Board board) {
         this.board = board;
         board.getMembers().add(this);
     }

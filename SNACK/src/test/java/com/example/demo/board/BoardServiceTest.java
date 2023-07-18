@@ -1,5 +1,6 @@
 package com.example.demo.board;
 
+import com.example.demo.Games;
 import com.example.demo.Member.Member;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ class BoardServiceTest {
     void saveBoard() throws Exception {
         Board board = new Board();
         board.setTitle("아무나 오세요");
-        board.setGameTitle("League of Legends");
+        board.setGameTitle(Games.valueOf("LeagueOfLegends"));
         board.setDate(LocalDate.now());
 
         Member member = new Member();

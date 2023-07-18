@@ -3,14 +3,18 @@ package com.example.demo.board;
 import com.example.demo.Member.Member;
 import com.example.demo.Member.MemberService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.util.function.Consumer;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/board/")
+@Slf4j
 public class BoardController {
 
     private final BoardService boardService;
@@ -23,8 +27,9 @@ public class BoardController {
     }
 
     @PostMapping
-    public String create(@Valid @RequestBody Board board) {
-
+    public String create(@Valid @RequestBody BoardDTO boardDTO) {
+        Board board = Board.createBoard(boardDTO).orElseGet(Board::new);
+        // board에서 게임 종류를 검색
         board.getMembers().iterator().forEachRemaining(
                 member -> {
                     member.setBoard(board);
@@ -38,6 +43,11 @@ public class BoardController {
     @GetMapping("{boardId}")
     public Board read(@PathVariable Long boardId) {
         return boardService.getBoard(boardId);
+    }
+
+    @GetMapping
+    public List<Board> readAll() {
+        return boardService.getBoards();
     }
 
     @PutMapping("{boardId}")
