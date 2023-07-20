@@ -19,6 +19,7 @@ import java.util.Optional;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 //제목, 게임 종류, 게임 아이콘, 인원, 날자, 시간 공지사항, 참가 신청 옵션
 public class Board {
     @GeneratedValue(strategy = GenerationType.AUTO)

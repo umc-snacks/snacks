@@ -1,16 +1,20 @@
 package com.example.demo.board;
 
-import com.example.demo.Member.Member;
 import com.example.demo.Member.MemberService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+import java.util.NoSuchElementException;
 
-import java.util.List;
-import java.util.Optional;
+import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
+
 
 @RestController
 @RequestMapping("/api/board/")
@@ -27,9 +31,10 @@ public class BoardController {
     }
 
     @PostMapping
-    public String create(@Valid @RequestBody BoardDTO boardDTO) {
-        Board board = Board.createBoard(boardDTO).orElseGet(Board::new);
-        // board에서 게임 종류를 검색
+    public ResponseEntity create(@Valid @RequestBody BoardDTO boardDTO,
+                                 UriComponentsBuilder uriBuilder) {
+        Board board = Board.createBoard(boardDTO).orElseThrow(() -> new IllegalArgumentException("멤버수 초과!"));
+
         board.getMembers().iterator().forEachRemaining(
                 member -> {
                     member.setBoard(board);
@@ -37,17 +42,28 @@ public class BoardController {
                 }
         );
 
-        return "ok";
+        URI uri = buildUri(uriBuilder, board);
+
+        // 응답 헤더의 Location 에 생성된 리소스 주소 반환
+        return ResponseEntity.created(uri).build();
+    }
+
+    private static URI buildUri(UriComponentsBuilder uriBuilder, Board board) {
+        URI uri = MvcUriComponentsBuilder.relativeTo(uriBuilder)
+                .withMethodCall(on(BoardController.class).read(board.getId()))
+                .build().encode().toUri();
+        return uri;
     }
 
     @GetMapping("{boardId}")
-    public Board read(@PathVariable Long boardId) {
-        return boardService.getBoard(boardId);
+    public ResponseEntity<Board> read(@PathVariable Long boardId) {
+        Board board = boardService.getBoard(boardId).orElseThrow(() -> new NoSuchElementException("해당 id의 게시판이 존재하지 않습니다."));
+        return ResponseEntity.ok().body(board);
     }
 
     @GetMapping
-    public List<Board> readAll() {
-        return boardService.getBoards();
+    public ResponseEntity<?> readAll() {
+        return ResponseEntity.ok().body(boardService.getBoards());
     }
 
     @PutMapping("{boardId}")

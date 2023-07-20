@@ -1,11 +1,8 @@
 package com.example.demo.board;
 
-import com.example.demo.Member.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +24,8 @@ public class BoardService {
         return board.getId();
     }
 
-    public Board getBoard(Long boardId) {
-        return boardRepository.findById(boardId).orElseGet(Board::new);
+    public Optional<Board> getBoard(Long boardId) {
+        return boardRepository.findById(boardId);
     }
 
     public List<Board> getBoards() {
