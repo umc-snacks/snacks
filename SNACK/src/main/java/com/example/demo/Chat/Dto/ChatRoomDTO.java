@@ -1,4 +1,6 @@
-package com.example.demo.Chat;
+package com.example.demo.Chat.Dto;
+
+import java.time.LocalDateTime;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,10 +12,11 @@ public class ChatRoomDTO {
 	@Setter
 	@RequiredArgsConstructor
 	public static class Get {
-		private Long room_id;
-		private Long member_id;	
+		private String type;
+		private Long roomId;
 		private String name;	
-		private int message_count;
-		private String image_uri;
+		private int numberOfUnreadMessage;
+		private String imageUri;
+		private LocalDateTime time;
 	}
 }
