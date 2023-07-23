@@ -9,13 +9,14 @@ import java.util.Optional;
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final BoardSearchRepository boardSearchRepository;
 
     @Autowired
-    public BoardService(BoardRepository boardRepository) {
+    public BoardService(BoardRepository boardRepository, BoardSearchRepository boardSearchRepository) {
         this.boardRepository = boardRepository;
+        this.boardSearchRepository = boardSearchRepository;
+
     }
-
-
 
     // 생성 로직
 
@@ -48,5 +49,9 @@ public class BoardService {
 
     public void deleteBoard(Long boardId) {
         boardRepository.deleteById(boardId);
+    }
+
+    public List<Board> searchBoard(BoardSearch boardSearch) {
+        return boardSearchRepository.searchBoard(boardSearch);
     }
 }

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -74,5 +75,11 @@ public class BoardController {
     @DeleteMapping("{boardId}")
     public void delete(@PathVariable Long boardId) {
         boardService.deleteBoard(boardId);
+
+    }
+
+    @GetMapping("boards")
+    public ResponseEntity findBoardList(@Validated BoardSearch boardSearch) {
+        return ResponseEntity.ok().body(boardService.searchBoard(boardSearch));
     }
 }
