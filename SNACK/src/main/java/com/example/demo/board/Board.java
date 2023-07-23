@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,14 +43,18 @@ public class Board {
     private List<Member> members = new ArrayList<>();
 
     @Column(name = "DATE")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private LocalDate date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime date;
+
 
     @Column(name = "NOTICE")
     private String notice;
 
     @Column(name = "MAX_COUNT")
     private Integer maxCount;
+
+    @Column(name = "AUTO_CHECK")
+    private boolean autoCheckIn;
 
     @Transient
     private Integer memberCount;
@@ -74,7 +79,10 @@ public class Board {
                 .date(boardDTO.getDate())
                 .notice(boardDTO.getNotice())
                 .maxCount(boardDTO.getMaxCount())
-                .memberCount(memberLen).build();
+                .memberCount(memberLen)
+                .autoCheckIn(boardDTO.isAutoCheckIn())
+                .build();
+
     }
 
 }
