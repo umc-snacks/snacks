@@ -1,5 +1,6 @@
 package com.example.demo.board;
 
+import com.example.demo.Games;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.micrometer.common.util.StringUtils;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.example.demo.board.QBoard.board;
+
 
 @Repository
 public class BoardSearchRepository {
@@ -27,7 +29,8 @@ public class BoardSearchRepository {
                 .select(board)
                 .from(board)
                 .where(
-                        eqTitle(boardSearch.getTitle())
+                        eqTitle(boardSearch.getTitle()),
+                        eqGameTitle(boardSearch.getGameTitle(), boardSearch.getEtcTitle())
                 ).fetch();
     }
 
@@ -38,12 +41,14 @@ public class BoardSearchRepository {
         return board.title.containsIgnoreCase(title);
     }
 
-//    private BooleanExpression eqGameTitle(Games games) {
-//        if (StringUtils.isBlank(games.name())) {
-//            return null;
-//        }
-//        return board.title.containsIgnoreCase(gameTitle);
-//    }
+    private BooleanExpression eqGameTitle(Games games, String etcTitle) {
+        if (games == Games.ETC) {
+            return board.etcTitle.eq(etcTitle);
+        }
+        return board.gameTitle.eq(games);
+    }
+
+
 
 
 }
