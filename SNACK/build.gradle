@@ -1,27 +1,8 @@
-/*
-buildscript {
-   dependencies {
-      classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:1.0.10")
-   }
-}
-*/
-
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.1'
 	id 'io.spring.dependency-management' version '1.1.0'
-	//id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
-
-//apply plugin: "com.ewerk.gradle.plugins.querydsl"
-
-/*
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-*/
 
 group = 'com.example'
 version = '0.0.1-SNACK'
@@ -73,45 +54,16 @@ dependencies {
     
     // Swagger 스프링 부트 3.0.0 이상에서는 springdoc 의존성을 사용한 swagger을 사용해야함
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
-    
-    // querydsl
-    //implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
-    //annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
-    //annotationProcessor "jakarta.annotation:jakarta.annotation-api"
-    //annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
    	/// Log4j2와 SLF4j 관련 종속성
    	implementation 'org.apache.logging.log4j:log4j-api:2.14.1'
     implementation 'org.apache.logging.log4j:log4j-core:2.14.1'
     implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.14.1'
+    
+    // security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 }
-
-/*
-// querydsl 설정
-def querydslDir = "src/main/generated/querydsl"
-
-querydsl {
-	library = "com.querydsl:querydsl-apt:5.0.0:jakarta"
-	jpa = true
-	querydslSourcesDir = querydslDir
-}
-
-sourceSets {
-	main.java.srcDirs = ['src/main/java', querydslDir]
-}
-
-compileQuerydsl {
-	options.annotationProcessorPath = configurations.querydsl
-}
-
-configurations {
-	querydsl.extendsFrom compileClasspath
-}
-*/
 
 tasks.named('test') {
    useJUnitPlatform()
 }
-
-
-
