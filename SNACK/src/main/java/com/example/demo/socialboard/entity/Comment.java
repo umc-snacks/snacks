@@ -1,17 +1,17 @@
-package com.example.demo.board.comment;
+package com.example.demo.socialboard.entity;
 
 import com.example.demo.Member.Member;
-import com.example.demo.board.BaseTimeEntity;
-import com.example.demo.board.Board;
+import com.example.demo.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -25,16 +25,11 @@ public class Comment extends BaseTimeEntity {
     @Column(name = "CONTENT")
     private String content;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "MEMBER_ID")
     private Member writer;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "BOARD_ID")
-    private Board board;
-
-
-
-
-
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "BOARD_ID")
+//    private SocialBoard board;
 }

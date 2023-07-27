@@ -1,4 +1,4 @@
-package com.example.demo.board;
+package com.example.demo.board.exception;
 
 
 import com.example.demo.exception.ErrorResult;
@@ -29,11 +29,11 @@ public class BoardControllerAdvice {
     }
 
     // 상태 코드 지정
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler
-    // 그냥 exception 사용
-    public ErrorResult exHandle(Exception e) {
-        log.error("[exceptionHandle] ex", e);
-        return new ErrorResult("EX", "내부 오류");
-    }
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    @ExceptionHandler
+//    // 그냥 exception 사용
+//    public ErrorResult exHandle(Exception e) {
+//        log.error("[exceptionHandle] ex", e);
+//        return new ErrorResult("EX", "내부 오류");
+//    }
 }

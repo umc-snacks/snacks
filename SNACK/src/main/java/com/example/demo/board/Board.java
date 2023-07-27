@@ -1,14 +1,14 @@
 package com.example.demo.board;
 
-
+import com.example.demo.BaseTimeEntity;
 import com.example.demo.Games;
 import com.example.demo.Member.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +17,20 @@ import java.util.Optional;
 @Entity
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-//제목, 게임 종류, 게임 아이콘, 인원, 날자, 시간 공지사항, 참가 신청 옵션
-public class Board {
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class Board extends BaseTimeEntity {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "BOARD_ID")
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member writer;
 
     @Column(name = "TITLE")
     private String title;
@@ -59,7 +63,6 @@ public class Board {
     @Transient
     private Integer memberCount;
 
-
     public static Optional<Board> createBoard(BoardDTO boardDTO) {
         Integer memberLen = boardDTO.getMembers().size();
         Integer maxCount = boardDTO.getMaxCount();
@@ -84,5 +87,4 @@ public class Board {
                 .build();
 
     }
-
 }

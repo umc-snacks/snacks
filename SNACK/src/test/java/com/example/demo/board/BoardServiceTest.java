@@ -25,7 +25,6 @@ class BoardServiceTest {
         Board board = new Board();
         board.setTitle("아무나 오세요");
         board.setGameTitle(Games.valueOf("LeagueOfLegends"));
-        board.setDate(LocalDate.now());
 
         Member member = new Member();
         member.setName("홍길동");
