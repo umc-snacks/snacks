@@ -17,6 +17,8 @@ public class ChatRoomDTO {
 		private String name;	
 		private int numberOfUnreadMessage;
 		private String imageUri;
-		private LocalDateTime time;
+		private String content;
+		private LocalDateTime sentAt;
+		private LocalDateTime appointment;
 	}
 }

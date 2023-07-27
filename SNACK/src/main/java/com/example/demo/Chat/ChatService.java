@@ -18,6 +18,10 @@ import com.example.demo.Chat.Dto.MessageDTO;
 import com.example.demo.Chat.Entity.ChatMessage;
 import com.example.demo.Chat.Entity.ChatRoom;
 import com.example.demo.Chat.Entity.ChatRoomMember;
+import com.example.demo.Chat.Entity.ChatRoomMemberId;
+import com.example.demo.Chat.Exception.ChatException;
+import com.example.demo.Chat.Exception.ErrorCode;
+import com.example.demo.Chat.Exception.MemberOrRoomNotFoundException;
 import com.example.demo.Chat.repository.ChatMessageRepository;
 import com.example.demo.Chat.repository.ChatRoomMemberRepository;
 import com.example.demo.Chat.repository.ChatRoomRepository;
@@ -53,32 +57,43 @@ public class ChatService {
 
 		List<Object[]> crmAndrt = chatRoomMemberRepository.findMembersWithSameRoomAndReceiveTime(member_id);
 		List<ChatRoomDTO.Get> chatList = new ArrayList<>();
+		
+		/*
+		 * 팔로워 목록을 가져오는 코드 
+		 */
+		
+		/*
+		 * 팀 약속 시간을 가져오는 코드
+		 */
 
 		Map<Long, ChatRoomDTO.Get> chatMap = new HashMap<>();
 
 	    for (Object[] list : crmAndrt) {
 	        ChatRoomMember crm = (ChatRoomMember) list[0];
-	        LocalDateTime ldt = (LocalDateTime) list[1];
+	        LocalDateTime time = (LocalDateTime) list[1];
+	        String content = (String) list[2];
 
-	        Long roomId = crm.getChatRoom().getRoomId();
+	        Long roomId = crm.getChatRoom( ).getRoomId();
 	        ChatRoomDTO.Get cr = chatMap.get(roomId);
 
 	        if (cr == null) {
 	            cr = new ChatRoomDTO.Get();
-	            boolean isTeam = crm.getChatRoom().getTeam() != null;
+	            boolean isTeam = crm.getChatRoom().getTeam() != null ? true : false;
 	            
 	            cr.setType(isTeam ? "team" : "private");
 	            cr.setRoomId(roomId);
 	            cr.setName(isTeam ? crm.getChatRoom().getTeam().getTeamName() : crm.getMember().getNickname());
 	            cr.setNumberOfUnreadMessage(chatMessageRepository.getNumberOfUnreadMessage(member_id, roomId));
-	            cr.setTime(ldt);
+	            cr.setContent(content);
+	            cr.setSentAt(time);
+	            cr.setAppointment(null);	// 
 	            
 	            chatMap.put(roomId, cr);
 	        }
 	    }
 	    
 	    return chatMap.values().stream()
-	            .sorted(Comparator.comparing(ChatRoomDTO.Get::getTime).reversed())
+	            .sorted(Comparator.comparing(ChatRoomDTO.Get::getSentAt).reversed())
 	            .collect(Collectors.toList());
 	}
 	
@@ -86,6 +101,9 @@ public class ChatService {
 	 * 팀에 어떤 사용자가 추가되었을 때 채팅방에 해당 사용자를 추가하는 메서드
 	 */
 	
+	/*
+	 * 
+	 */
 	
 	
 	/*
@@ -96,18 +114,29 @@ public class ChatService {
 	 */
 	public Long createPrivateChatRoom(Long myMemberId, String theOtherMemberName) {
 		// 사용자 닉네임으로 찾는 부분
-//		MemberEntity member = memberRepository.getByNickName();
-		MemberEntity member = new MemberEntity(111L, theOtherMemberName);	// 임시
+		MemberEntity sender = new MemberEntity(11L, "11");	// 임시
+//		MemberEntity receiver = memberRepository.getByNickName(theOtherMemberName);
+		MemberEntity receiver = new MemberEntity(12L, "12");
 		
 		ChatRoom chatRoom = chatRoomRepository.saveAndFlush(new ChatRoom());
 		
-		ChatRoomMember chatRoomMemeber = ChatRoomMember.builder()
+		ChatRoomMember chatRoomMemeberSender = ChatRoomMember.builder()
+				.chatRoomMemberId(new ChatRoomMemberId(sender.getMemberId(), chatRoom.getRoomId()))
 				.chatRoom(chatRoom)
-				.member(member)
+				.member(sender)
 				.readTime(LocalDateTime.now())
 				.build();
 		
-		chatRoomMemberRepository.save(chatRoomMemeber);
+		
+		ChatRoomMember chatRoomMemeberReceiver = ChatRoomMember.builder()
+				.chatRoomMemberId(new ChatRoomMemberId(receiver.getMemberId(), chatRoom.getRoomId()))
+				.chatRoom(chatRoom)
+				.member(receiver)
+				.readTime(LocalDateTime.now())
+				.build();
+		
+		chatRoomMemberRepository.save(chatRoomMemeberSender);
+		chatRoomMemberRepository.save(chatRoomMemeberReceiver);
 		
 		return chatRoom.getRoomId();
 	}
@@ -178,13 +207,16 @@ public class ChatService {
 	
 	// 사용자가 어떤 채팅방을 읽은 시간을 저장함
 	@Transactional
-	public void setReadingTime(Long memberId, Long roomId) {
+	public void setReadingTime(Long memberId, Long roomId) throws NullPointerException {
 		log.info("--setReadingTime--");
 		
-		// crm not found 예외 처리 해야함
-		ChatRoomMember crm = chatRoomMemberRepository.findByMemberIdAndRoomId(memberId, roomId);
-		crm.setReadTime(LocalDateTime.now());
-		chatRoomMemberRepository.save(crm);
+		try {
+			ChatRoomMember crm = chatRoomMemberRepository.findByMemberIdAndRoomId(memberId, roomId);
+			crm.setReadTime(LocalDateTime.now());
+			chatRoomMemberRepository.save(crm);
+		} catch (NullPointerException e) {
+			throw new MemberOrRoomNotFoundException(ErrorCode.MEMBER_OR_ROOM_NOT_FOUND);
+		}
 	}
 	
 //	public MemberEntity findByMemberName(Long memberId) {
@@ -195,7 +227,7 @@ public class ChatService {
 	
 	@Cacheable(cacheNames = "members")	// 캐싱이 안되는데 원인을 모르겠음
 	public MemberEntity verifiedMember(Long memberId) {
-		log.info("--verifiedMember--");
+		log.info("== verifiedMember ==");
 		
 		Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
 		return optionalMemberEntity.orElseThrow(() -> new ChatException(ErrorCode.MEMBER_NOT_FOUND));
@@ -203,7 +235,7 @@ public class ChatService {
 
 	@Cacheable(cacheNames = "chatRooms")	// 캐싱이 안되는데 원인을 모르겠음
 	public ChatRoom verifiedChatRoom(Long roomId) {
-		log.info("--verifiedChatRoom--");
+		log.info("== verifiedChatRoom ==");
 		
 		Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findById(roomId);
 		return optionalChatRoom.orElseThrow(() -> new ChatException(ErrorCode.ROOM_NOT_FOUND));

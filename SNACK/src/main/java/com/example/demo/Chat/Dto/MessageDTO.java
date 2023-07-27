@@ -38,4 +38,13 @@ public class MessageDTO {
 		private String content;
 		private LocalDateTime time;
 	}
+	
+	@Getter
+	@Builder
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class Preview {
+		private String content;
+		private LocalDateTime time;
+	}
 }

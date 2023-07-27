@@ -14,14 +14,15 @@ import com.example.demo.Chat.Entity.ChatMessage;
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>{
 	@Query("SELECT COUNT(*) "
 			+ "FROM ChatMessage cm "
-			+ "WHERE cm.chatRoom.id = :chatRoom_id "
-			+ "AND cm.sentAt < ("
+			+ "WHERE cm.chatRoom.id = :chatRoomId "
+			+ "AND cm.sentAt > ("
 				+ "SELECT crm.readTime "
 				+ "FROM ChatRoomMember crm "
-				+ "WHERE crm.member.id = :my_member_id "
+				+ "WHERE crm.member.id = :myMemberId "
 				+ "ORDER BY crm.readTime DESC "
-				+ "LIMIT 1)")
-	int getNumberOfUnreadMessage(@Param("my_member_id") Long my_member_id, @Param("chatRoom_id") Long chatRoom_id);
+				+ "LIMIT 1)"
+			+ "AND cm.sender.id != :myMemberId")
+	int getNumberOfUnreadMessage(@Param("myMemberId") Long myMemberId, @Param("chatRoomId") Long chatRoomId);
 	
 //	@Query("SELECT cm "
 //			+ "FROM ChatMessage cm "

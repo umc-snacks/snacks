@@ -1,10 +1,11 @@
-package com.example.demo.Chat;
+package com.example.demo.Chat.Exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ChatException extends RuntimeException {
+public class MemberOrRoomNotFoundException extends RuntimeException {
 	private final ErrorCode errorCode;
 }
+
