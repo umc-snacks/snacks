@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatRoomMember {
+public class ChatRoomMember extends BaseTimeEntity {
     @EmbeddedId
     private ChatRoomMemberId chatRoomMemberId;
 

@@ -2,9 +2,7 @@ package com.example.demo.Chat.Entity;
 
 import java.io.Serializable;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
 
 @Embeddable
 public class ChatRoomMemberId implements Serializable {
