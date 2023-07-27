@@ -2,7 +2,7 @@ package com.example.demo.Chat.Entity;
 
 import java.time.LocalDateTime;
 
-import com.example.demo.Member.MemberEntity;
+import com.example.demo.profile.domain.member.Member;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,7 +32,7 @@ public class ChatMessage extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", referencedColumnName = "member_id")
-    private MemberEntity sender;
+    private Member sender;
 
     private String content;
     

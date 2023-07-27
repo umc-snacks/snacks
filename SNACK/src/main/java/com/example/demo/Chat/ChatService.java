@@ -25,8 +25,8 @@ import com.example.demo.Chat.Exception.MemberOrRoomNotFoundException;
 import com.example.demo.Chat.repository.ChatMessageRepository;
 import com.example.demo.Chat.repository.ChatRoomMemberRepository;
 import com.example.demo.Chat.repository.ChatRoomRepository;
-import com.example.demo.Member.MemberEntity;
-import com.example.demo.Member.MemberRepository;
+import com.example.demo.profile.domain.member.Member;
+import com.example.demo.profile.domain.member.MemberRepository;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -53,7 +53,7 @@ public class ChatService {
 	public List<ChatRoomDTO.Get> getChatList(Long member_id) {
 		log.info("--getChatList--");
 		
-		MemberEntity memberEntity = verifiedMember(member_id);
+		Member memberEntity = verifiedMember(member_id);
 
 		List<Object[]> crmAndrt = chatRoomMemberRepository.findMembersWithSameRoomAndReceiveTime(member_id);
 		List<ChatRoomDTO.Get> chatList = new ArrayList<>();
@@ -100,10 +100,20 @@ public class ChatService {
 	/*
 	 * 팀에 어떤 사용자가 추가되었을 때 채팅방에 해당 사용자를 추가하는 메서드
 	 */
-	
-	/*
-	 * 
-	 */
+	public void addMemberToTeam(Long TeamId, Long memberId) {
+		Member member = verifiedMember(memberId);
+		ChatRoom chatRoom = chatRoomRepository.findByTeamId(TeamId);
+		ChatRoomMemberId chatRoomMemberId = new ChatRoomMemberId(chatRoom.getRoomId(), member.getId());
+		
+		ChatRoomMember chatRoomMember = ChatRoomMember.builder()
+				.chatRoom(chatRoom)
+				.chatRoomMemberId(chatRoomMemberId)
+				.member(member)
+				.readTime(LocalDateTime.now())
+				.build();
+		
+		chatRoomMemberRepository.saveAndFlush(chatRoomMember);
+	}
 	
 	
 	/*
@@ -114,22 +124,23 @@ public class ChatService {
 	 */
 	public Long createPrivateChatRoom(Long myMemberId, String theOtherMemberName) {
 		// 사용자 닉네임으로 찾는 부분
-		MemberEntity sender = new MemberEntity(11L, "11");	// 임시
+		Member sender = null;// = new Member(11L, "11");	// 임시
 //		MemberEntity receiver = memberRepository.getByNickName(theOtherMemberName);
-		MemberEntity receiver = new MemberEntity(12L, "12");
+		Member receiver = null;// = new Member(12L, "12");
 		
 		ChatRoom chatRoom = chatRoomRepository.saveAndFlush(new ChatRoom());
 		
+		// sender
 		ChatRoomMember chatRoomMemeberSender = ChatRoomMember.builder()
-				.chatRoomMemberId(new ChatRoomMemberId(sender.getMemberId(), chatRoom.getRoomId()))
+				.chatRoomMemberId(new ChatRoomMemberId(sender.getId(), chatRoom.getRoomId()))
 				.chatRoom(chatRoom)
 				.member(sender)
 				.readTime(LocalDateTime.now())
 				.build();
 		
-		
+		// receiver
 		ChatRoomMember chatRoomMemeberReceiver = ChatRoomMember.builder()
-				.chatRoomMemberId(new ChatRoomMemberId(receiver.getMemberId(), chatRoom.getRoomId()))
+				.chatRoomMemberId(new ChatRoomMemberId(receiver.getId(), chatRoom.getRoomId()))
 				.chatRoom(chatRoom)
 				.member(receiver)
 				.readTime(LocalDateTime.now())
@@ -152,7 +163,7 @@ public class ChatService {
 		log.info("--saveMessage--");
 		
 		ChatRoom ChatRoomEntity = verifiedChatRoom(mdto.getRoomId());
-		MemberEntity memberEntity = verifiedMember(mdto.getSenderId());
+		Member memberEntity = verifiedMember(mdto.getSenderId());
 
 		ChatMessage chatMessageEntity = ChatMessage.builder()
 				.chatRoom(ChatRoomEntity)
@@ -225,11 +236,19 @@ public class ChatService {
 //		Optional<MemberEntity> optionalMemberEntity = memberRepository.findBy
 //	}
 	
+	/*
+	 * 보류, user, user_info, member 정리 될 때까지
+	 */
+//	public User verifiedUser(Long userId) {
+//		User followedUser = userRepository.findById(userId);
+//		
+//	}
+	
 	@Cacheable(cacheNames = "members")	// 캐싱이 안되는데 원인을 모르겠음
-	public MemberEntity verifiedMember(Long memberId) {
+	public Member verifiedMember(Long memberId) {
 		log.info("== verifiedMember ==");
 		
-		Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
+		Optional<Member> optionalMemberEntity = memberRepository.findById(memberId);
 		return optionalMemberEntity.orElseThrow(() -> new ChatException(ErrorCode.MEMBER_NOT_FOUND));
 	}
 

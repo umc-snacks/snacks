@@ -1,7 +1,7 @@
 package com.example.demo.profile.domain.follow;
 
 
-import com.example.demo.profile.domain.user.User;
+import com.example.demo.profile.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,14 +21,14 @@ public class Follow  {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
-    private User follower; // 팔로우를 하는 사람
+    private Member follower; // 팔로우를 하는 사람
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
-    private User followee; // 팔로우를 받는 사람
+    private Member followee; // 팔로우를 받는 사람
 
     @Builder
-    public Follow(User follower, User followee) {
+    public Follow(Member follower, Member followee) {
         this.follower = follower;
         this.followee = followee;
     }

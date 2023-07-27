@@ -2,16 +2,14 @@ package com.example.demo.Chat.Entity;
 
 import java.time.LocalDateTime;
 
-import com.example.demo.Member.MemberEntity;
+import com.example.demo.profile.domain.member.Member;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,7 +32,7 @@ public class ChatRoomMember extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("memberId")
     @JoinColumn(name = "member_id")
-    private MemberEntity member;
+    private Member member;
     
     private LocalDateTime readTime;
     

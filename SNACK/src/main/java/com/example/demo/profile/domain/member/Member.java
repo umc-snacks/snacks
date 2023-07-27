@@ -1,7 +1,8 @@
-package com.example.demo.profile.domain.user;
+package com.example.demo.profile.domain.member;
 
 import com.example.demo.profile.domain.follow.Follow;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @DynamicUpdate
 @Entity
-public class User  {
+public class Member {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -44,8 +45,13 @@ public class User  {
     @OneToMany(mappedBy = "followee",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Follow> followeeList = new ArrayList<>(); //나를 팔로우 하는 유저들의 리스트
 
+//    @Column
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul") //날짜 포멧 바꾸기
+//    private LocalDate birth;
+
     @Builder
-    public User(String username, String nickname, String password, UserInfo userInfo) {
+    public Member(String username, String nickname, String password, UserInfo userInfo) {
         this.username = username;
         this.nickname = nickname;
         this.password = password;
@@ -65,6 +71,7 @@ public class User  {
     public void hasFollowing(){
         this.userInfo.followCountPlus();
     }
+
     public void hasUnFollowing(){
         this.userInfo.followCountMinus();
     }

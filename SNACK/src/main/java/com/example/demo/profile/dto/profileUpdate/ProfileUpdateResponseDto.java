@@ -1,6 +1,6 @@
 package com.example.demo.profile.dto.profileUpdate;
 
-import com.example.demo.profile.domain.user.User;
+import com.example.demo.profile.domain.member.Member;
 import lombok.Getter;
 
 @Getter
@@ -15,9 +15,9 @@ public class ProfileUpdateResponseDto {
         this.introduction = introduction;
     }
 
-    public ProfileUpdateResponseDto(User user){
-        this.nickname = user.getNickname();
-        this.profileImageUrl = user.getProfileImageUrl();
-        this.introduction = user.getUserInfo().getIntroduction();
+    public ProfileUpdateResponseDto(Member member){
+        this.nickname = member.getNickname();
+        this.profileImageUrl = member.getProfileImageUrl();
+        this.introduction = member.getUserInfo().getIntroduction();
     }
 }

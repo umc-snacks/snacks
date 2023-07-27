@@ -1,7 +1,7 @@
 package com.example.demo.profile.service;
 
-import com.example.demo.profile.domain.user.User;
-import com.example.demo.profile.domain.user.UserRepository;
+import com.example.demo.profile.domain.member.Member;
+import com.example.demo.profile.domain.member.MemberRepository;
 import com.example.demo.profile.domain.userinfo.UserInfoRepository;
 import com.example.demo.profile.dto.profileUpdate.ProfileReadResponseDto;
 import com.example.demo.profile.dto.myInfo.MyInfoResponseDto;
@@ -15,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MyInfoService {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final UserInfoRepository userInfoRepository;
-    public MyInfoResponseDto readMyInfo(User user) {
-        User tempUser = userRepository.findById(user.getId()).get();
+    public MyInfoResponseDto readMyInfo(Member member) {
+        Member tempMember = memberRepository.findById(member.getId()).get();
 
 
         /*
@@ -26,29 +26,27 @@ public class MyInfoService {
          */
 
         return MyInfoResponseDto.builder()
-                .myProfileImageUrl(tempUser.getProfileImageUrl())
-                .nickname(tempUser.getNickname())
-                .articleCount(tempUser.getUserInfo().getArticleCount())
-                .followerCount(tempUser.getUserInfo().getFollowerCount())
-                .followCount(tempUser.getUserInfo().getFollowCount())
-                .introduction(tempUser.getUserInfo().getIntroduction())
+                .myProfileImageUrl(tempMember.getProfileImageUrl())
+                .nickname(tempMember.getNickname())
+                .articleCount(tempMember.getUserInfo().getArticleCount())
+                .followerCount(tempMember.getUserInfo().getFollowerCount())
+                .followCount(tempMember.getUserInfo().getFollowCount())
+                .introduction(tempMember.getUserInfo().getIntroduction())
                 .build();
     }
 
-    public ProfileReadResponseDto readProfile(User user) {
-        User tempUser = userRepository.findById(user.getId()).get();
-        return new ProfileReadResponseDto(tempUser);
+    public ProfileReadResponseDto readProfile(Member member) {
+        Member tempMember = memberRepository.findById(member.getId()).get();
+        return new ProfileReadResponseDto(tempMember);
     }
 
     @Transactional
-    public ProfileUpdateResponseDto updateProfile(ProfileUpdateRequestDto profileUpdateRequestDto, User user) {
-        User tempUser = userRepository.findById(user.getId()).get();
-        tempUser.setNickname(profileUpdateRequestDto.getNickname());
-        tempUser.setProfileImageUrl(profileUpdateRequestDto.getProfileImageUrl());
-        tempUser.getUserInfo().setIntroduction(profileUpdateRequestDto.getInroduction());
-        userRepository.save(tempUser);
-        userInfoRepository.save(tempUser.getUserInfo());
-        return new ProfileUpdateResponseDto(tempUser);
+    public ProfileUpdateResponseDto updateProfile(ProfileUpdateRequestDto profileUpdateRequestDto, Member member) {
+        Member tempMember = memberRepository.findById(member.getId()).get();
+        tempMember.setNickname(profileUpdateRequestDto.getNickname());
+        tempMember.setProfileImageUrl(profileUpdateRequestDto.getProfileImageUrl());
+        tempMember.getUserInfo().setIntroduction(profileUpdateRequestDto.getIntroduction());
+        return new ProfileUpdateResponseDto(tempMember);
     }
 }
 

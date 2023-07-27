@@ -10,10 +10,10 @@ public class ProfileUpdateRequestDto {
 
     private String profileImageUrl;
 
-    private String inroduction;
+    private String introduction;
     public ProfileUpdateRequestDto(String nickname, String profileImageUrl, String introduction){
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
-        this.inroduction = introduction;
+        this.introduction = introduction;
     }
 }

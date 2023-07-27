@@ -1,6 +1,6 @@
 package com.example.demo.profile.domain.userinfo;
 
-import com.example.demo.profile.domain.user.User;
+import com.example.demo.profile.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ public class UserInfo {
     private Long id;
 
     @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER)
-    private User user;
+    private Member member;
 
     @Column(nullable = false)
     private Long articleCount;
@@ -57,5 +57,6 @@ public class UserInfo {
     public void articleCountPlus() { this.articleCount += 1L; }
 
     public void articleCountMinus() { this.articleCount -= 1L; }
+
 
 }
