@@ -29,7 +29,7 @@ public abstract class SocialBoard extends BaseTimeEntity {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "WRITER_ID")
     private Member writer;
 
     @Column(name = "CONTENT")
@@ -38,9 +38,6 @@ public abstract class SocialBoard extends BaseTimeEntity {
     @Column(name = "LIKES")
     private Long likes;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "SOCIAL_BOARD_ID")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "board")
     private List<Comment> comments = new ArrayList<>();
-
-
 }

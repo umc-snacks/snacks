@@ -38,7 +38,6 @@ public class SocialBoardController {
         System.out.println(board.toString());
         socialBoardService.saveBoard(board);
 
-
         URI uri = buildUri(uriBuilder, board);
 
         return ResponseEntity.created(uri).build();

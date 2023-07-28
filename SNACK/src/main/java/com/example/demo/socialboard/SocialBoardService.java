@@ -1,6 +1,8 @@
 package com.example.demo.socialboard;
 
 import com.example.demo.socialboard.entity.SocialBoard;
+import com.example.demo.socialboard.entity.Vote;
+import com.example.demo.socialboard.entity.VoteBoard;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,14 +14,22 @@ import java.util.Optional;
 public class SocialBoardService {
 
     private final SocialBoardRepository socialBoardRepository;
+    private final VoteRepository voteRepository;
 
     @Autowired
-    public SocialBoardService(SocialBoardRepository socialBoardRepository) {
+    public SocialBoardService(SocialBoardRepository socialBoardRepository, VoteRepository voteRepository) {
         this.socialBoardRepository = socialBoardRepository;
+        this.voteRepository = voteRepository;
     }
 
     public Long saveBoard(@Valid SocialBoard socialBoard) {
-        socialBoardRepository.save(socialBoard);
+        VoteBoard board = (VoteBoard) socialBoard;
+        board.getVotes().iterator().forEachRemaining(
+                vote -> {
+                    vote.setVoteBoard(board);
+                    voteRepository.save(vote);
+                }
+        );
 
         return socialBoard.getId();
     }

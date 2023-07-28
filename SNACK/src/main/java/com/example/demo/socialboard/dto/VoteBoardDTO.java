@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class VoteBoardDTO extends SocialBoardDTO{
 
-    private List<Vote> votes = new ArrayList<>();
+    private List<VoteDTO> votes = new ArrayList<>();
 
     @Override
     public SocialBoard toEntity() {
@@ -29,12 +29,17 @@ public class VoteBoardDTO extends SocialBoardDTO{
                 .map(CommentDTO::toEntity)
                 .collect(Collectors.toList());
 
+        List<VoteDTO> votes = this.getVotes();
+        List<Vote> voteEntities = votes.stream()
+                .map(VoteDTO::toEntity)
+                .collect(Collectors.toList());
+
         return VoteBoard.builder()
                 .writer(this.getWriter())
                 .content(this.getContent())
                 .likes(this.getLikes())
                 .comments(commentEntities)
-                .votes(this.getVotes())
+                .votes(voteEntities)
                 .build();
     }
 
