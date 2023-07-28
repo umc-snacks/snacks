@@ -6,25 +6,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class ChatExceptionHandler {
 	
-//	@ExceptionHandler(value = ChatException.class) 
-//	public ResponseEntity memberOrRoomNotFound(Exception e) {
-//		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("qweqweqwe");
-//	}
-	
-	@ExceptionHandler(value = MemberOrRoomNotFoundException.class) 
-	public ResponseEntity memberOrRoomNotFound(Exception e) {
-		HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+	@ExceptionHandler(value = NotFoundException.class) 
+	public ResponseEntity memberOrRoomNotFound(NotFoundException e) {
+		ChatException chatException = getChatException(e.getErrorCode());
 		
-		ApiException apiException = ApiException.builder()
-				.httpStatus(httpStatus)
-				.message(ErrorCode.MEMBER_OR_ROOM_NOT_FOUND.getMessage())
+		return ResponseEntity.status(chatException.getHttpStatus()).body(chatException);
+	}
+	
+	public ChatException getChatException(ErrorCode errorCode) {
+		return ChatException.builder()
+				.httpStatus(errorCode.getStatus())
+				.message(errorCode.getMessage())
 				.timestamp(LocalDateTime.now())
 				.build();
-		
-		return ResponseEntity.status(httpStatus).body(apiException);
 	}
 }

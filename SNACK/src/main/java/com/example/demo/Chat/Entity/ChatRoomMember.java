@@ -30,8 +30,7 @@ public class ChatRoomMember extends BaseTimeEntity {
     private ChatRoom chatRoom;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("memberId")
-    @JoinColumn(name = "member_id")
+    @MapsId("id")
     private Member member;
     
     private LocalDateTime readTime;

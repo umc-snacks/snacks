@@ -19,6 +19,6 @@ public class ChatRoomDTO {
 		private String imageUri;
 		private String content;
 		private LocalDateTime sentAt;
-		private LocalDateTime appointment;
+		private LocalDateTime appointment;	// 팀의 경우 약속 시간
 	}
 }

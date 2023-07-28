@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class MemberOrRoomNotFoundException extends RuntimeException {
+public class NotFoundException extends RuntimeException {
 	private final ErrorCode errorCode;
 }
 

@@ -35,7 +35,7 @@ public class Member {
     @Column(nullable = true)
     private String profileImageUrl;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(nullable = true)
     private UserInfo userInfo;
 

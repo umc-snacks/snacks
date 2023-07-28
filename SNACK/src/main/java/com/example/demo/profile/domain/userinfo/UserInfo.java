@@ -1,11 +1,19 @@
 package com.example.demo.profile.domain.userinfo;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.example.demo.profile.domain.member.Member;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Getter @Setter
@@ -29,7 +37,7 @@ public class UserInfo {
     @Column(nullable = false)
     private Long followCount; // 내가 누구를 팔로우
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String introduction;
 
     public UserInfo(Long articleCount, Long followerCount, Long followCount) {

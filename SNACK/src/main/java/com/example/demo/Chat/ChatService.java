@@ -14,17 +14,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.Chat.Dto.ChatRoomDTO;
+import com.example.demo.Chat.Dto.ChatRoomDTO.Get;
+import com.example.demo.Chat.Dto.ChatRoomListDTO;
+import com.example.demo.Chat.Dto.FollowDTO;
 import com.example.demo.Chat.Dto.MessageDTO;
 import com.example.demo.Chat.Entity.ChatMessage;
 import com.example.demo.Chat.Entity.ChatRoom;
 import com.example.demo.Chat.Entity.ChatRoomMember;
 import com.example.demo.Chat.Entity.ChatRoomMemberId;
-import com.example.demo.Chat.Exception.ChatException;
 import com.example.demo.Chat.Exception.ErrorCode;
-import com.example.demo.Chat.Exception.MemberOrRoomNotFoundException;
+import com.example.demo.Chat.Exception.NotFoundException;
 import com.example.demo.Chat.repository.ChatMessageRepository;
 import com.example.demo.Chat.repository.ChatRoomMemberRepository;
 import com.example.demo.Chat.repository.ChatRoomRepository;
+import com.example.demo.profile.domain.follow.Follow;
+import com.example.demo.profile.domain.follow.FollowRepository;
 import com.example.demo.profile.domain.member.Member;
 import com.example.demo.profile.domain.member.MemberRepository;
 
@@ -39,29 +43,28 @@ public class ChatService {
 	private final ChatRoomMemberRepository chatRoomMemberRepository;
 	private final ChatMessageRepository chatMessageRepository;
 	private final ChatRoomRepository chatRoomRepository;
-	private final Mapper mapper;
+	private final FollowRepository followRepository;
 	
 	/*
-	 * 사용자가 속한 채팅방을 모두 조회하여 리턴한다.
+	 * 사용자가 속한 채팅방과 팔로워를 모두 조회하여 리턴한다.
 	 * 
-	 * @param Long member_id 사용자 식별자
-	 * 
-	 * @return 사용자가 속한 채팅방 리스트를 DTO로 반환 Exception 사용자가 검색되지 않을 경우 ChatException을
-	 * 발생시킴
+	 * @param Long memberId 사용자 식별자
+	 * @return 사용자가 속한 채팅방 리스트를 DTO로 반환
 	 */
 	@Transactional(readOnly = true)
-	public List<ChatRoomDTO.Get> getChatList(Long member_id) {
+	public ChatRoomListDTO getChatList(Long memberId) {
 		log.info("--getChatList--");
 		
-		Member memberEntity = verifiedMember(member_id);
+		Member member = verifiedMember(memberId);	// 유효성 검사, memberId에 해당하는 사용자가 없으면 NotFoundException 발생
 
-		List<Object[]> crmAndrt = chatRoomMemberRepository.findMembersWithSameRoomAndReceiveTime(member_id);
-		List<ChatRoomDTO.Get> chatList = new ArrayList<>();
+		List<Object[]> crmAndrt = chatRoomMemberRepository.findMembersWithSameRoomAndReceiveTime(memberId);
 		
-		/*
-		 * 팔로워 목록을 가져오는 코드 
-		 */
+		//팔로워 목록을 가져오는 코드 
+		List<Follow> followList = followRepository.findAllMyFollowr(memberId);
 		
+		List<FollowDTO> fdtoList = followList.stream()
+				.map(s -> Mapper.FollowToDTO(s))
+				.collect(Collectors.toList());
 		/*
 		 * 팀 약속 시간을 가져오는 코드
 		 */
@@ -83,18 +86,23 @@ public class ChatService {
 	            cr.setType(isTeam ? "team" : "private");
 	            cr.setRoomId(roomId);
 	            cr.setName(isTeam ? crm.getChatRoom().getTeam().getTeamName() : crm.getMember().getNickname());
-	            cr.setNumberOfUnreadMessage(chatMessageRepository.getNumberOfUnreadMessage(member_id, roomId));
+	            cr.setNumberOfUnreadMessage(chatMessageRepository.getNumberOfUnreadMessage(memberId, roomId));
 	            cr.setContent(content);
 	            cr.setSentAt(time);
-	            cr.setAppointment(null);	// 
+	            cr.setAppointment(null);	
 	            
 	            chatMap.put(roomId, cr);
 	        }
 	    }
 	    
-	    return chatMap.values().stream()
-	            .sorted(Comparator.comparing(ChatRoomDTO.Get::getSentAt).reversed())
-	            .collect(Collectors.toList());
+	    List<Get> chatRoomList = chatMap.values().stream()
+	    		.sorted(Comparator.comparing(ChatRoomDTO.Get::getSentAt).reversed())
+	    		.collect(Collectors.toList());
+	    
+	    return ChatRoomListDTO.builder()
+	    		.ChatRoomDTOGetList(chatRoomList)
+	    		.followList(fdtoList)
+	    		.build();
 	}
 	
 	/*
@@ -186,7 +194,7 @@ public class ChatService {
 		List<MessageDTO.Response> messageDTOResponse = new ArrayList<>();
 		
 		for(ChatMessage cm : unreadChatMessages) {
-			MessageDTO.Response mdtor = mapper.ChatMessageToMessageDtoResponse(cm);
+			MessageDTO.Response mdtor = Mapper.ChatMessageToMessageDtoResponse(cm);
 			messageDTOResponse.add(mdtor);
 		}
 		
@@ -226,7 +234,7 @@ public class ChatService {
 			crm.setReadTime(LocalDateTime.now());
 			chatRoomMemberRepository.save(crm);
 		} catch (NullPointerException e) {
-			throw new MemberOrRoomNotFoundException(ErrorCode.MEMBER_OR_ROOM_NOT_FOUND);
+			throw new NotFoundException(ErrorCode.MEMBER_OR_ROOM_NOT_FOUND);
 		}
 	}
 	
@@ -249,7 +257,7 @@ public class ChatService {
 		log.info("== verifiedMember ==");
 		
 		Optional<Member> optionalMemberEntity = memberRepository.findById(memberId);
-		return optionalMemberEntity.orElseThrow(() -> new ChatException(ErrorCode.MEMBER_NOT_FOUND));
+		return optionalMemberEntity.orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND));
 	}
 
 	@Cacheable(cacheNames = "chatRooms")	// 캐싱이 안되는데 원인을 모르겠음
@@ -257,7 +265,7 @@ public class ChatService {
 		log.info("== verifiedChatRoom ==");
 		
 		Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findById(roomId);
-		return optionalChatRoom.orElseThrow(() -> new ChatException(ErrorCode.ROOM_NOT_FOUND));
+		return optionalChatRoom.orElseThrow(() -> new NotFoundException(ErrorCode.ROOM_NOT_FOUND));
 	}
 }
 

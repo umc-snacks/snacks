@@ -10,7 +10,7 @@ public class ChatRoomMemberId implements Serializable {
 	private Long chatRoomId;
 	
 //	@Column(name="member_id")
-    private Long memberId;
+    private Long id;
     
     public ChatRoomMemberId() {
         // 기본 생성자 필요
@@ -18,6 +18,6 @@ public class ChatRoomMemberId implements Serializable {
 
     public ChatRoomMemberId(Long chatRoomId, Long memberId) {
         this.chatRoomId = chatRoomId;
-        this.memberId = memberId;
+        this.id = memberId;
     }
 }
