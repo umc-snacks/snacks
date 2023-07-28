@@ -27,7 +27,7 @@ public abstract class SocialBoardDTO {
 
     private String content;
 
-    private Long likes;
+    private Long likes = 0L;
 
     private List<CommentDTO> comments = new ArrayList<>();
 

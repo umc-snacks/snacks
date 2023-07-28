@@ -30,11 +30,11 @@ public class SocialBoardController {
     }
 
 
-
     @PostMapping
-    public ResponseEntity create(@RequestBody SocialBoardDTO boardDTO,
+    public ResponseEntity create(@Valid @RequestBody SocialBoardDTO boardDTO,
                                  UriComponentsBuilder uriBuilder) {
         SocialBoard board = boardDTO.toEntity();
+
         System.out.println(board.toString());
         socialBoardService.saveBoard(board);
 
@@ -43,16 +43,24 @@ public class SocialBoardController {
         return ResponseEntity.created(uri).build();
     }
 
-    @GetMapping("{boardId}")
-    public ResponseEntity<SocialBoard> read(@PathVariable Long boardId) {
-        SocialBoard board = socialBoardService.getBoard(boardId).orElseThrow(() -> new NoSuchElementException("해당 id의 게시판이 존재하지 않습니다."));
-        return ResponseEntity.ok().body(board);
-    }
-
     private static URI buildUri(UriComponentsBuilder uriBuilder, SocialBoard socialBoard) {
         URI uri = MvcUriComponentsBuilder.relativeTo(uriBuilder)
                 .withMethodCall(on(SocialBoardController.class).read(socialBoard.getId()))
                 .build().encode().toUri();
         return uri;
     }
+
+    @GetMapping("{boardId}")
+    public ResponseEntity<SocialBoard> read(@PathVariable Long boardId) {
+        SocialBoard board = socialBoardService.getBoard(boardId).orElseThrow(() -> new NoSuchElementException("해당 id의 게시판이 존재하지 않습니다."));
+        return ResponseEntity.ok().body(board);
+    }
+
+
+    @DeleteMapping("{boardId}")
+    public void delete(@PathVariable Long boardId) {
+        socialBoardService.deleteBoard(boardId);
+    }
+
+
 }

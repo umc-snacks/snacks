@@ -36,7 +36,7 @@ public abstract class SocialBoard extends BaseTimeEntity {
     private String content;
 
     @Column(name = "LIKES")
-    private Long likes;
+    private Long likes = 0L;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "board")
     private List<Comment> comments = new ArrayList<>();
