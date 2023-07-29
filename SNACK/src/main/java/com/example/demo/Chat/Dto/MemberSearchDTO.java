@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @Builder
-public class FollowDTO {
+public class MemberSearchDTO {
 	private String nickName;
-	private Long id;
+	private Long memberId;
 }

@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.Chat.Dto.ChatRoomDTO;
 import com.example.demo.Chat.Dto.ChatRoomDTO.Get;
 import com.example.demo.Chat.Dto.ChatRoomListDTO;
-import com.example.demo.Chat.Dto.FollowDTO;
+import com.example.demo.Chat.Dto.MemberSearchDTO;
 import com.example.demo.Chat.Dto.MessageDTO;
 import com.example.demo.Chat.Entity.ChatMessage;
 import com.example.demo.Chat.Entity.ChatRoom;
@@ -27,7 +27,6 @@ import com.example.demo.Chat.Exception.NotFoundException;
 import com.example.demo.Chat.repository.ChatMessageRepository;
 import com.example.demo.Chat.repository.ChatRoomMemberRepository;
 import com.example.demo.Chat.repository.ChatRoomRepository;
-import com.example.demo.profile.domain.follow.Follow;
 import com.example.demo.profile.domain.follow.FollowRepository;
 import com.example.demo.profile.domain.member.Member;
 import com.example.demo.profile.domain.member.MemberRepository;
@@ -60,11 +59,12 @@ public class ChatService {
 		List<Object[]> crmAndrt = chatRoomMemberRepository.findMembersWithSameRoomAndReceiveTime(memberId);
 		
 		//팔로워 목록을 가져오는 코드 
-		List<Follow> followList = followRepository.findAllMyFollowr(memberId);
+		List<Member> memberList = memberRepository.findAll();
 		
-		List<FollowDTO> fdtoList = followList.stream()
-				.map(s -> Mapper.FollowToDTO(s))
+		List<MemberSearchDTO> mdtoList = memberList.stream()
+				.map(s -> Mapper.MemberToMemberSearchDTO(s))
 				.collect(Collectors.toList());
+		
 		/*
 		 * 팀 약속 시간을 가져오는 코드
 		 */
@@ -79,7 +79,7 @@ public class ChatService {
 	        Long roomId = crm.getChatRoom( ).getRoomId();
 	        ChatRoomDTO.Get cr = chatMap.get(roomId);
 
-	        if (cr == null) {
+	        if (cr == null && time != null) {
 	            cr = new ChatRoomDTO.Get();
 	            boolean isTeam = crm.getChatRoom().getTeam() != null ? true : false;
 	            
@@ -101,7 +101,7 @@ public class ChatService {
 	    
 	    return ChatRoomListDTO.builder()
 	    		.ChatRoomDTOGetList(chatRoomList)
-	    		.followList(fdtoList)
+	    		.memberList(mdtoList)
 	    		.build();
 	}
 	
@@ -130,27 +130,30 @@ public class ChatService {
 	 * @param userName B의 닉네임에 해당
 	 * @return chatRoom.getRoomId() 
 	 */
-	public Long createPrivateChatRoom(Long myMemberId, String theOtherMemberName) {
-		// 사용자 닉네임으로 찾는 부분
-		Member sender = null;// = new Member(11L, "11");	// 임시
-//		MemberEntity receiver = memberRepository.getByNickName(theOtherMemberName);
-		Member receiver = null;// = new Member(12L, "12");
+	public Long createPrivateChatRoom(Long creatorId, Long participantId) {
+		
+		/*
+		 * 어떤 오류로 방이 있는데 또 방이 생성될 경우 로직 처리 필요
+		 */
+		
+		Member creator = verifiedMember(creatorId);
+		Member participant = verifiedMember(participantId);
 		
 		ChatRoom chatRoom = chatRoomRepository.saveAndFlush(new ChatRoom());
 		
-		// sender
+		// creator
 		ChatRoomMember chatRoomMemeberSender = ChatRoomMember.builder()
-				.chatRoomMemberId(new ChatRoomMemberId(sender.getId(), chatRoom.getRoomId()))
+				.chatRoomMemberId(new ChatRoomMemberId(creator.getId(), chatRoom.getRoomId()))
 				.chatRoom(chatRoom)
-				.member(sender)
+				.member(creator)
 				.readTime(LocalDateTime.now())
 				.build();
 		
 		// receiver
 		ChatRoomMember chatRoomMemeberReceiver = ChatRoomMember.builder()
-				.chatRoomMemberId(new ChatRoomMemberId(receiver.getId(), chatRoom.getRoomId()))
+				.chatRoomMemberId(new ChatRoomMemberId(participant.getId(), chatRoom.getRoomId()))
 				.chatRoom(chatRoom)
-				.member(receiver)
+				.member(participant)
 				.readTime(LocalDateTime.now())
 				.build();
 		

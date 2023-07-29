@@ -13,5 +13,5 @@ import lombok.Getter;
 @Getter
 public class ChatRoomListDTO {
 	private List<ChatRoomDTO.Get> ChatRoomDTOGetList;
-	private List<FollowDTO> followList;
+	private List<MemberSearchDTO> memberList;
 }

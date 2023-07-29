@@ -2,10 +2,10 @@ package com.example.demo.Chat;
 
 import java.time.LocalDateTime;
 
-import com.example.demo.Chat.Dto.FollowDTO;
+import com.example.demo.Chat.Dto.MemberSearchDTO;
 import com.example.demo.Chat.Dto.MessageDTO;
 import com.example.demo.Chat.Entity.ChatMessage;
-import com.example.demo.profile.domain.follow.Follow;
+import com.example.demo.profile.domain.member.Member;
 
 import lombok.NoArgsConstructor;
 
@@ -27,10 +27,10 @@ public class Mapper {
 				.build();
 	}
 	
-	public static FollowDTO FollowToDTO(Follow follow) {
-		return FollowDTO.builder()
-				.nickName(follow.getFollower().getNickname().toString())
-				.id(follow.getFollower().getId())
+	public static MemberSearchDTO MemberToMemberSearchDTO(Member member) {
+		return MemberSearchDTO.builder()
+				.nickName(member.getNickname().toString())
+				.memberId(member.getId())
 				.build();
 	}
 	
