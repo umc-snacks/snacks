@@ -1,13 +1,8 @@
 package com.example.demo.socialboard.dto;
 
-import com.example.demo.Member.Member;
-import com.example.demo.socialboard.entity.SocialBoard;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -23,14 +18,13 @@ import java.util.List;
 })
 public abstract class SocialBoardDTO {
 
-    private Member writer;
+    private Long writerId;
 
     private String content;
 
     private Long likes = 0L;
 
-    private List<CommentDTO> comments = new ArrayList<>();
 
-    public abstract SocialBoard toEntity();
+
 
 }

@@ -1,7 +1,5 @@
 package com.example.demo.socialboard;
 
-import com.example.demo.board.Board;
-import com.example.demo.board.BoardController;
 import com.example.demo.socialboard.dto.SocialBoardDTO;
 import com.example.demo.socialboard.entity.SocialBoard;
 import jakarta.validation.Valid;
@@ -33,10 +31,8 @@ public class SocialBoardController {
     @PostMapping
     public ResponseEntity create(@Valid @RequestBody SocialBoardDTO boardDTO,
                                  UriComponentsBuilder uriBuilder) {
-        SocialBoard board = boardDTO.toEntity();
 
-        System.out.println(board.toString());
-        socialBoardService.saveBoard(board);
+        SocialBoard board = socialBoardService.saveBoard(boardDTO);
 
         URI uri = buildUri(uriBuilder, board);
 
@@ -55,6 +51,10 @@ public class SocialBoardController {
         SocialBoard board = socialBoardService.getBoard(boardId).orElseThrow(() -> new NoSuchElementException("해당 id의 게시판이 존재하지 않습니다."));
         return ResponseEntity.ok().body(board);
     }
+
+    /*
+    업데이트 요청 추가해야함
+     */
 
 
     @DeleteMapping("{boardId}")
