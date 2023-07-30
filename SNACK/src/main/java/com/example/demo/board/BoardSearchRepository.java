@@ -1,0 +1,56 @@
+package com.example.demo.board;
+
+import static com.example.demo.board.QBoard.board;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.Games;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
+import io.micrometer.common.util.StringUtils;
+
+
+@Repository
+public class BoardSearchRepository {
+    private final JPAQueryFactory jpaQueryFactory;
+
+    @Autowired
+    public BoardSearchRepository(JPAQueryFactory jpaQueryFactory) {
+        this.jpaQueryFactory = jpaQueryFactory;
+    }
+
+    public List<Board> searchBoard(BoardSearch boardSearch) {
+
+        QBoard board = QBoard.board;
+
+        return jpaQueryFactory
+                .select(board)
+                .from(board)
+                .where(
+                        eqTitle(boardSearch.getTitle()),
+                        eqGameTitle(boardSearch.getGameTitle(), boardSearch.getEtcTitle())
+                ).fetch();
+    }
+
+    private BooleanExpression eqTitle(String title) {
+        if (StringUtils.isBlank(title)) {
+            return null;
+        }
+        return board.title.containsIgnoreCase(title);
+    }
+
+    private BooleanExpression eqGameTitle(Games games, String etcTitle) {
+        if (games == Games.ETC) {
+            return board.etcTitle.eq(etcTitle);
+        }
+        return board.gameTitle.eq(games);
+    }
+
+
+
+
+}
