@@ -9,12 +9,12 @@ import java.util.Optional;
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
-    private final BoardSearchRepository boardSearchRepository;
+    private final BoardSearchRepositoryImpl boardSearchRepositoryImpl;
 
     @Autowired
-    public BoardService(BoardRepository boardRepository, BoardSearchRepository boardSearchRepository) {
+    public BoardService(BoardRepository boardRepository, BoardSearchRepositoryImpl boardSearchRepositoryImpl) {
         this.boardRepository = boardRepository;
-        this.boardSearchRepository = boardSearchRepository;
+        this.boardSearchRepositoryImpl = boardSearchRepositoryImpl;
 
     }
 
@@ -52,6 +52,6 @@ public class BoardService {
     }
 
     public List<Board> searchBoard(BoardSearch boardSearch) {
-        return boardSearchRepository.searchBoard(boardSearch);
+        return boardSearchRepositoryImpl.searchBoard(boardSearch);
     }
 }

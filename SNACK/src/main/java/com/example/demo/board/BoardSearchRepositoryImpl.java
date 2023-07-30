@@ -13,11 +13,11 @@ import static com.example.demo.board.QBoard.board;
 
 
 @Repository
-public class BoardSearchRepository {
+public class BoardSearchRepositoryImpl {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Autowired
-    public BoardSearchRepository(JPAQueryFactory jpaQueryFactory) {
+    public BoardSearchRepositoryImpl(JPAQueryFactory jpaQueryFactory) {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
