@@ -36,9 +36,9 @@ public class CommentService {
                         .orElseThrow(() -> new NoSuchElementException("Could not found board id : " + boardId));
 
         Comment comment = Comment.builder()
+                .board(board)
                 .writer(member)
                 .content(commentDTO.getContent())
-                .board(board)
                 .build();
 
         return commentRepository.save(comment);

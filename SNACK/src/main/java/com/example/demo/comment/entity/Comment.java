@@ -38,4 +38,8 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "BOARD_ID")
     private SocialBoard board;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "comment")
+    private List<ReplyComment> replies = new ArrayList<>();
+
 }
