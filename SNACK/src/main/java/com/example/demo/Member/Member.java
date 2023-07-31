@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Member {
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "MEMBER_ID")
     private Long id;
