@@ -6,7 +6,7 @@ import com.example.demo.board.dto.BoardRequestDTO;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardMember;
 import com.example.demo.board.entity.BoardSearch;
-import com.example.demo.board.exception.BoardSizeOverException;
+import com.example.demo.exception.BoardSizeOverException;
 import com.example.demo.board.repository.BoardMemberRepository;
 import com.example.demo.board.repository.BoardRepository;
 import com.example.demo.board.repository.BoardSearchRepositoryImpl;
@@ -117,8 +117,7 @@ public class BoardService {
     private static void boardSizeCheck(BoardRequestDTO boardRequestDTO, List<Long> memberIds) {
         int maxMember = boardRequestDTO.getMemberCount();
         if ( memberIds.size() > maxMember){
-            //"멤버수가 설정한것보다 많습니다"
-            new BoardSizeOverException();
+            throw new BoardSizeOverException("멤버수가 설정한것보다 많습니다");
         }
     }
 

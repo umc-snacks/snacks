@@ -16,8 +16,6 @@ public class HeartController {
         this.heartService = heartService;
     }
 
-    // TODO 예외처리: 이미 좋아요를 눌렀을 경우 안된다고 알려주기
-
     @PostMapping
     public ResponseEntity<?> insert(@RequestBody @Valid HeartRequestDTO heartRequestDTO) throws Exception {
         heartService.insert(heartRequestDTO);

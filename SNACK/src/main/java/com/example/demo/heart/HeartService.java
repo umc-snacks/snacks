@@ -2,6 +2,7 @@ package com.example.demo.heart;
 
 import com.example.demo.Member.Member;
 import com.example.demo.Member.MemberRepository;
+import com.example.demo.exception.HeartRequestException;
 import com.example.demo.socialboard.repository.SocialBoardRepository;
 import com.example.demo.socialboard.entity.SocialBoard;
 import jakarta.transaction.Transactional;
@@ -37,13 +38,15 @@ public class HeartService {
 
         // 이미 좋아요되어있으면 에러 반환
         if (heartRepository.findByMemberAndSocialBoard(member, board).isPresent()){
-            throw new Exception();
+            delete(heartRequestDTO);
+            return;
         }
 
         Heart heart = Heart.builder()
                 .socialBoard(board)
                 .member(member)
                 .build();
+
         socialBoardRepository.updateCount(board, true);
         heartRepository.save(heart);
     }

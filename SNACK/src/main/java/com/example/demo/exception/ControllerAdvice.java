@@ -1,7 +1,6 @@
-package com.example.demo.board.exception;
+package com.example.demo.exception;
 
 
-import com.example.demo.exception.ErrorResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,7 +12,7 @@ import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 @Slf4j
-public class BoardControllerAdvice {
+public class ControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ErrorResult illegalHandle(IllegalArgumentException e) {
@@ -28,12 +27,18 @@ public class BoardControllerAdvice {
         return new ErrorResult("BadRequest", e.getMessage());
     }
 
-    // 상태 코드 지정
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    @ExceptionHandler
-//    // 그냥 exception 사용
-//    public ErrorResult exHandle(Exception e) {
-//        log.error("[exceptionHandle] ex", e);
-//        return new ErrorResult("EX", "내부 오류");
-//    }
+    @ExceptionHandler(HeartRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResult heartOverlapHandle(HeartRequestException e) {
+        log.error("[exceptionHandle] 좋아요의 요청이 중복되었습니다.", e);
+        return new ErrorResult("BadRequest", e.getMessage());
+    }
+
+    @ExceptionHandler(BoardSizeOverException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResult boardSizeOverHandle(HeartRequestException e) {
+        log.error("[exceptionHandle] 멤버수가 설정한것보다 많습니다.", e);
+        return new ErrorResult("BadRequest", e.getMessage());
+    }
+
 }
