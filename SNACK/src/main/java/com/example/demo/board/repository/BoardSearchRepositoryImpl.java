@@ -1,6 +1,9 @@
-package com.example.demo.board;
+package com.example.demo.board.repository;
 
 import com.example.demo.Games;
+import com.example.demo.board.entity.BoardSearch;
+import com.example.demo.board.entity.QBoard;
+import com.example.demo.board.entity.Board;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.micrometer.common.util.StringUtils;
@@ -9,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.example.demo.board.QBoard.board;
+import static com.example.demo.board.entity.QBoard.board;
 
 
 @Repository

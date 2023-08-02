@@ -1,8 +1,9 @@
-package com.example.demo.board;
+package com.example.demo.board.entity;
 
 import com.example.demo.BaseTimeEntity;
 import com.example.demo.Games;
 import com.example.demo.Member.Member;
+import com.example.demo.board.dto.BoardRequestDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -28,8 +29,8 @@ public class Board extends BaseTimeEntity {
     @Column(name = "BOARD_ID")
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "MEMBER_ID")
+    @ManyToOne
+    @JoinColumn(name = "WRITER_ID")
     private Member writer;
 
     @Column(name = "TITLE")
@@ -44,7 +45,7 @@ public class Board extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "board")
     @JsonIgnoreProperties({"board"})
-    private List<Member> members = new ArrayList<>();
+    private List<BoardMember> boardMembers = new ArrayList<>();
 
     @Column(name = "DATE")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -63,28 +64,4 @@ public class Board extends BaseTimeEntity {
     @Transient
     private Integer memberCount;
 
-    public static Optional<Board> createBoard(BoardDTO boardDTO) {
-        Integer memberLen = boardDTO.getMembers().size();
-        Integer maxCount = boardDTO.getMaxCount();
-
-        return maxCount > memberLen ? Optional.of(buildBoard(boardDTO)) : Optional.empty();
-
-    }
-
-    private static Board buildBoard(BoardDTO boardDTO) {
-        List<Member> members = boardDTO.getMembers();
-        Integer memberLen = members.size();
-
-        return Board.builder()
-                .title(boardDTO.getTitle())
-                .gameTitle(boardDTO.getGameTitle())
-                .members(members)
-                .date(boardDTO.getDate())
-                .notice(boardDTO.getNotice())
-                .maxCount(boardDTO.getMaxCount())
-                .memberCount(memberLen)
-                .autoCheckIn(boardDTO.isAutoCheckIn())
-                .build();
-
-    }
 }

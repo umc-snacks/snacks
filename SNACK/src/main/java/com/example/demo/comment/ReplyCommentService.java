@@ -3,7 +3,6 @@ package com.example.demo.comment;
 
 import com.example.demo.Member.Member;
 import com.example.demo.Member.MemberRepository;
-import com.example.demo.board.BoardRepository;
 import com.example.demo.comment.dto.ReplyCommentDTO;
 import com.example.demo.comment.entity.Comment;
 import com.example.demo.comment.entity.ReplyComment;

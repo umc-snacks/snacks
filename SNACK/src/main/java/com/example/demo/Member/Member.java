@@ -1,15 +1,22 @@
 package com.example.demo.Member;
 
 
-import com.example.demo.board.Board;
+import com.example.demo.BaseTimeEntity;
+import com.example.demo.board.entity.BoardMember;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class Member {
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Member extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "MEMBER_ID")
@@ -21,17 +28,8 @@ public class Member {
 
     private String email;
 
-    @ManyToOne( cascade = CascadeType.ALL)
-    @JoinColumn(name = "BOARD_ID")
-    private Board board;
+    @OneToMany(mappedBy = "member")
+    private List<BoardMember> memberBoards = new ArrayList<>();
 
 
-    /**
-     * 연관관계 메서드
-     * @param board
-     */
-    public void addBoard(Board board) {
-        this.board = board;
-        board.getMembers().add(this);
-    }
 }

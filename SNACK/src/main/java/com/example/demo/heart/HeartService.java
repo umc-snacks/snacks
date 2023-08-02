@@ -37,7 +37,6 @@ public class HeartService {
 
         // 이미 좋아요되어있으면 에러 반환
         if (heartRepository.findByMemberAndSocialBoard(member, board).isPresent()){
-            //TODO 409에러로 변경
             throw new Exception();
         }
 
