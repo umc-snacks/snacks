@@ -19,7 +19,7 @@ import java.util.List;
 public class BoardResponseDTO {
     private Long id;
 
-    private Member writer;
+    private String writer;
 
     private String title;
 
@@ -27,7 +27,7 @@ public class BoardResponseDTO {
 
     private String etcTitle;
 
-    private List<BoardMember> boardMembers = new ArrayList<>();
+    private List<String> boardMembers;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime date;
@@ -39,14 +39,18 @@ public class BoardResponseDTO {
     private boolean autoCheckIn;
 
     public static BoardResponseDTO getBuild(Board board) {
-        List<BoardMember> members = board.getBoardMembers();
+        ArrayList<String> memberName = new ArrayList<>();
+
+        board.getBoardMembers().iterator().forEachRemaining(
+                boardMember -> memberName.add(boardMember.getMember().getNickname())
+        );
         return BoardResponseDTO.builder()
                 .id(board.getId())
-                .writer(board.getWriter())
+                .writer(board.getWriter().getNickname())
                 .title(board.getTitle())
                 .gameTitle(board.getGameTitle())
                 .etcTitle(board.getEtcTitle())
-                .boardMembers(members)
+                .boardMembers(memberName)
                 .date(board.getDate())
                 .notice(board.getNotice())
                 .maxCount(board.getMaxCount())

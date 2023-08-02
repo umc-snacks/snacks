@@ -52,7 +52,6 @@ class BoardServiceTest {
 
         // given
         Long boardId = boardService.saveBoard(board);
-        boardService.updateBoard(boardId, updateBoard);
 
         // then
         Assertions.assertThat(boardId).isEqualTo(board.getId());

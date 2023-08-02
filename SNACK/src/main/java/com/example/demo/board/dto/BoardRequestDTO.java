@@ -49,7 +49,7 @@ public class BoardRequestDTO {
 
     private boolean autoCheckIn;
 
-    public static Board getBuild(BoardRequestDTO boardRequestDTO, List<BoardMember> members, Member writer) {
+    public static Board toEntity(BoardRequestDTO boardRequestDTO, List<BoardMember> members, Member writer) {
         return Board.builder()
                 .title(boardRequestDTO.getTitle())
                 .gameTitle(boardRequestDTO.getGameTitle())

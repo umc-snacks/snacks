@@ -61,12 +61,12 @@ public class BoardController {
         return ResponseEntity.created(uri).build();
     }
 
-    private static URI buildUri(UriComponentsBuilder uriBuilder, BoardResponseDTO responseDTO) {
-        URI uri = MvcUriComponentsBuilder.relativeTo(uriBuilder)
-                .withMethodCall(on(BoardController.class).read(responseDTO.getId()))
-                .build().encode().toUri();
-        return uri;
-    }
+        private static URI buildUri(UriComponentsBuilder uriBuilder, BoardResponseDTO responseDTO) {
+            URI uri = MvcUriComponentsBuilder.relativeTo(uriBuilder)
+                    .withMethodCall(on(BoardController.class).read(responseDTO.getId()))
+                    .build().encode().toUri();
+            return uri;
+        }
 
     @GetMapping("{boardId}")
     public ResponseEntity<BoardResponseDTO> read(@PathVariable Long boardId) {
@@ -82,12 +82,18 @@ public class BoardController {
     }
 
     @PutMapping("{boardId}")
-    public void update(@Valid @RequestBody Board board, @PathVariable Long boardId) {
-        boardService.updateBoard(boardId, board);
+    public void update(@Valid @RequestBody BoardRequestDTO boardRequestDTO, @PathVariable Long boardId) {
+        boardService.updateBoard(boardId, boardRequestDTO);
     }
 
     @DeleteMapping("{boardId}")
     public void delete(@PathVariable Long boardId) {
+        List<BoardMember> boardMembers = boardMemberRepository.findBoardMembersByBoardId(boardId);
+        boardMembers.stream().iterator().forEachRemaining(
+                boardMemberRepository::delete
+        );
+
+
         boardService.deleteBoard(boardId);
     }
 

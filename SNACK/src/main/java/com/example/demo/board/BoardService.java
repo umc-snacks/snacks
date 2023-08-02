@@ -42,37 +42,6 @@ public class BoardService {
         return board.getId();
     }
 
-    public Optional<Board> getBoard(Long boardId) {
-        return boardRepository.findById(boardId);
-    }
-
-    public List<Board> getBoards() {
-        return boardRepository.findAll();
-    }
-
-
-    // 취약 부분 -> Board에 너무 관여하는 메서드 (set...)
-    public void updateBoard(Long boardId, Board updatedBoard) {
-        Board existingBoard = boardRepository.findById(boardId).orElseGet(Board::new);
-
-        existingBoard.setTitle(updatedBoard.getTitle());
-        existingBoard.setGameTitle(updatedBoard.getGameTitle());
-        existingBoard.setDate(updatedBoard.getDate());
-        existingBoard.setNotice(updatedBoard.getNotice());
-
-        // Save the updated board
-        boardRepository.save(existingBoard);
-    }
-
-    public void deleteBoard(Long boardId) {
-        boardRepository.deleteById(boardId);
-    }
-
-
-    public List<Board> searchBoard(BoardSearch boardSearch) {
-        return boardSearchRepositoryImpl.searchBoard(boardSearch);
-    }
-
     @Transactional
     public Board buildBoard(BoardRequestDTO boardRequestDTO) {
         List<BoardMember> boardMembers = new ArrayList<>();
@@ -91,12 +60,57 @@ public class BoardService {
         Member writer = memberRepository.findById(writerId)
                 .orElseThrow(() -> new NoSuchElementException("Could not found writer id : " + writerId));
 
-        Board board = BoardRequestDTO.getBuild(boardRequestDTO, boardMembers, writer);
+        Board board = BoardRequestDTO.toEntity(boardRequestDTO, boardMembers, writer);
         boardMemberRepository.saveAll(boardMembers);
         boardRepository.save(board);
 
         return board;
     }
+
+    public Optional<Board> getBoard(Long boardId) {
+        return boardRepository.findById(boardId);
+    }
+
+    public List<Board> getBoards() {
+        return boardRepository.findAll();
+    }
+
+
+    // 취약 부분 -> Board에 너무 관여하는 메서드 (set...)
+    public void updateBoard(Long boardId, BoardRequestDTO requestDTO) {
+        // writerId, memberIds는 못바꿈
+        Board updatedBoard = BoardRequestDTO.toEntity(requestDTO, new ArrayList<>(), null);
+        Board existingBoard = boardRepository.findById(boardId)
+                        .orElseThrow(() -> new NoSuchElementException("Could not found board id : " + boardId));
+
+        update(updatedBoard, existingBoard);
+
+        boardRepository.save(existingBoard);
+    }
+
+    private static void update(Board updatedBoard, Board existingBoard) {
+        existingBoard.setTitle(updatedBoard.getTitle());
+        existingBoard.setGameTitle(updatedBoard.getGameTitle());
+        existingBoard.setEtcTitle(updatedBoard.getEtcTitle());
+
+        existingBoard.setDate(updatedBoard.getDate());
+
+        existingBoard.setNotice(updatedBoard.getNotice());
+        existingBoard.setMaxCount(updatedBoard.getMaxCount());
+
+        existingBoard.setAutoCheckIn(updatedBoard.isAutoCheckIn());
+    }
+
+    public void deleteBoard(Long boardId) {
+        boardRepository.deleteById(boardId);
+    }
+
+
+    public List<Board> searchBoard(BoardSearch boardSearch) {
+        return boardSearchRepositoryImpl.searchBoard(boardSearch);
+    }
+
+
 
 
 

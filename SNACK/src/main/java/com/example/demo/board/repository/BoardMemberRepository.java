@@ -11,4 +11,6 @@ public interface BoardMemberRepository extends JpaRepository<BoardMember, Long> 
 
 
     public List<BoardMember> findBoardMembersByMemberId(Long memberId);
+
+    public List<BoardMember> findBoardMembersByBoardId(Long boardId);
 }
