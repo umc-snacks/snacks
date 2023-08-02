@@ -33,8 +33,6 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "MEMBER_ID")
     private Member writer;
 
-
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "BOARD_ID")
     private SocialBoard board;

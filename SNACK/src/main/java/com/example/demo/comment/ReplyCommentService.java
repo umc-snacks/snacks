@@ -3,7 +3,7 @@ package com.example.demo.comment;
 
 import com.example.demo.Member.Member;
 import com.example.demo.Member.MemberRepository;
-import com.example.demo.comment.dto.ReplyCommentDTO;
+import com.example.demo.comment.dto.ReplyRequestCommentDTO;
 import com.example.demo.comment.entity.Comment;
 import com.example.demo.comment.entity.ReplyComment;
 
@@ -24,9 +24,9 @@ public class ReplyCommentService {
         this.commentRepository = commentRepository;
     }
 
-    public ReplyComment insert(Long commentId, ReplyCommentDTO replyCommentDTO){
-        Member member = memberRepository.findById(replyCommentDTO.getWriterId())
-                .orElseThrow(() -> new NoSuchElementException("Could not found member id : " + replyCommentDTO.getWriterId()));
+    public ReplyComment insert(Long commentId, ReplyRequestCommentDTO replyRequestCommentDTO){
+        Member member = memberRepository.findById(replyRequestCommentDTO.getWriterId())
+                .orElseThrow(() -> new NoSuchElementException("Could not found member id : " + replyRequestCommentDTO.getWriterId()));
 
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new NoSuchElementException("Could not found comment id : " + commentId));
@@ -34,7 +34,7 @@ public class ReplyCommentService {
         ReplyComment replyComment = ReplyComment.builder()
                 .comment(comment)
                 .writer(member)
-                .content(replyCommentDTO.getContent())
+                .content(replyRequestCommentDTO.getContent())
                 .build();
 
         return replyCommentRepository.save(replyComment);

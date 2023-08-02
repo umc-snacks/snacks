@@ -15,7 +15,7 @@ import java.util.List;
 public class ReplyCommentResponseDTO {
 
     private Long id;
-    private Member writer;
+    private String writer;
 
     private String content;
 
@@ -27,15 +27,20 @@ public class ReplyCommentResponseDTO {
         List<ReplyCommentResponseDTO> responseDTOList = new ArrayList<>();
 
         for (ReplyComment reply: replyCommentList) {
-            ReplyCommentResponseDTO response = ReplyCommentResponseDTO.builder()
-                    .id(reply.getId())
-                    .writer(reply.getWriter())
-                    .content(reply.getContent())
-                    .build();
-
+            ReplyCommentResponseDTO response = getResponseDTO(reply);
             responseDTOList.add(response);
         }
 
         return responseDTOList;
+    }
+
+    public static ReplyCommentResponseDTO getResponseDTO(ReplyComment reply) {
+        ReplyCommentResponseDTO response = ReplyCommentResponseDTO.builder()
+                .id(reply.getId())
+                .writer(reply.getWriter().getNickname())
+                .content(reply.getContent())
+                .build();
+
+        return response;
     }
 }

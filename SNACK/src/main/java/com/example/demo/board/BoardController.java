@@ -7,6 +7,7 @@ import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardMember;
 import com.example.demo.board.entity.BoardSearch;
 import com.example.demo.board.repository.BoardMemberRepository;
+import com.example.demo.exception.BoardSizeOverException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class BoardController {
 
     @PostMapping
     public ResponseEntity create(@Valid @RequestBody BoardRequestDTO boardRequestDTO,
-                                 UriComponentsBuilder uriBuilder) {
+                                 UriComponentsBuilder uriBuilder) throws BoardSizeOverException {
         Board board = boardService.buildBoard(boardRequestDTO);
 
         List<BoardMember> boardMembers = board.getBoardMembers();

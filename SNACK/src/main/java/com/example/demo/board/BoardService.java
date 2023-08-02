@@ -43,7 +43,7 @@ public class BoardService {
     }
 
     @Transactional
-    public Board buildBoard(BoardRequestDTO boardRequestDTO) {
+    public Board buildBoard(BoardRequestDTO boardRequestDTO) throws BoardSizeOverException {
         List<BoardMember> boardMembers = new ArrayList<>();
         List<Long> memberIds = boardRequestDTO.getMemberIds();
 
@@ -114,8 +114,8 @@ public class BoardService {
 
 
 
-    private static void boardSizeCheck(BoardRequestDTO boardRequestDTO, List<Long> memberIds) {
-        int maxMember = boardRequestDTO.getMemberCount();
+    private static void boardSizeCheck(BoardRequestDTO boardRequestDTO, List<Long> memberIds) throws BoardSizeOverException {
+        int maxMember = boardRequestDTO.getMaxCount();
         if ( memberIds.size() > maxMember){
             throw new BoardSizeOverException("멤버수가 설정한것보다 많습니다");
         }

@@ -5,16 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReplyCommentDTO {
+public class CommentRequestDTO {
     private String content;
     private Long writerId;
-
-
-
 }

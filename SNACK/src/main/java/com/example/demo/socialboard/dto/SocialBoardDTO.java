@@ -24,7 +24,4 @@ public abstract class SocialBoardDTO {
 
     private Long likes = 0L;
 
-
-
-
 }

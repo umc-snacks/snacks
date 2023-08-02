@@ -27,7 +27,6 @@ public class SocialBoardController {
         this.socialBoardService = socialBoardService;
     }
 
-
     @PostMapping
     public ResponseEntity create(@Valid @RequestBody SocialBoardDTO boardDTO,
                                  UriComponentsBuilder uriBuilder) {
@@ -56,11 +55,9 @@ public class SocialBoardController {
     업데이트 요청 추가해야함
      */
 
-
     @DeleteMapping("{boardId}")
     public void delete(@PathVariable Long boardId) {
         socialBoardService.deleteBoard(boardId);
     }
-
 
 }

@@ -1,6 +1,6 @@
 package com.example.demo.comment;
 
-import com.example.demo.comment.dto.CommentDTO;
+import com.example.demo.comment.dto.CommentRequestDTO;
 import com.example.demo.comment.dto.CommentResponseDTO;
 import com.example.demo.comment.entity.Comment;
 import com.example.demo.socialboard.SocialBoardService;
@@ -24,10 +24,11 @@ public class CommentController {
 
 
     @PostMapping("{socialBoardId}")
-    public ResponseEntity insert(@PathVariable Long socialBoardId, @RequestBody CommentDTO commentDTO) {
-        Comment comment = commentService.insert(socialBoardId, commentDTO);
+    public ResponseEntity insert(@PathVariable Long socialBoardId, @RequestBody CommentRequestDTO commentRequestDTO) {
+        Comment comment = commentService.insert(socialBoardId, commentRequestDTO);
 
         CommentResponseDTO responseDTO = CommentResponseDTO.toResponseEntity(comment);
+
         return ResponseEntity.ok().body(responseDTO);
     }
 

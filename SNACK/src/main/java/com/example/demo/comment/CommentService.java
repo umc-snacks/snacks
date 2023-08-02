@@ -3,7 +3,7 @@ package com.example.demo.comment;
 import com.example.demo.Member.Member;
 import com.example.demo.Member.MemberRepository;
 import com.example.demo.board.repository.BoardRepository;
-import com.example.demo.comment.dto.CommentDTO;
+import com.example.demo.comment.dto.CommentRequestDTO;
 import com.example.demo.socialboard.repository.SocialBoardRepository;
 import com.example.demo.comment.entity.Comment;
 import com.example.demo.socialboard.entity.SocialBoard;
@@ -28,9 +28,9 @@ public class CommentService {
 
 
     @Transactional
-    public Comment insert(Long boardId, CommentDTO commentDTO) {
-        Member member = memberRepository.findById(commentDTO.getWriterId())
-                .orElseThrow(() -> new NoSuchElementException("Could not found member id : " + commentDTO.getWriterId()));
+    public Comment insert(Long boardId, CommentRequestDTO commentRequestDTO) {
+        Member member = memberRepository.findById(commentRequestDTO.getWriterId())
+                .orElseThrow(() -> new NoSuchElementException("Could not found member id : " + commentRequestDTO.getWriterId()));
 
         SocialBoard board = socialBoardRepository.findById(boardId)
                         .orElseThrow(() -> new NoSuchElementException("Could not found board id : " + boardId));
@@ -38,7 +38,7 @@ public class CommentService {
         Comment comment = Comment.builder()
                 .board(board)
                 .writer(member)
-                .content(commentDTO.getContent())
+                .content(commentRequestDTO.getContent())
                 .build();
 
         return commentRepository.save(comment);
