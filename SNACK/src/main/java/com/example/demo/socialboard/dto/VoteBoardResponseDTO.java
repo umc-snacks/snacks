@@ -5,6 +5,7 @@ import com.example.demo.socialboard.entity.SocialBoard;
 
 import com.example.demo.socialboard.entity.VoteBoard;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @SuperBuilder
+@NoArgsConstructor
 public class VoteBoardResponseDTO extends SocialBoardResponseDTO{
     private List<VoteResponseDTO> votes;
 

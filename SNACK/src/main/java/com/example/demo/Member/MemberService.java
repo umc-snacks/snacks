@@ -18,7 +18,7 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public void saveMember(MemberRequestDTO memberRequestDTO) {
+    public Member saveMember(MemberRequestDTO memberRequestDTO) {
         Member member = Member.builder()
                 .name(memberRequestDTO.getName())
                 .nickname(memberRequestDTO.getNickname())
@@ -26,18 +26,12 @@ public class MemberService {
                 .build();
 
         memberRepository.save(member);
+        return member;
     }
 
-    public MemberResponseDTO findMember(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NoSuchElementException("해당 id의 멤버가 존재하지 않습니다."));
+    public Member findMember(Long memberId) {
 
-        return MemberResponseDTO.builder()
-                .id(member.getId())
-                .name(member.getName())
-                .nickname(member.getNickname())
-                .email(member.getEmail())
-                .memberBoards(member.getMemberBoards())
-                .build();
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("해당 id의 멤버가 존재하지 않습니다."));
     }
 }

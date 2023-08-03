@@ -4,6 +4,7 @@ import com.example.demo.BaseTimeEntity;
 import com.example.demo.Member.Member;
 
 import com.example.demo.comment.entity.Comment;
+import com.example.demo.socialboard.dto.SocialBoardResponseDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,4 +41,6 @@ public abstract class SocialBoard extends BaseTimeEntity {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "board")
     private List<Comment> comments = new ArrayList<>();
+
+    public abstract SocialBoardResponseDTO toResponseEntity();
 }

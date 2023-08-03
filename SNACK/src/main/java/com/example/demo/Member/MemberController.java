@@ -18,14 +18,17 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity create(@Valid @RequestBody MemberRequestDTO memberRequestDTO){
-        memberService.saveMember(memberRequestDTO);
-        return ResponseEntity.ok().body(memberRequestDTO);
+    public ResponseEntity<MemberResponseDTO> create(@Valid @RequestBody MemberRequestDTO memberRequestDTO){
+        Member member = memberService.saveMember(memberRequestDTO);
+        MemberResponseDTO memberResponseDTO = MemberResponseDTO.toResponseEntity(member);
+        return ResponseEntity.ok().body(memberResponseDTO);
     }
 
     @GetMapping("{memberId}")
     public ResponseEntity<MemberResponseDTO> read(@PathVariable Long memberId) {
-        return ResponseEntity.ok(memberService.findMember(memberId));
+        Member member = memberService.findMember(memberId);
+        MemberResponseDTO memberResponseDTO = MemberResponseDTO.toResponseEntity(member);
+        return ResponseEntity.ok().body(memberResponseDTO);
     }
 
 }

@@ -1,6 +1,8 @@
 package com.example.demo.socialboard;
 
 import com.example.demo.socialboard.dto.SocialBoardDTO;
+import com.example.demo.socialboard.dto.SocialBoardResponseDTO;
+import com.example.demo.socialboard.dto.VoteBoardResponseDTO;
 import com.example.demo.socialboard.entity.SocialBoard;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -46,9 +48,11 @@ public class SocialBoardController {
     }
 
     @GetMapping("{boardId}")
-    public ResponseEntity<SocialBoard> read(@PathVariable Long boardId) {
+    public ResponseEntity<SocialBoardResponseDTO> read(@PathVariable Long boardId) {
         SocialBoard board = socialBoardService.getBoard(boardId).orElseThrow(() -> new NoSuchElementException("해당 id의 게시판이 존재하지 않습니다."));
-        return ResponseEntity.ok().body(board);
+
+        SocialBoardResponseDTO socialBoardResponseDTO = board.toResponseEntity();
+        return ResponseEntity.ok().body(socialBoardResponseDTO);
     }
 
     /*
