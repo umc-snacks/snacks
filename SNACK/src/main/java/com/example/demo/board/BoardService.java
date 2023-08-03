@@ -76,7 +76,6 @@ public class BoardService {
     }
 
 
-    // 취약 부분 -> Board에 너무 관여하는 메서드 (set...)
     public void updateBoard(Long boardId, BoardRequestDTO requestDTO) {
         // writerId, memberIds는 못바꿈
         Board updatedBoard = BoardRequestDTO.toEntity(requestDTO, new ArrayList<>(), null);

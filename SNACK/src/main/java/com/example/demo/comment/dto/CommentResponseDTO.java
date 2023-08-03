@@ -26,6 +26,7 @@ public class CommentResponseDTO {
 
     public static List<CommentResponseDTO> toListEntity(List<Comment> comments) {
         List<CommentResponseDTO> responseDTOList = new ArrayList<>();
+
         for (Comment comment: comments) {
             CommentResponseDTO dto = CommentResponseDTO.toResponseEntity(comment);
             responseDTOList.add(dto);

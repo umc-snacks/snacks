@@ -28,4 +28,11 @@ public class VoteBoard extends SocialBoard {
     public SocialBoardResponseDTO toResponseEntity() {
         return new VoteBoardResponseDTO().toResponseEntity(this);
     }
+
+    @Override
+    public void update(SocialBoard updatedBoard) {
+        VoteBoard voteBoard = (VoteBoard) updatedBoard;
+        this.setContent(voteBoard.getContent());
+        this.setVotes(voteBoard.getVotes());
+    }
 }

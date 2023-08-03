@@ -43,4 +43,6 @@ public abstract class SocialBoard extends BaseTimeEntity {
     private List<Comment> comments = new ArrayList<>();
 
     public abstract SocialBoardResponseDTO toResponseEntity();
+
+    public abstract void update(SocialBoard updatedBoard);
 }

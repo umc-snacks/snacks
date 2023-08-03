@@ -14,6 +14,8 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 public abstract class SocialBoardResponseDTO {
+    private Long id;
+
     private String writer;
 
     private String content;

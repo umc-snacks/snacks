@@ -26,6 +26,7 @@ public class VoteBoardResponseDTO extends SocialBoardResponseDTO{
         List<VoteResponseDTO> voteResponseDTOS = VoteResponseDTO.toListEntity(voteBoard.getVotes());
 
         return VoteBoardResponseDTO.builder()
+                .id(voteBoard.getId())
                 .writer(voteBoard.getWriter().getNickname())
                 .content(voteBoard.getContent())
                 .likes(voteBoard.getLikes())
