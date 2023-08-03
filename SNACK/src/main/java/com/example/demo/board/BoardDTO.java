@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.Games;
-import com.example.demo.profile.domain.member.Member;
+import com.example.demo.entity.MemberEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.EnumType;
@@ -27,7 +27,7 @@ public class BoardDTO {
 
     private String etcTitle;
 
-    private List<Member> members = new ArrayList<>();
+    private List<MemberEntity> members = new ArrayList<>();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime date;

@@ -3,7 +3,7 @@ package com.example.demo.socialboard.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.demo.profile.domain.member.Member;
+import com.example.demo.entity.MemberEntity;
 import com.example.demo.socialboard.entity.SocialBoard;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -26,7 +26,7 @@ import lombok.ToString;
 })
 public abstract class SocialBoardDTO {
 
-    private Member writer;
+    private MemberEntity writer;
 
     private String content;
 

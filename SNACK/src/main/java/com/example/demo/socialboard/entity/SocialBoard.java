@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.BaseTimeEntity;
-import com.example.demo.profile.domain.member.Member;
+import com.example.demo.entity.MemberEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -40,7 +40,7 @@ public abstract class SocialBoard extends BaseTimeEntity {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "WRITER_ID")
-    private Member writer;
+    private MemberEntity writer;
 
     @Column(name = "CONTENT")
     private String content;

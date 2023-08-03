@@ -2,6 +2,7 @@ package com.example.demo.Chat.Entity;
 
 
 import com.example.demo.BaseTimeEntity;
+import com.example.demo.board.Board;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,8 +20,6 @@ public class ChatRoom extends BaseTimeEntity {
     @Column(name="room_id")
     private Long roomId;
     
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "team_id")
-//    private Team team;
-    
+    @OneToOne(fetch = FetchType.LAZY)
+    private Board board;
 }

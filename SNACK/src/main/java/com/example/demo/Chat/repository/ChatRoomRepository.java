@@ -15,6 +15,6 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long>{
 	@Query("DELETE FROM ChatRoom cr WHERE cr.roomId = :roomId")
 	int deleteByRoomId(@Param("roomId") Long roomId);
 	
-	@Query("SELECT cr FROM ChatRoom cr WHERE cr.team.id = :teamId")
+	@Query("SELECT cr FROM ChatRoom cr WHERE cr.board.id = :teamId")
 	ChatRoom findByTeamId(@Param("teamId") Long teamId);
 }

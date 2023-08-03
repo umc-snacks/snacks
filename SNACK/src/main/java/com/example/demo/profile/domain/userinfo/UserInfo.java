@@ -1,23 +1,15 @@
 package com.example.demo.profile.domain.userinfo;
 
+import com.example.demo.entity.MemberEntity;
+import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-
-import com.example.demo.profile.domain.member.Member;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @DynamicUpdate
 public class UserInfo {
 
@@ -26,7 +18,7 @@ public class UserInfo {
     private Long id;
 
     @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER)
-    private Member member;
+    private MemberEntity member;
 
     @Column(nullable = false)
     private Long articleCount;

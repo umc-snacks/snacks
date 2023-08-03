@@ -1,33 +1,19 @@
 package com.example.demo.board;
 
+import com.example.demo.BaseTimeEntity;
+import com.example.demo.Chat.Entity.ChatRoom;
+import com.example.demo.Games;
+import com.example.demo.entity.MemberEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import com.example.demo.BaseTimeEntity;
-import com.example.demo.Games;
-import com.example.demo.profile.domain.member.Member;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
@@ -45,7 +31,7 @@ public class Board extends BaseTimeEntity {
 
     @OneToOne
     @JoinColumn(name = "MEMBER_ID")
-    private Member writer;
+    private MemberEntity writer;
 
     @Column(name = "TITLE")
     private String title;
@@ -57,14 +43,17 @@ public class Board extends BaseTimeEntity {
     @Column(name = "ETC_TITLE")
     private String etcTitle;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany/*(mappedBy = "board")*/
     @JsonIgnoreProperties({"board"})
-    private List<Member> members = new ArrayList<>();
+    private List<MemberEntity> members = new ArrayList<>();
 
     @Column(name = "DATE")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime date;
 
+    // board 생성시 채팅방을 생성하기 위해서 연과관계 추가 23.08.03
+    @OneToOne(/*mappedBy = "board", */cascade = CascadeType.ALL, orphanRemoval = true)
+    private ChatRoom chatRoom;
 
     @Column(name = "NOTICE")
     private String notice;
@@ -87,7 +76,7 @@ public class Board extends BaseTimeEntity {
     }
 
     private static Board buildBoard(BoardDTO boardDTO) {
-        List<Member> members = boardDTO.getMembers();
+        List<MemberEntity> members = boardDTO.getMembers();
         Integer memberLen = members.size();
 
         return Board.builder()

@@ -1,8 +1,8 @@
 package com.example.demo.profile.service;
 
-import com.example.demo.profile.domain.member.Member;
-import com.example.demo.profile.domain.member.MemberRepository;
+import com.example.demo.entity.MemberEntity;
 import com.example.demo.profile.dto.myInfo.MyInfoResponseDto;
+import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +13,14 @@ public class UserInfoService {
     private final MemberRepository memberRepository;
 
     public MyInfoResponseDto readUserInfo(Long userId) {
-        Member tempMember = memberRepository.findById(userId).get();
+        MemberEntity tempMember = memberRepository.findById(userId).get();
 
         /*
         게시글 가져오는 코드
          */
 
         return MyInfoResponseDto.builder()
-                .myProfileImageUrl(tempMember.getProfileImageUrl())
+                .myProfileImageUrl(tempMember.getProfileimageurl())
                 .nickname(tempMember.getNickname())
                 .articleCount(tempMember.getUserInfo().getArticleCount())
                 .followerCount(tempMember.getUserInfo().getFollowerCount())

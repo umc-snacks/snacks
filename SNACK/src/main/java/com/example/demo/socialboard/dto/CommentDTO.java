@@ -1,6 +1,6 @@
 package com.example.demo.socialboard.dto;
 
-import com.example.demo.profile.domain.member.Member;
+import com.example.demo.entity.MemberEntity;
 import com.example.demo.socialboard.entity.Comment;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CommentDTO {
     private String content;
-    private Member writer;
+    private MemberEntity writer;
 
     public Comment toEntity(){
         return Comment.builder()

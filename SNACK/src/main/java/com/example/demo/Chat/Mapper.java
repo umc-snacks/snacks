@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import com.example.demo.Chat.Dto.MemberSearchDTO;
 import com.example.demo.Chat.Dto.MessageDTO;
 import com.example.demo.Chat.Entity.ChatMessage;
-import com.example.demo.profile.domain.member.Member;
+import com.example.demo.entity.MemberEntity;
 
 import lombok.NoArgsConstructor;
 
@@ -27,10 +27,10 @@ public class Mapper {
 				.build();
 	}
 	
-	public static MemberSearchDTO MemberToMemberSearchDTO(Member member) {
+	public static MemberSearchDTO MemberToMemberSearchDTO(MemberEntity member) {
 		return MemberSearchDTO.builder()
 				.nickName(member.getNickname().toString())
-				.memberId(member.getId())
+				.memberId(member.getMemberLoginId())
 				.build();
 	}
 	

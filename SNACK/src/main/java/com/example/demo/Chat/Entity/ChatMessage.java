@@ -1,18 +1,19 @@
 package com.example.demo.Chat.Entity;
 
 import com.example.demo.BaseTimeEntity;
-import com.example.demo.profile.domain.member.Member;
+import com.example.demo.entity.MemberEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatMessage extends BaseTimeEntity {
@@ -26,7 +27,7 @@ public class ChatMessage extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", referencedColumnName = "id")
-    private Member sender;
+    private MemberEntity sender;
 
     private String content;
     

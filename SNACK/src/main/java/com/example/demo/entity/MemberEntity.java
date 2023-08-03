@@ -1,11 +1,11 @@
 package com.example.demo.entity;
 
 import com.example.demo.dto.MemberDTO;
-import com.example.demo.profile.domain.Follow;
+import com.example.demo.profile.domain.follow.Follow;
+import com.example.demo.profile.domain.userinfo.UserInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +17,9 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "member_table_07_27")
 public class MemberEntity {
 
@@ -43,6 +46,10 @@ public class MemberEntity {
 
     @Column
     private String profileimageurl;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(nullable = true)
+    private UserInfo userInfo;
 
     @OneToMany(mappedBy = "follower",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Follow> followerList = new ArrayList<>(); //내가 팔로우를 하는 유저들의 리스트
@@ -74,7 +81,27 @@ public class MemberEntity {
         return memberEntity;
     }
 
+        public void hasFollowed(){
+        this.userInfo.followerCountPlus();
+    }
+    public void hasUnFollowed(){
+        this.userInfo.followerCountMinus();
+    }
 
+    public void hasFollowing(){
+        this.userInfo.followCountPlus();
+    }
+
+    public void hasUnFollowing(){
+        this.userInfo.followCountMinus();
+    }
+
+    public void hasWroteArticle(){
+        this.userInfo.articleCountPlus();
+    }
+    public void hasDeletedArticle(){
+        this.userInfo.articleCountMinus();
+    }
 
 
 }

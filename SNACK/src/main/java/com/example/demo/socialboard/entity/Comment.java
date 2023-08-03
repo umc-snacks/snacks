@@ -3,7 +3,7 @@ package com.example.demo.socialboard.entity;
 import static jakarta.persistence.FetchType.LAZY;
 
 import com.example.demo.BaseTimeEntity;
-import com.example.demo.profile.domain.member.Member;
+import com.example.demo.entity.MemberEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -40,7 +40,7 @@ public class Comment extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "MEMBER_ID")
-    private Member writer;
+    private MemberEntity writer;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "BOARD_ID")
