@@ -2,10 +2,11 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.1'
 	id 'io.spring.dependency-management' version '1.1.0'
+	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
 group = 'com.example'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1-SNACK'
 
 java {
 	sourceCompatibility = '17'
@@ -16,61 +17,104 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
-
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	// 여기 mysql 버전을 잘입력해줘야한다!!!
-	implementation 'mysql:mysql-connector-java:8.0.21'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'mysql:mysql-connector-java'
 
-
-	//07.13 추가
+	// security 07.13 추가
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
-
-
 	//07.18추가
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+//	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.security:spring-security-test'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
-
-
 
 	//07.22추가 email!
 	implementation 'com.sun.mail:javax.mail:1.6.2'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-
-	//07.28추가 //swagger.api해보기..
-	//implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
-
-//:0.11.5
-
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
-
-
-	/*implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'*/
-	//이게 javax/xml/bind/DatatypeConverter] with root cause 해결 ?
-
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
+	// ==
+	implementation 'jakarta.persistence:jakarta.persistence-api'
 
+	// devtools
+	implementation 'org.springframework.boot:spring-boot-devtools'
+
+	// Spring Data JPA
+  	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.hibernate:hibernate-core:6.1.0.Final'
+  
+  	// MySQL Connector
+  	implementation 'mysql:mysql-connector-java:8.0.30'
+  	
+  	// WebSocket and stomp
+  	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework:spring-messaging'
+    implementation 'org.springframework:spring-websocket'
+    implementation 'org.webjars:webjars-locator-core'
+    implementation 'org.webjars:sockjs-client:1.1.2'
+    implementation 'org.webjars:stomp-websocket:2.3.3-1'
+    
+    // Swagger 스프링 부트 3.0.0 이상에서는 springdoc 의존성을 사용한 swagger을 사용해야함
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+
+   	/// Log4j2와 SLF4j 관련 종속성
+   	implementation 'org.apache.logging.log4j:log4j-api:2.14.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.14.1'
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.14.1'
+    
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// Validation
+	implementation 'jakarta.validation:jakarta.validation-api:3.0.0'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// === QueryDsl 시작 ===
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+	// === QueryDsl 끝 ===
+	
+	}
+
+//querydsl 추가
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+	main.java.srcDir querydslDir
+}
+
+compileQuerydsl{
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+   useJUnitPlatform()
 }
