@@ -1,34 +1,22 @@
 package com.example.demo.profile.domain.member;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hibernate.annotations.DynamicUpdate;
-
-import com.example.demo.profile.domain.follow.Follow;
-import com.example.demo.profile.domain.userinfo.UserInfo;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import com.example.demo.profile.domain.follow.*;
+import com.example.demo.profile.domain.userinfo.*;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor
 @DynamicUpdate
 @Entity
 public class Member {
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;

@@ -1,16 +1,14 @@
 package com.example.demo.Chat.Entity;
 
-import java.io.Serializable;
-
 import jakarta.persistence.Embeddable;
+
+import java.io.Serializable;
 
 @Embeddable
 public class ChatRoomMemberId implements Serializable {
-//	@Column(name="room_id")
 	private Long chatRoomId;
 	
-//	@Column(name="member_id")
-    private Long id;
+    private Long memberId;
     
     public ChatRoomMemberId() {
         // 기본 생성자 필요
@@ -18,6 +16,6 @@ public class ChatRoomMemberId implements Serializable {
 
     public ChatRoomMemberId(Long chatRoomId, Long memberId) {
         this.chatRoomId = chatRoomId;
-        this.id = memberId;
+        this.memberId = memberId;
     }
 }
