@@ -42,4 +42,10 @@ public class CommentController {
         return ResponseEntity.ok().body(responseDTO);
 
     }
+    // TODO delete test 필요
+    @DeleteMapping("{commentId}")
+    public ResponseEntity delete(@PathVariable Long commentId) {
+        commentService.delete(commentId);
+        return ResponseEntity.ok().build();
+    }
 }

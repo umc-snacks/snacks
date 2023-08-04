@@ -1,5 +1,6 @@
 package com.example.demo.comment.dto;
 
+import com.example.demo.comment.entity.ReplyComment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +17,9 @@ public class ReplyRequestCommentDTO {
     private Long writerId;
 
 
-
+    public static ReplyComment toEntity(ReplyRequestCommentDTO replyRequestDTO) {
+        return ReplyComment.builder()
+                .content(replyRequestDTO.getContent())
+                .build();
+    }
 }

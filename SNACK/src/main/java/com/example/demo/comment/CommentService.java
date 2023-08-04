@@ -54,4 +54,8 @@ public class CommentService {
         existingComment.setContent(updatedComment.getContent());
         return existingComment;
     }
+
+    public void delete(Long commentId) {
+        commentRepository.deleteById(commentId);
+    }
 }

@@ -3,6 +3,7 @@ package com.example.demo.comment;
 
 import com.example.demo.Member.Member;
 import com.example.demo.Member.MemberRepository;
+import com.example.demo.comment.dto.CommentRequestDTO;
 import com.example.demo.comment.dto.ReplyRequestCommentDTO;
 import com.example.demo.comment.entity.Comment;
 import com.example.demo.comment.entity.ReplyComment;
@@ -38,5 +39,19 @@ public class ReplyCommentService {
                 .build();
 
         return replyCommentRepository.save(replyComment);
+    }
+
+    public ReplyComment update(Long commentId, ReplyRequestCommentDTO replyRequestDTO) {
+        ReplyComment existingComment = replyCommentRepository.findById(commentId)
+                .orElseThrow(() -> new NoSuchElementException("Could not found comment Id : " + commentId));
+
+        ReplyComment updatedComment = ReplyRequestCommentDTO.toEntity(replyRequestDTO);
+
+        existingComment.setContent(updatedComment.getContent());
+        return existingComment;
+    }
+
+    public void delete(Long commentId) {
+        commentRepository.deleteById(commentId);
     }
 }
