@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BoardMemberRepository extends JpaRepository<BoardMember, Long> {
+public interface BoardMemberRepository extends JpaRepository<BoardMember, Long>, BoardMemberRepositoryCustom {
 
 
     public List<BoardMember> findBoardMembersByMemberId(Long memberId);

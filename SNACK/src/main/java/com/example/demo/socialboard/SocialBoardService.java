@@ -43,8 +43,8 @@ public class SocialBoardService {
                 .writer(member)
                 .content(socialBoardDTO.getContent())
                 .likes(0L)
-                .comments(new ArrayList<Comment>())
-                .votes(new ArrayList<Vote>())
+                .comments(new ArrayList<>())
+                .votes(new ArrayList<>())
                 .build();
         VoteBoardDTO board = (VoteBoardDTO) socialBoardDTO;
 
@@ -53,6 +53,7 @@ public class SocialBoardService {
                 vote -> {
                     vote.setVoteBoard(voteBoard);
                     voteRepository.save(vote);
+//                     member.hasWriteArticle();
                 }
         );
 

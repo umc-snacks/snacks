@@ -32,4 +32,7 @@ public class Member extends BaseTimeEntity {
     private List<BoardMember> memberBoards = new ArrayList<>();
 
 
+//    public void hasWriteArticle() {
+//        this.userInfo.articleCountPlus*();
+//    }
 }
