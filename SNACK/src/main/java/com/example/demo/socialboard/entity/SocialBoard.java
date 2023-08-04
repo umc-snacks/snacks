@@ -29,7 +29,7 @@ public abstract class SocialBoard extends BaseTimeEntity {
     @Column(name = "SOCIAL_BOARD_ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WRITER_ID")
     private Member writer;
 

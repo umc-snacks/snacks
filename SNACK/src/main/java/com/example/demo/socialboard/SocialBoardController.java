@@ -57,7 +57,6 @@ public class SocialBoardController {
 
     @DeleteMapping("{boardId}")
     public void delete(@PathVariable Long boardId) {
-
         socialBoardService.deleteBoard(boardId);
     }
 

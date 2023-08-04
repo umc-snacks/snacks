@@ -21,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 public class VoteBoard extends SocialBoard {
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "voteBoard")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "voteBoard", cascade = CascadeType.REMOVE)
     private List<Vote> votes = new ArrayList<>();
 
     @Override

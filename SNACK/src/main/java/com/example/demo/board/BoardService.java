@@ -67,8 +67,8 @@ public class BoardService {
         return board;
     }
 
-    public Optional<Board> getBoard(Long boardId) {
-        return boardRepository.findById(boardId);
+    public Board getBoard(Long boardId) {
+        return boardRepository.findById(boardId).orElseThrow(() -> new NoSuchElementException("해당 id의 게시판이 존재하지 않습니다."));
     }
 
     public List<Board> getBoards() {

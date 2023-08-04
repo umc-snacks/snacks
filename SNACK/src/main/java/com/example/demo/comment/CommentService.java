@@ -44,4 +44,14 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
+
+    public Comment update(Long commentId, CommentRequestDTO commentRequestDTO) {
+        Comment existingComment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NoSuchElementException("Could not found comment Id : " + commentId));
+
+        Comment updatedComment = CommentRequestDTO.toEntity(commentRequestDTO);
+
+        existingComment.setContent(updatedComment.getContent());
+        return existingComment;
+    }
 }

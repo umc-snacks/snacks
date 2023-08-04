@@ -71,7 +71,7 @@ public class BoardController {
 
     @GetMapping("{boardId}")
     public ResponseEntity<BoardResponseDTO> read(@PathVariable Long boardId) {
-        Board board = boardService.getBoard(boardId).orElseThrow(() -> new NoSuchElementException("해당 id의 게시판이 존재하지 않습니다."));
+        Board board = boardService.getBoard(boardId);
         BoardResponseDTO responseDTO = BoardResponseDTO.getBuild(board);
 
         return ResponseEntity.ok().body(responseDTO);
