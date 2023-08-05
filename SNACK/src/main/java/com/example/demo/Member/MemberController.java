@@ -38,6 +38,8 @@ public class MemberController {
         return ResponseEntity.ok().body(memberResponseDTO);
     }
 
+
+    // TODO 테스트 필요
     @GetMapping("attending/{memberId}")
     public ResponseEntity<List> searchAttendingBoards(@PathVariable Long memberId){
         List<Board> boards = memberService.findBoardsByMemberId(memberId);

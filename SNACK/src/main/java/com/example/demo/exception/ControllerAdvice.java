@@ -20,6 +20,7 @@ public class ControllerAdvice {
         return new ErrorResult("BadRequest", e.getMessage());
     }
 
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NoSuchElementException.class)
     public ErrorResult noElementHandle(NoSuchElementException e) {
@@ -36,9 +37,15 @@ public class ControllerAdvice {
 
     @ExceptionHandler(BoardSizeOverException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResult boardSizeOverHandle(HeartRequestException e) {
+    public ErrorResult boardSizeOverHandle(BoardSizeOverException e) {
         log.error("[exceptionHandle] 멤버수가 설정한것보다 많습니다.", e);
         return new ErrorResult("BadRequest", e.getMessage());
     }
 
+    @ExceptionHandler(BoardMemberOverlappingException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResult boardMemberOverlapHandle(BoardMemberOverlappingException e) {
+        log.error("[exceptionHandle] 게시판에 중복으로 들어갈 수 없습니다.", e);
+        return new ErrorResult("BadRequest", e.getMessage());
+    }
 }

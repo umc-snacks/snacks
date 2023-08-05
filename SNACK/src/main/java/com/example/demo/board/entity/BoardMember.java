@@ -2,12 +2,14 @@ package com.example.demo.board.entity;
 
 import com.example.demo.Member.Member;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class BoardMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -13,17 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
-import java.util.NoSuchElementException;
-
-import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
 
 
 @RestController
@@ -43,8 +36,7 @@ public class BoardController {
     }
 
     @PostMapping
-    public ResponseEntity create(@Valid @RequestBody BoardRequestDTO boardRequestDTO,
-                                 UriComponentsBuilder uriBuilder) throws BoardSizeOverException {
+    public ResponseEntity create(@Valid @RequestBody BoardRequestDTO boardRequestDTO) throws BoardSizeOverException {
         Board board = boardService.buildBoard(boardRequestDTO);
 
         List<BoardMember> boardMembers = board.getBoardMembers();
@@ -56,18 +48,10 @@ public class BoardController {
         }
 
         BoardResponseDTO responseDTO = BoardResponseDTO.getBuild(board);
-        URI uri = buildUri(uriBuilder, responseDTO);
 
-        // 응답 헤더의 Location 에 생성된 리소스 주소 반환
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.ok().body(responseDTO);
     }
 
-        private static URI buildUri(UriComponentsBuilder uriBuilder, BoardResponseDTO responseDTO) {
-            URI uri = MvcUriComponentsBuilder.relativeTo(uriBuilder)
-                    .withMethodCall(on(BoardController.class).read(responseDTO.getId()))
-                    .build().encode().toUri();
-            return uri;
-        }
 
     @GetMapping("{boardId}")
     public ResponseEntity<BoardResponseDTO> read(@PathVariable Long boardId) {
