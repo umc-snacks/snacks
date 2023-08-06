@@ -1,25 +1,26 @@
-package com.example.demo.board;
+package com.example.demo.board.repository;
 
-import static com.example.demo.board.QBoard.board;
-
-import java.util.List;
-
+import com.example.demo.Games;
+import com.example.demo.board.entity.BoardSearch;
+import com.example.demo.board.entity.QBoard;
+import com.example.demo.board.entity.Board;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.Games;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
 
-import io.micrometer.common.util.StringUtils;
+import static com.example.demo.board.QBoard.board;
 
 
 @Repository
-public class BoardSearchRepository {
+public class BoardSearchRepositoryImpl {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Autowired
-    public BoardSearchRepository(JPAQueryFactory jpaQueryFactory) {
+    public BoardSearchRepositoryImpl(JPAQueryFactory jpaQueryFactory) {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 

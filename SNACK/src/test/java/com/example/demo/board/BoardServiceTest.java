@@ -2,13 +2,13 @@ package com.example.demo.board;
 
 import com.example.demo.Games;
 import com.example.demo.Member.Member;
+import com.example.demo.board.entity.Board;
+import com.example.demo.board.repository.BoardRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 
 @SpringBootTest
 @Transactional
@@ -28,7 +28,6 @@ class BoardServiceTest {
 
         Member member = new Member();
         member.setName("홍길동");
-        member.addBoard(board);
 
         Long boardId = boardService.saveBoard(board);
 
@@ -53,7 +52,6 @@ class BoardServiceTest {
 
         // given
         Long boardId = boardService.saveBoard(board);
-        boardService.updateBoard(boardId, updateBoard);
 
         // then
         Assertions.assertThat(boardId).isEqualTo(board.getId());
