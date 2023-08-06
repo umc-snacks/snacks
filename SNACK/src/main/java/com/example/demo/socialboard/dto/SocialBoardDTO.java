@@ -1,7 +1,9 @@
 package com.example.demo.socialboard.dto;
 
-import com.example.demo.Member.Member;
-import com.example.demo.comment.entity.Comment;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.demo.entity.MemberEntity;
 import com.example.demo.socialboard.entity.SocialBoard;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -27,7 +29,7 @@ import java.util.List;
 @AllArgsConstructor
 public abstract class SocialBoardDTO {
 
-    private Long writerId;
+    private MemberEntity writer;
 
     private String content;
 

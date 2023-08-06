@@ -1,12 +1,12 @@
 package com.example.demo.profile.service;
 
-import com.example.demo.profile.domain.member.Member;
-import com.example.demo.profile.domain.member.MemberRepository;
+import com.example.demo.entity.MemberEntity;
 import com.example.demo.profile.domain.userinfo.UserInfoRepository;
-import com.example.demo.profile.dto.profileUpdate.ProfileReadResponseDto;
 import com.example.demo.profile.dto.myInfo.MyInfoResponseDto;
+import com.example.demo.profile.dto.profileUpdate.ProfileReadResponseDto;
 import com.example.demo.profile.dto.profileUpdate.ProfileUpdateRequestDto;
 import com.example.demo.profile.dto.profileUpdate.ProfileUpdateResponseDto;
+import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +17,8 @@ public class MyInfoService {
 
     private final MemberRepository memberRepository;
     private final UserInfoRepository userInfoRepository;
-    public MyInfoResponseDto readMyInfo(Member member) {
-        Member tempMember = memberRepository.findById(member.getId()).get();
+    public MyInfoResponseDto readMyInfo(MemberEntity member) {
+        MemberEntity tempMember = memberRepository.findById(member.getId()).get();
 
 
         /*
@@ -26,7 +26,7 @@ public class MyInfoService {
          */
 
         return MyInfoResponseDto.builder()
-                .myProfileImageUrl(tempMember.getProfileImageUrl())
+                .myProfileImageUrl(tempMember.getProfileimageurl())
                 .nickname(tempMember.getNickname())
                 .articleCount(tempMember.getUserInfo().getArticleCount())
                 .followerCount(tempMember.getUserInfo().getFollowerCount())
@@ -35,16 +35,16 @@ public class MyInfoService {
                 .build();
     }
 
-    public ProfileReadResponseDto readProfile(Member member) {
-        Member tempMember = memberRepository.findById(member.getId()).get();
+    public ProfileReadResponseDto readProfile(MemberEntity member) {
+        MemberEntity tempMember = memberRepository.findById(member.getId()).get();
         return new ProfileReadResponseDto(tempMember);
     }
 
     @Transactional
-    public ProfileUpdateResponseDto updateProfile(ProfileUpdateRequestDto profileUpdateRequestDto, Member member) {
-        Member tempMember = memberRepository.findById(member.getId()).get();
+    public ProfileUpdateResponseDto updateProfile(ProfileUpdateRequestDto profileUpdateRequestDto, MemberEntity member) {
+        MemberEntity tempMember = memberRepository.findById(member.getId()).get();
         tempMember.setNickname(profileUpdateRequestDto.getNickname());
-        tempMember.setProfileImageUrl(profileUpdateRequestDto.getProfileImageUrl());
+        tempMember.setProfileimageurl(profileUpdateRequestDto.getProfileImageUrl());
         tempMember.getUserInfo().setIntroduction(profileUpdateRequestDto.getIntroduction());
         return new ProfileUpdateResponseDto(tempMember);
     }

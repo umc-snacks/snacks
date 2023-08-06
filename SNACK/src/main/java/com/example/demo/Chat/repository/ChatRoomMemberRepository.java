@@ -18,33 +18,33 @@ public interface ChatRoomMemberRepository extends JpaRepository<ChatRoomMember, 
 			+ "("
 			+ "SELECT cm.sentAt"
 			+ " FROM ChatMessage cm"
-			+ " WHERE cm.chatRoom.id = crm.chatRoom.id"
+			+ " WHERE cm.chatRoom.roomId = crm.chatRoom.roomId"
 			+ " ORDER BY cm.sentAt DESC LIMIT 1"
 			+ ") "
 			+ ", ("
 			+ "SELECT cm.content"
 			+ " FROM ChatMessage cm"
-			+ " WHERE cm.chatRoom.id = crm.chatRoom.id"
+			+ " WHERE cm.chatRoom.roomId = crm.chatRoom.roomId"
 			+ " ORDER BY cm.sentAt DESC LIMIT 1"
 			+ ") "
 			+ "FROM ChatRoomMember crm "
-			+ "WHERE crm.chatRoom.id"
+			+ "WHERE crm.chatRoom.roomId"
 			+ " IN ("
-			+ " SELECT crm2.chatRoom.id"
+			+ " SELECT crm2.chatRoom.roomId"
 			+ " FROM ChatRoomMember crm2"
-			+ " WHERE crm2.member.id = :memberId"
+			+ " WHERE crm2.member.memberLoginId = :memberId"
 			+ ")"
-			+ " AND crm.member.id != :memberId")
+			+ " AND crm.member.memberLoginId != :memberId")
 	List<Object[]> findMembersWithSameRoomAndReceiveTime(@Param("memberId") Long memberId);
 	
 	@Query("SELECT crm FROM ChatRoomMember crm "
 			+ "JOIN FETCH crm.member "
-			+ "WHERE crm.member.id = :memberId "
-			+ "AND crm.chatRoom.id = :roomId")
+			+ "WHERE crm.member.memberLoginId = :memberId "
+			+ "AND crm.chatRoom.roomId = :roomId")
 	ChatRoomMember findByMemberIdAndRoomId(@Param("memberId")Long memberId, @Param("roomId")Long roomId);
 	
 	@Modifying
-	@Query("DELETE FROM ChatRoomMember crm WHERE crm.chatRoom.id = :roomId")
+	@Query("DELETE FROM ChatRoomMember crm WHERE crm.chatRoom.roomId = :roomId")
 	int deleteByRoomId(@Param("roomId") Long roomId);
 	
 	@Query("SELECT c.readTime FROM ChatRoomMember c " +

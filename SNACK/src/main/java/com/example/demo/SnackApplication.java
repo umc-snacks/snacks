@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableCaching
 @SpringBootApplication
+@ComponentScan(basePackages= { "com.example.demo", "com.example.demo.config", "com.example.demo.Chat.Mapper" } )
 @EnableJpaAuditing
 public class SnackApplication {
 	public static void main(String[] args) {

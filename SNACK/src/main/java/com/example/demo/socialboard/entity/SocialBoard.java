@@ -1,7 +1,7 @@
 package com.example.demo.socialboard.entity;
 
 import com.example.demo.BaseTimeEntity;
-import com.example.demo.Member.Member;
+import com.example.demo.profile.domain.member.Member;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -14,11 +14,11 @@ import com.example.demo.Chat.Entity.ChatMessage;
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>{
 	@Query("SELECT COUNT(*) "
 			+ "FROM ChatMessage cm "
-			+ "WHERE cm.chatRoom.id = :chatRoomId "
+			+ "WHERE cm.chatRoom.roomId = :chatRoomId "
 			+ "AND cm.sentAt > ("
 				+ "SELECT crm.readTime "
 				+ "FROM ChatRoomMember crm "
-				+ "WHERE crm.member.id = :myMemberId "
+				+ "WHERE crm.member.memberLoginId = :myMemberId "
 				+ "ORDER BY crm.readTime DESC "
 				+ "LIMIT 1)"
 			+ "AND cm.sender.id != :myMemberId")
@@ -29,21 +29,21 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>{
 //			+ "JOIN FETCH ChatRoomMember crm "
 //			+ "WHERE cm.chatRoom.id = crm.chatRoom.id "
 //				+ "AND cm.chatRoom.id = :chatRoom_id "
-//				+ "AND cm.sentAt < (SELECT crm2.sentAt FROM ChatRoomMember crm2 WHERE crm2.member.id = :memberID AND crm2.chatRoom.id = :chatRoom.id) "
+//				+ "AND cm.sentAt < (SELECT crm2.sentAt FROM ChatRoomMember crm2 WHERE crm2.member.memberLoginId = :memberID AND crm2.chatRoom.id = :chatRoom.id) "
 //				+ "AND cm.sender.id != :memberId")
 //	List<ChatMessage> getUnreadMessages(@Param("memberId") Long memberId, @Param("chatRoom_id") Long chatRoom_id);
 	
 	@Query("SELECT cm FROM ChatMessage cm "
             + "JOIN FETCH ChatRoomMember crm "
-            + "ON crm.member.id = :memberId "
-            + "WHERE cm.chatRoom.id = :chatRoomId "
+            + "ON crm.member.memberLoginId = :memberId "
+            + "WHERE cm.chatRoom.roomId = :chatRoomId "
             + "AND cm.sentAt >= (SELECT crm2.readTime FROM ChatRoomMember crm2 "
-            					+ "WHERE crm2.member.id = :memberId "
-            					+ "AND crm2.chatRoom.id = :chatRoomId) "
+            					+ "WHERE crm2.member.memberLoginId = :memberId "
+            					+ "AND crm2.chatRoom.roomId = :chatRoomId) "
             + "AND cm.sender.id != :memberId")
     List<ChatMessage> getUnreadMessages(@Param("memberId")Long memberId, @Param("chatRoomId")Long chatRoomId);
 	
 	@Modifying
-	@Query("DELETE FROM ChatMessage cm WHERE cm.chatRoom.id = :roomId")
+	@Query("DELETE FROM ChatMessage cm WHERE cm.chatRoom.roomId = :roomId")
 	int deleteByRoomId(@Param("roomId") Long roomId);
 }

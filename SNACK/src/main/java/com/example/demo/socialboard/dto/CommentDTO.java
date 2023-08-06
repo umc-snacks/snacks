@@ -1,6 +1,6 @@
 package com.example.demo.socialboard.dto;
 
-import com.example.demo.Member.Member;
+import com.example.demo.profile.domain.member.Member;
 import com.example.demo.socialboard.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
