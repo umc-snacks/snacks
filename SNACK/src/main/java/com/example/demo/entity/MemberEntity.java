@@ -4,6 +4,8 @@ import com.example.demo.dto.MemberDTO;
 import com.example.demo.profile.domain.Follow;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -17,6 +19,7 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
+@Builder
 @Table(name = "member_table_07_27")
 public class MemberEntity {
 
@@ -50,6 +53,7 @@ public class MemberEntity {
     @OneToMany(mappedBy = "followee",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Follow> followeeList = new ArrayList<>(); //나를 팔로우 하는 유저들의 리스트
 
+    public MemberEntity() {};
 
     public static MemberEntity toMemberEntity(MemberDTO memberDTO, PasswordEncoder passwordEncoder) {
         MemberEntity memberEntity = new MemberEntity();
