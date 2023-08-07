@@ -1,7 +1,8 @@
 package com.example.demo.Chat.Entity;
 
 import com.example.demo.BaseTimeEntity;
-import com.example.demo.entity.MemberEntity;
+import com.example.demo.entity.Member;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,10 +27,11 @@ public class ChatMessage extends BaseTimeEntity {
     private ChatRoom chatRoom;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id", referencedColumnName = "id")
-    private MemberEntity sender;
+    @JoinColumn(name = "sender_id", referencedColumnName = "memberLoginId")
+    private Member sender;
 
     private String content;
-    
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime sentAt;
 }

@@ -44,7 +44,6 @@ public class ChatController {
 	 * @DTO 식별자, 이미지 URI, 이름, 읽지 않은 메시지 개수
 	 * Exception
 	 */ 
-	@CrossOrigin(origins = "http://localhost:3000")
 	@Operation(summary = "채팅 리스트 메서드", description = "채팅 페이지에 진입시 사용자의 모든 채팅 내용을 반환하는 메서드입니다.")
 	@GetMapping("/chat")
 	public ResponseEntity<Object> getChatRoomList(/*Principal principal*/) {
@@ -59,7 +58,6 @@ public class ChatController {
 	/*
 	 * (개인) 처음으로 대화하거나 방을 나갔다가 다시 대화 생성하는 경우
 	 */
-	@CrossOrigin(origins = "http://localhost:3000")
 	@Operation(summary = "", description = "채팅방에서 나올 때 해당 사용자의 채팅방에서 읽은 시각을 기록합니다.")
 	@PostMapping("/chat/{memberId}")
 	public ResponseEntity createChatRoom(/*Principal principal,*/ @PathVariable("memberId") int participantId) {
@@ -77,13 +75,12 @@ public class ChatController {
 	 * @return 안 읽은 메시지들
 	 * exception
 	 */
-	@CrossOrigin(origins = "http://localhost:3000")
 	@Operation(summary = "채팅방 입장시 안 읽은 메시지 반환", description = "채팅방에 입장했을 때 오프라인 상태여서 안 읽었던 메시지를 반환합니다.")
 	@GetMapping("/chat/{roomId}")
 	public ResponseEntity<List<MessageDTO.Response>> enterChatRoom(/*Principal principal,*/ @Positive @PathVariable("roomId") Long roomId) {
 //		List<MessageDTO.Response> msgList = chatService.getChatMessage(Long.parseLong(principal.getName()), roomId);
 		
-		List<MessageDTO.Response> msgList = chatService.getChatMessage(3L, roomId);	// 하드 코딩
+		List<MessageDTO.Response> msgList = chatService.getChatMessage(1L, roomId);	// 하드 코딩
 		
 		return new ResponseEntity<>(msgList, HttpStatus.OK);
 	}
@@ -94,7 +91,6 @@ public class ChatController {
 	 * @param
 	 * @DTO senderName 이름, content 내용
 	 */
-	@CrossOrigin(origins = "http://localhost:3000")
 	@Operation(summary = "메시지 전송", description = "사용자가 채팅방에서 메시지를 전송하면 채팅방에 온라인인 모든 사용자에게 메시지를 반환하며, 오프라인 사용자를 위해 메시지를 DB에 저장합니다.")
 	@MessageMapping("/chat/{roomId}") // '/pub/chat/roomId'
 	public void messageSendAndSave(/*Principal principal,*/ @Positive @DestinationVariable int roomId, @RequestBody MessageDTO.Get messageDTO) {

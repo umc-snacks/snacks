@@ -1,7 +1,7 @@
 package com.example.demo.Chat.Entity;
 
 import com.example.demo.BaseTimeEntity;
-import com.example.demo.entity.MemberEntity;
+import com.example.demo.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,14 +20,15 @@ public class ChatRoomMember extends BaseTimeEntity {
     @EmbeddedId
     private ChatRoomMemberId chatRoomMemberId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("chatRoomId")
     @JoinColumn(name = "room_id")
     private ChatRoom chatRoom;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("memberId")
-    private MemberEntity member;
+    @JoinColumn(name = "member_id")
+    private Member member;
     
     private LocalDateTime readTime;
     

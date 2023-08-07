@@ -21,18 +21,10 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>{
 				+ "WHERE crm.member.memberLoginId = :myMemberId "
 				+ "ORDER BY crm.readTime DESC "
 				+ "LIMIT 1)"
-			+ "AND cm.sender.id != :myMemberId")
+			+ "AND cm.sender.memberLoginId != :myMemberId")
 	int getNumberOfUnreadMessage(@Param("myMemberId") Long myMemberId, @Param("chatRoomId") Long chatRoomId);
 	
-//	@Query("SELECT cm "
-//			+ "FROM ChatMessage cm "
-//			+ "JOIN FETCH ChatRoomMember crm "
-//			+ "WHERE cm.chatRoom.id = crm.chatRoom.id "
-//				+ "AND cm.chatRoom.id = :chatRoom_id "
-//				+ "AND cm.sentAt < (SELECT crm2.sentAt FROM ChatRoomMember crm2 WHERE crm2.member.memberLoginId = :memberID AND crm2.chatRoom.id = :chatRoom.id) "
-//				+ "AND cm.sender.id != :memberId")
-//	List<ChatMessage> getUnreadMessages(@Param("memberId") Long memberId, @Param("chatRoom_id") Long chatRoom_id);
-	
+
 	@Query("SELECT cm FROM ChatMessage cm "
             + "JOIN FETCH ChatRoomMember crm "
             + "ON crm.member.memberLoginId = :memberId "
@@ -40,7 +32,7 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>{
             + "AND cm.sentAt >= (SELECT crm2.readTime FROM ChatRoomMember crm2 "
             					+ "WHERE crm2.member.memberLoginId = :memberId "
             					+ "AND crm2.chatRoom.roomId = :chatRoomId) "
-            + "AND cm.sender.id != :memberId")
+            + "AND cm.sender.memberLoginId != :memberId")
     List<ChatMessage> getUnreadMessages(@Param("memberId")Long memberId, @Param("chatRoomId")Long chatRoomId);
 	
 	@Modifying
