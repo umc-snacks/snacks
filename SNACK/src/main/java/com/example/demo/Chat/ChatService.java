@@ -106,7 +106,7 @@ public class ChatService {
 	}
 	
 	/*
-	 * 팀에 어떤 사용자가 추가되었을 때 채팅방에 해당 사용자를 추가하는 메서드
+	 * board에 어떤 사용자가 추가되었을 때 채팅방에 해당 사용자를 추가하는 메서드
 	 */
 	public Board createBoardChatRoom(Board board, List<BoardMember> members) {
 		ChatRoom chatRoom = chatRoomRepository.saveAndFlush(new ChatRoom());
@@ -121,6 +121,27 @@ public class ChatService {
 		}
 
 		return board;
+	}
+
+	/*
+	 * board에 추가 인원이 들어왔을 때 해당 인원을 board의 채팅방에 포함시키는 메소드
+	 */
+	public void addMemberToChatRoom(BoardMember boardMember) {
+		ChatRoom chatRoom = boardMember.getBoard().getChatRoom();
+		Member member = boardMember.getMember();
+
+		ChatRoomMember chatRoomMember = createChatRoomMember(chatRoom, member);
+		chatRoomMemberRepository.save(chatRoomMember);
+	}
+
+	/*
+	 * board에서 나가는 인원이 있을 때 해당 인원을 board의 채팅방에서 내보내는 메소드
+	 */
+	public void deleteMemberToChatRoomd(BoardMember boardMember) {
+		ChatRoom chatRoom = boardMember.getBoard().getChatRoom();
+		Member member = boardMember.getMember();
+
+		chatRoomMemberRepository.deleteMemberToChatRoom(member.getMemberLoginId(), chatRoom.getRoomId());
 	}
 
 	/*
