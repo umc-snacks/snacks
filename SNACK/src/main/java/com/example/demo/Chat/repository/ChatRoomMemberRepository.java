@@ -13,7 +13,7 @@ import com.example.demo.Chat.Entity.ChatRoom;
 import com.example.demo.Chat.Entity.ChatRoomMember;
 
 @Repository
-public interface ChatRoomMemberRepository extends JpaRepository<ChatRoomMember, Long>{
+public interface ChatRoomMemberRepository extends JpaRepository<ChatRoomMember, Long>, ChatRoomMemberCustomRepository {
 	@Query("SELECT crm, "
 			+ "("
 			+ "SELECT cm.sentAt"
