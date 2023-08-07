@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 //import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.dto.MemberDTO;
-import com.example.demo.entity.MemberEntity;
+import com.example.demo.entity.Member;
 import com.example.demo.profile.domain.userinfo.UserInfo;
 import com.example.demo.profile.domain.userinfo.UserInfoRepository;
 import com.example.demo.service.EmailService;
@@ -153,7 +153,7 @@ public class MemberController {
     @GetMapping("/member/save/{user_id}")
     public boolean checkIDExist(@PathVariable String user_id) {
 
-        Optional<MemberEntity> memberEntity_cehckIDExist,memberEntity_checknicknameExist;
+        Optional<Member> memberEntity_cehckIDExist,memberEntity_checknicknameExist;
         memberEntity_cehckIDExist = memberService.findOne_withID(user_id);
         memberEntity_checknicknameExist = memberService.findOne_withnickname(user_id);
         System.out.println(memberEntity_cehckIDExist);

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.Games;
-import com.example.demo.entity.MemberEntity;
+import com.example.demo.entity.Member;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +17,7 @@ public class BoardSearch {
     private String title;
     private Games gameTitle;
     private String etcTitle;
-    private List<MemberEntity> members = new ArrayList<>();
+    private List<Member> members = new ArrayList<>();
     private LocalDateTime date;
     private String notice;
     private Integer maxCount;

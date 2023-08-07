@@ -5,7 +5,12 @@ import com.example.demo.Chat.Entity.ChatRoomMember;
 import com.example.demo.Chat.repository.ChatMessageRepository;
 import com.example.demo.Chat.repository.ChatRoomMemberRepository;
 import com.example.demo.Chat.repository.ChatRoomRepository;
-import com.example.demo.entity.MemberEntity;
+import com.example.demo.board.BoardService;
+import com.example.demo.board.entity.Board;
+import com.example.demo.board.entity.BoardMember;
+import com.example.demo.board.repository.BoardMemberRepository;
+import com.example.demo.board.repository.BoardRepository;
+import com.example.demo.entity.Member;
 import com.example.demo.profile.domain.follow.Follow;
 import com.example.demo.profile.domain.follow.FollowRepository;
 import com.example.demo.profile.domain.userinfo.UserInfo;
@@ -24,73 +29,97 @@ import java.util.Optional;
 
 @SpringBootTest
 class SnackApplicationTests {
-	@Autowired
-	private MemberRepository memberRepository; // 나중에 멤버 서비스의 메소드로 대체할 예정
-	@Autowired
-	private ChatRoomMemberRepository chatRoomMemberRepository;
-	@Autowired
-	private ChatMessageRepository chatMessageRepository;
-	@Autowired
-	private ChatRoomRepository chatRoomRepository;
-	@Autowired
-	private FollowRepository followRepository;
-	@Autowired
-	private UserInfoRepository userInfoRepository;
+    @Autowired
+    private MemberRepository memberRepository; // 나중에 멤버 서비스의 메소드로 대체할 예정
+    @Autowired
+    private ChatRoomMemberRepository chatRoomMemberRepository;
+    @Autowired
+    private ChatMessageRepository chatMessageRepository;
+    @Autowired
+    private ChatRoomRepository chatRoomRepository;
+    @Autowired
+    private FollowRepository followRepository;
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+    @Autowired
+    private BoardService boardService;
+    @Autowired
+    private BoardMemberRepository boardMemberRepository;
+    @Autowired
+    private BoardRepository boardRepository;
 
-	@DisplayName("멤버 추가")
-	@Test
-	void contextLoads() {
-		for (int i = 0; i < 10; i++) {
-			// (String username, String nickname, String password, UserInfo userInfo)
-			MemberEntity member = MemberEntity.builder()
-					.id("test" + i)
-					.pw("1234")
-					.name("test" + i)
-					.nickname("test" + i)
-					.birth(LocalDate.now())
-					.userInfo(null)
-					.profileimageurl(null)
-					.build();
+    @DisplayName("멤버 추가")
+    @Test
+    void contextLoads() {
+        for (int i = 0; i < 10; i++) {
+            // (String username, String nickname, String password, UserInfo userInfo)
+            Member member = Member.builder()
+                    .id("test" + i)
+                    .pw("1234")
+                    .name("test" + i)
+                    .nickname("test" + i)
+                    .birth(LocalDate.now())
+                    .userInfo(null)
+                    .profileimageurl(null)
+                    .build();
 
-			UserInfo userInfo = UserInfo.builder()
-					.member(member)
-					.articleCount(0L)
-					.followCount(0L)
-					.followerCount(0L)
-					.introduction("test hi" + i)
-					.build();
+            UserInfo userInfo = UserInfo.builder()
+                    .member(member)
+                    .articleCount(0L)
+                    .followCount(0L)
+                    .followerCount(0L)
+                    .introduction("test hi" + i)
+                    .build();
 
-			memberRepository.save(member);
-			userInfoRepository.save(userInfo);
-		}
-	}
+            memberRepository.save(member);
+            userInfoRepository.save(userInfo);
+        }
+    }
 
-	@Test
-	void addFollowr() {
-		List<MemberEntity> list = memberRepository.findAll();
-		MemberEntity member = list.get(0);
+    @Test
+    void addFollowr() {
+        List<Member> list = memberRepository.findAll();
+        Member member = list.get(0);
 
 
-		for(int i = 1; i < 10; i++) {
-			Follow f = new Follow(member, list.get(i));
-			followRepository.save(f);
+        for (int i = 1; i < 10; i++) {
+            Follow f = new Follow(member, list.get(i));
+            followRepository.save(f);
 
-			if(i % 2 == 0) {
-				followRepository.save(new Follow(member, list.get(i)));
-			}
+            if (i % 2 == 0) {
+                followRepository.save(new Follow(member, list.get(i)));
+            }
 
-		}
-	}
+        }
+    }
+//    @Test
+//    @Transactional
+//    void deleteBoardTest() {
+//        boardRepository.deleteById(252L);
+//    }
+
+
 
 //    @Test
 //    @Transactional
-//    void addChatMessage() {
-////        List<ChatRoom> crlist = chatRoomRepository.findAll();
-////        List<MemberEntity> mlsit = memberRepository.findAll();
-//        List<ChatRoomMember> crm = chatRoomMemberRepository.findAll();
+//    void addBoard() {
 //
-//        for(int i = 0 ; i < 10; i++) {
+//        List<Member> list = memberRepository.findAll();
 //
+//
+//        Board board = new Board();
+//        board.setTitle("test Title ");
+//        board.setGameTitle(Games.valueOf("LeagueOfLegends"));
+//        boardRepository.saveAndFlush(board);
+//
+//        for (int i = 1; i < 4; i++) {
+//            Member member = list.get(i);
+//            BoardMember bm = BoardMember.builder()
+//                    .member(member)
+//                    .board(board)
+//                    .build();
+//
+//            boardMemberRepository.saveAndFlush(bm);
 //        }
 //    }
 //

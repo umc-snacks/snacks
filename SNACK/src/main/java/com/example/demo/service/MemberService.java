@@ -3,7 +3,7 @@ package com.example.demo.service;
 
 import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.dto.MemberDTO;
-import com.example.demo.entity.MemberEntity;
+import com.example.demo.entity.Member;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +34,12 @@ public class MemberService {
 
 
     public void save(MemberDTO memberDTO) {
-        MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDTO, passwordEncoder);
+        Member memberEntity = Member.toMemberEntity(memberDTO, passwordEncoder);
         memberRepository.save(memberEntity);
+    }
 
-
+    public void saveMember(Member member) {
+        memberRepository.save(member);
     }
 
 
@@ -81,11 +83,11 @@ public class MemberService {
 //    }
 
     public String login(Map<String, String> members) {
-        Optional<MemberEntity> byMemberId = memberRepository.findById(members.get("id"));
+        Optional<Member> byMemberId = memberRepository.findById(members.get("id"));
 
         if(byMemberId.isPresent()){
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            MemberEntity memberEntity =byMemberId.get();
+            Member memberEntity =byMemberId.get();
             if(encoder.matches(members.get("pw"), memberEntity.getPw())){
                 // 비밀번호 일치!
                 // 처음에 시작을 MemberDTO 라 했으니! entity -> dto 로 변환 후 리턴하는 과정이 필요!!
@@ -120,14 +122,14 @@ public class MemberService {
 
 
     public String Idfind(MemberDTO memberDTO){
-        Optional<MemberEntity> findMemberId = memberRepository.findByName(memberDTO.getName());
+        Optional<Member> findMemberId = memberRepository.findByName(memberDTO.getName());
 
         String return_id= null ;
 
 
         if(findMemberId.isPresent()){
             //System.out.println("확인111");
-            MemberEntity memberEntity = findMemberId.get();
+            Member memberEntity = findMemberId.get();
             if(memberEntity.getBirth().equals((memberDTO.getBirth())) ){
                 //System.out.println("확인222");
                 return_id = memberEntity.getId();
@@ -141,17 +143,17 @@ public class MemberService {
 
 
 
-    public Optional<MemberEntity> findOne_withID(String insertedUserId) {
+    public Optional<Member> findOne_withID(String insertedUserId) {
         return memberRepository.findById(insertedUserId);
     }
 
-    public Optional<MemberEntity> findOne_withnickname(String nickname) {
+    public Optional<Member> findOne_withnickname(String nickname) {
         return memberRepository.findByNickname(nickname);
     }
 
     public String changepw(MemberDTO memberDTO) {
 
-        Optional<MemberEntity> change_member_pw = memberRepository.findByNameAndIdAndBirth(memberDTO.getName(),memberDTO.getId(),memberDTO.getBirth());
+        Optional<Member> change_member_pw = memberRepository.findByNameAndIdAndBirth(memberDTO.getName(),memberDTO.getId(),memberDTO.getBirth());
         String change_pw=null;
         if(change_member_pw.isPresent()){
 
@@ -162,11 +164,11 @@ public class MemberService {
             //change_pw=randompasswordService.getRamdomPassword(8);
 
             //DB 바꾸기 과정중!!!
-            MemberEntity memberEntity =change_member_pw.get();
+            Member memberEntity =change_member_pw.get();
 
             MemberDTO dto = MemberDTO.toMemberDTO_with_LongId(memberEntity);
             System.out.println(dto);
-            MemberEntity memberEntity_with_newpw = MemberEntity.toMemberEntity_with_newpw(dto,change_pw, passwordEncoder);
+            Member memberEntity_with_newpw = Member.toMemberEntity_with_newpw(dto,change_pw, passwordEncoder);
              memberRepository.save(memberEntity_with_newpw);
 
             System.out.println("이름,아이디,생년월일을 이용해 찾기 성공! 그후 db 바꾸기 과정도 수행");

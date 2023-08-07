@@ -4,13 +4,9 @@ import com.example.demo.dto.MemberDTO;
 import com.example.demo.profile.domain.follow.Follow;
 import com.example.demo.profile.domain.userinfo.UserInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -55,14 +51,15 @@ public class Member {
     @JoinColumn(nullable = true)
     private UserInfo userInfo;
 
+
     @OneToMany(mappedBy = "follower",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Follow> followerList = new ArrayList<>(); //내가 팔로우를 하는 유저들의 리스트
 
     @OneToMany(mappedBy = "followee",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Follow> followeeList = new ArrayList<>(); //나를 팔로우 하는 유저들의 리스트
 
-    public static MemberEntity toMemberEntity(MemberDTO memberDTO, PasswordEncoder passwordEncoder) {
-        MemberEntity memberEntity = new MemberEntity();
+    public static Member toMemberEntity(MemberDTO memberDTO, PasswordEncoder passwordEncoder) {
+        Member memberEntity = new Member();
         //memberEntity.setMemberLoginId(memberDTO.getMemberLoginId());
         memberEntity.setId(memberDTO.getId());
         memberEntity.setPw(passwordEncoder.encode(memberDTO.getPw()));
@@ -73,8 +70,8 @@ public class Member {
     }
 
 
-    public static MemberEntity toMemberEntity_with_newpw(MemberDTO memberDTO,String new_pw, PasswordEncoder passwordEncoder) {
-        MemberEntity memberEntity = new MemberEntity();
+    public static Member toMemberEntity_with_newpw(MemberDTO memberDTO,String new_pw, PasswordEncoder passwordEncoder) {
+        Member memberEntity = new Member();
         memberEntity.setMemberLoginId(memberDTO.getMemberLoginId());
         memberEntity.setId(memberDTO.getId());
         memberEntity.setPw(passwordEncoder.encode(new_pw));

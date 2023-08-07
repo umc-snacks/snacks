@@ -1,6 +1,6 @@
 package com.example.demo.board.entity;
 
-import com.example.demo.Member.Member;
+import com.example.demo.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +20,7 @@ public class BoardMember {
     private Board board;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "member_login_id")
     private Member member;
 
 }

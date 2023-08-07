@@ -44,7 +44,7 @@ public class SpringSecurityConfig{
         http.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(request -> request
                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                .requestMatchers("/status","/email","/email/**", "/","","/member/","/member/**","/member/save","/member/save/**","/swagger-ui/**").permitAll()
+                .requestMatchers("/status","/email","/email/**", "/","","/member/","/member/**","/member/save","/member/save/**","/swagger-ui/**", "*/**").permitAll()
                 .anyRequest().authenticated()	// 어떠한 요청이라도 인증필요
 
         )

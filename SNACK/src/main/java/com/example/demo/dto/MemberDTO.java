@@ -1,6 +1,6 @@
 package com.example.demo.dto;
 
-import com.example.demo.entity.MemberEntity;
+import com.example.demo.entity.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class MemberDTO {
 
 
 
-    public static MemberDTO toMemberDTO(MemberEntity memberEntity) {
+    public static MemberDTO toMemberDTO(Member memberEntity) {
         MemberDTO memberDTO = new MemberDTO();
 
         //memberDTO.setMemberLoginId(memberEntity.getMemberLoginId());
@@ -39,7 +39,7 @@ public class MemberDTO {
     }
 
 
-    public static MemberDTO toMemberDTO_after_login(MemberEntity memberEntity) {
+    public static MemberDTO toMemberDTO_after_login(Member memberEntity) {
         MemberDTO memberDTO = new MemberDTO();
 
         memberDTO.setMemberLoginId(memberEntity.getMemberLoginId());
@@ -53,7 +53,7 @@ public class MemberDTO {
 
     }
 
-    public static MemberDTO toMemberDTO_with_LongId(MemberEntity memberEntity) {
+    public static MemberDTO toMemberDTO_with_LongId(Member memberEntity) {
         MemberDTO memberDTO = new MemberDTO();
 
         memberDTO.setMemberLoginId(memberEntity.getMemberLoginId());
