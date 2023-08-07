@@ -1,15 +1,16 @@
 package com.example.demo.board;
 
-import com.example.demo.Member.Member;
-import com.example.demo.Member.MemberRepository;
+import com.example.demo.Chat.ChatService;
 import com.example.demo.board.dto.BoardRequestDTO;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardMember;
 import com.example.demo.board.entity.BoardSearch;
-import com.example.demo.exception.BoardSizeOverException;
 import com.example.demo.board.repository.BoardMemberRepository;
 import com.example.demo.board.repository.BoardRepository;
 import com.example.demo.board.repository.BoardSearchRepositoryImpl;
+import com.example.demo.entity.Member;
+import com.example.demo.exception.BoardSizeOverException;
+import com.example.demo.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class BoardService {
@@ -26,13 +26,15 @@ public class BoardService {
     private final MemberRepository memberRepository;
 
     private final BoardMemberRepository boardMemberRepository;
+    private final ChatService chatService;
 
     @Autowired
-    public BoardService(BoardRepository boardRepository, BoardSearchRepositoryImpl boardSearchRepositoryImpl, MemberRepository memberRepository, BoardMemberRepository boardMemberRepository) {
+    public BoardService(BoardRepository boardRepository, BoardSearchRepositoryImpl boardSearchRepositoryImpl, MemberRepository memberRepository, BoardMemberRepository boardMemberRepository, ChatService chatService) {
         this.boardRepository = boardRepository;
         this.boardSearchRepositoryImpl = boardSearchRepositoryImpl;
         this.memberRepository = memberRepository;
         this.boardMemberRepository = boardMemberRepository;
+        this.chatService = chatService;
     }
 
     // 생성 로직
@@ -44,6 +46,7 @@ public class BoardService {
 
     @Transactional
     public Board buildBoard(BoardRequestDTO boardRequestDTO) throws BoardSizeOverException {
+
         List<BoardMember> boardMembers = new ArrayList<>();
         List<Long> memberIds = boardRequestDTO.getMemberIds();
 
@@ -57,12 +60,16 @@ public class BoardService {
         }
 
         Long writerId = boardRequestDTO.getWriterId();
+
         Member writer = memberRepository.findById(writerId)
                 .orElseThrow(() -> new NoSuchElementException("Could not found writer id : " + writerId));
-
         Board board = BoardRequestDTO.toEntity(boardRequestDTO, boardMembers, writer);
+
         boardMemberRepository.saveAll(boardMembers);
-        boardRepository.save(board);
+        Board boardWithChatRoomAdded = chatService.createBoardChatRoom(board, boardMembers);
+        boardRepository.save(boardWithChatRoomAdded);
+
+        // board 생성시 채팅방도 함께 생성
 
         return board;
     }
