@@ -73,6 +73,10 @@ public class EnrollmentService {
                 .build();
 
         boardMemberRepository.save(boardMember);
+
+        // 사용자가 board에 추가될 경우 chat에도 추가되어야 하기 때문에 추가됨 23.08.08
+        chatService.addMemberToChatRoom(boardMember);
+
         return "Enrollment request for board " + enrollment.getBoard().getTitle() + " successes";
     }
 
