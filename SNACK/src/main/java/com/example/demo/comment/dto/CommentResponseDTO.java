@@ -1,6 +1,5 @@
 package com.example.demo.comment.dto;
 
-import com.example.demo.Member.Member;
 import com.example.demo.comment.entity.Comment;
 import com.example.demo.comment.entity.ReplyComment;
 import com.example.demo.socialboard.entity.SocialBoard;

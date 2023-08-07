@@ -1,6 +1,6 @@
 package com.example.demo.heart;
 
-import com.example.demo.Member.Member;
+import com.example.demo.entity.Member;
 import com.example.demo.socialboard.entity.SocialBoard;
 import jakarta.persistence.*;
 import lombok.*;

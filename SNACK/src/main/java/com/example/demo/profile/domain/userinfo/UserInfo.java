@@ -1,6 +1,6 @@
 package com.example.demo.profile.domain.userinfo;
 
-import com.example.demo.entity.MemberEntity;
+import com.example.demo.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -18,7 +18,7 @@ public class UserInfo {
     private Long id;
 
     @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER)
-    private MemberEntity member;
+    private Member member;
 
     @Column(nullable = false)
     private Long articleCount;

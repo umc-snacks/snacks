@@ -1,15 +1,17 @@
 package com.example.demo.board.enrollment;
 
-import com.example.demo.Member.Member;
-import com.example.demo.Member.MemberRepository;
+import com.example.demo.Chat.ChatService;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardMember;
 import com.example.demo.board.repository.BoardMemberRepository;
 import com.example.demo.board.repository.BoardRepository;
+import com.example.demo.entity.Member;
 import com.example.demo.exception.BoardMemberOverlappingException;
 import com.example.demo.exception.BoardSizeOverException;
+import com.example.demo.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -21,12 +23,14 @@ public class EnrollmentService {
     private final MemberRepository memberRepository;
     private final BoardMemberRepository boardMemberRepository;
     private final EnrollmentRepository enrollmentRepository;
+    private final ChatService chatService;
 
-    public EnrollmentService(BoardRepository boardRepository, MemberRepository memberRepository, BoardMemberRepository boardMemberRepository, EnrollmentRepository enrollmentRepository) {
+    public EnrollmentService(BoardRepository boardRepository, MemberRepository memberRepository, BoardMemberRepository boardMemberRepository, EnrollmentRepository enrollmentRepository, ChatService chatService) {
         this.boardRepository = boardRepository;
         this.memberRepository = memberRepository;
         this.boardMemberRepository = boardMemberRepository;
         this.enrollmentRepository = enrollmentRepository;
+        this.chatService = chatService;
     }
 
     public Enrollment convert(EnrollmentRequestDTO enrollment) {

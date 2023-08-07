@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import static com.example.demo.board.entity.QBoard.board;
 
 import static com.example.demo.board.enrollment.QEnrollment.enrollment;
-
+import static com.example.demo.board.entity.QBoard.board;
 import static com.example.demo.board.entity.QBoardMember.boardMember;
 
 @Repository
@@ -34,7 +33,7 @@ public class BoardMemberRepositoryImpl implements  BoardMemberRepositoryCustom{
                 .from(board)
                 .join(boardMember)
                 .on(boardMember.board.id.eq(board.id))
-                .where(boardMember.member.id.eq(memberId))
+                .where(boardMember.member.id.eq(String.valueOf(memberId)))
                 .fetch();
 
         return boards;
@@ -55,7 +54,7 @@ public class BoardMemberRepositoryImpl implements  BoardMemberRepositoryCustom{
                 .from(enrollment)
                 .join(enrollment.board, board)
                 .on(enrollment.board.id.eq(board.id))
-                .where(board.writer.id.eq(hostId))
+                .where(board.writer.id.eq(String.valueOf(hostId)))
                 .fetch();
     }
 

@@ -1,10 +1,14 @@
 package com.example.demo.comment.entity;
 
 import com.example.demo.BaseTimeEntity;
-import com.example.demo.Member.Member;
+import com.example.demo.entity.Member;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+
 
 @Entity
 @Getter @Setter

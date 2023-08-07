@@ -1,8 +1,8 @@
 package com.example.demo.heart;
 
-import com.example.demo.Member.Member;
-import com.example.demo.Member.MemberRepository;
+import com.example.demo.entity.Member;
 import com.example.demo.exception.HeartRequestException;
+import com.example.demo.repository.MemberRepository;
 import com.example.demo.socialboard.repository.SocialBoardRepository;
 import com.example.demo.socialboard.entity.SocialBoard;
 import jakarta.transaction.Transactional;

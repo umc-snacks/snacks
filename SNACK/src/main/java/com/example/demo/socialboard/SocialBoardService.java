@@ -1,8 +1,8 @@
 package com.example.demo.socialboard;
 
-import com.example.demo.Member.Member;
-import com.example.demo.Member.MemberRepository;
 import com.example.demo.comment.entity.Comment;
+import com.example.demo.entity.Member;
+import com.example.demo.repository.MemberRepository;
 import com.example.demo.socialboard.dto.SocialBoardDTO;
 import com.example.demo.socialboard.dto.VoteBoardDTO;
 import com.example.demo.socialboard.entity.SocialBoard;
@@ -35,8 +35,8 @@ public class SocialBoardService {
 
 
     public SocialBoard saveBoard(@Valid SocialBoardDTO socialBoardDTO) {
-        Member member = memberRepository.findById(socialBoardDTO.getWriterId())
-                .orElseThrow(() -> new NoSuchElementException("Could not found member id : " + socialBoardDTO.getWriterId()));
+        Member member = memberRepository.findById(socialBoardDTO.getWriter().getId())
+                .orElseThrow(() -> new NoSuchElementException("Could not found member id : " + socialBoardDTO.getWriter().getId()));
 
 
         VoteBoard voteBoard = VoteBoard.builder()

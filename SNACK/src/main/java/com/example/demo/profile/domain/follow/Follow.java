@@ -1,7 +1,7 @@
 package com.example.demo.profile.domain.follow;
 
 
-import com.example.demo.entity.MemberEntity;
+import com.example.demo.entity.Member;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,14 +20,14 @@ public class Follow  {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
-    private MemberEntity follower; // 팔로우를 하는 사람
+    private Member follower; // 팔로우를 하는 사람
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
-    private MemberEntity followee; // 팔로우를 받는 사람
+    private Member followee; // 팔로우를 받는 사람
 
     @Builder
-    public Follow(MemberEntity follower, MemberEntity followee) {
+    public Follow(Member follower, Member followee) {
         this.follower = follower;
         this.followee = followee;
     }

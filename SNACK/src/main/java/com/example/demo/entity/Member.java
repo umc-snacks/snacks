@@ -21,12 +21,11 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "member_table_07_27")
-public class MemberEntity {
+@Table
+public class Member {
 
     @Id//pk 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,8 +60,6 @@ public class MemberEntity {
 
     @OneToMany(mappedBy = "followee",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Follow> followeeList = new ArrayList<>(); //나를 팔로우 하는 유저들의 리스트
-
-    public MemberEntity() {};
 
     public static MemberEntity toMemberEntity(MemberDTO memberDTO, PasswordEncoder passwordEncoder) {
         MemberEntity memberEntity = new MemberEntity();

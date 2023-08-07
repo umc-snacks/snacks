@@ -1,14 +1,14 @@
 package com.example.demo.socialboard.entity;
 
 import com.example.demo.BaseTimeEntity;
-import com.example.demo.profile.domain.member.Member;
-
+import com.example.demo.comment.entity.Comment;
+import com.example.demo.entity.Member;
+import com.example.demo.socialboard.dto.SocialBoardResponseDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.Cascade;
 
 import java.util.ArrayList;
 import java.util.List;

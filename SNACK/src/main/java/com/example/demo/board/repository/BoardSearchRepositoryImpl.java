@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.example.demo.board.QBoard.board;
+import static com.example.demo.board.entity.QBoard.board;
 
 
 @Repository

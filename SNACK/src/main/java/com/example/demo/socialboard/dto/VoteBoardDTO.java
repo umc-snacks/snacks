@@ -1,7 +1,8 @@
 package com.example.demo.socialboard.dto;
 
 
-import com.example.demo.socialboard.entity.Comment;
+import com.example.demo.comment.entity.Comment;
+import com.example.demo.entity.Member;
 import com.example.demo.socialboard.entity.SocialBoard;
 import com.example.demo.socialboard.entity.Vote;
 import com.example.demo.socialboard.entity.VoteBoard;

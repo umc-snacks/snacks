@@ -3,7 +3,8 @@ package com.example.demo.socialboard.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.demo.entity.MemberEntity;
+import com.example.demo.comment.entity.Comment;
+import com.example.demo.entity.Member;
 import com.example.demo.socialboard.entity.SocialBoard;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -29,7 +30,7 @@ import java.util.List;
 @AllArgsConstructor
 public abstract class SocialBoardDTO {
 
-    private MemberEntity writer;
+    private Member writer;
 
     private String content;
 

@@ -1,6 +1,6 @@
 package com.example.demo.profile.service;
 
-import com.example.demo.entity.MemberEntity;
+import com.example.demo.entity.Member;
 import com.example.demo.profile.domain.userinfo.UserInfoRepository;
 import com.example.demo.profile.dto.myInfo.MyInfoResponseDto;
 import com.example.demo.profile.dto.profileUpdate.ProfileReadResponseDto;
@@ -17,8 +17,8 @@ public class MyInfoService {
 
     private final MemberRepository memberRepository;
     private final UserInfoRepository userInfoRepository;
-    public MyInfoResponseDto readMyInfo(MemberEntity member) {
-        MemberEntity tempMember = memberRepository.findById(member.getId()).get();
+    public MyInfoResponseDto readMyInfo(Member member) {
+        Member tempMember = memberRepository.findById(member.getId()).get();
 
 
         /*
@@ -35,14 +35,14 @@ public class MyInfoService {
                 .build();
     }
 
-    public ProfileReadResponseDto readProfile(MemberEntity member) {
-        MemberEntity tempMember = memberRepository.findById(member.getId()).get();
+    public ProfileReadResponseDto readProfile(Member member) {
+        Member tempMember = memberRepository.findById(member.getId()).get();
         return new ProfileReadResponseDto(tempMember);
     }
 
     @Transactional
-    public ProfileUpdateResponseDto updateProfile(ProfileUpdateRequestDto profileUpdateRequestDto, MemberEntity member) {
-        MemberEntity tempMember = memberRepository.findById(member.getId()).get();
+    public ProfileUpdateResponseDto updateProfile(ProfileUpdateRequestDto profileUpdateRequestDto, Member member) {
+        Member tempMember = memberRepository.findById(member.getId()).get();
         tempMember.setNickname(profileUpdateRequestDto.getNickname());
         tempMember.setProfileimageurl(profileUpdateRequestDto.getProfileImageUrl());
         tempMember.getUserInfo().setIntroduction(profileUpdateRequestDto.getIntroduction());

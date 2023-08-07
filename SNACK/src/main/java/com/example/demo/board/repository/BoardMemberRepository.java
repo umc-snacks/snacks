@@ -10,7 +10,7 @@ import java.util.List;
 public interface BoardMemberRepository extends JpaRepository<BoardMember, Long>, BoardMemberRepositoryCustom {
 
 
-    public List<BoardMember> findBoardMembersByMemberId(Long memberId);
+//    public List<BoardMember> findBoardMembersByMemberId(Long memberId);
 
     public List<BoardMember> findBoardMembersByBoardId(Long boardId);
 }

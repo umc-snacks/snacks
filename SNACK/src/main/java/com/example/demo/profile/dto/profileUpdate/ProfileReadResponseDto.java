@@ -1,6 +1,6 @@
 package com.example.demo.profile.dto.profileUpdate;
 
-import com.example.demo.entity.MemberEntity;
+import com.example.demo.entity.Member;
 import lombok.Getter;
 
 @Getter
@@ -15,7 +15,7 @@ public class ProfileReadResponseDto {
         this.introduction = introduction;
     }
 
-    public ProfileReadResponseDto(MemberEntity member){
+    public ProfileReadResponseDto(Member member){
         this.nickname = member.getNickname();
         this.profileImageUrl = member.getProfileimageurl();
         this.introduction = member.getUserInfo().getIntroduction();
