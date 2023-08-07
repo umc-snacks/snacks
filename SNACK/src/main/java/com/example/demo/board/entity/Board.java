@@ -1,8 +1,9 @@
-package com.example.demo.board;
+package com.example.demo.board.entity;
 
 import com.example.demo.BaseTimeEntity;
+import com.example.demo.Chat.Entity.ChatRoom;
 import com.example.demo.Games;
-import com.example.demo.Member.Member;
+import com.example.demo.entity.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -12,7 +13,6 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 @Getter
@@ -50,6 +50,9 @@ public class Board extends BaseTimeEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime date;
 
+    @OneToOne(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"board"})
+    private ChatRoom chatRoom;
 
     @Column(name = "NOTICE")
     private String notice;
