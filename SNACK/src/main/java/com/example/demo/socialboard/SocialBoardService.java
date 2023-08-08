@@ -33,8 +33,8 @@ public class SocialBoardService {
 
 
     public SocialBoard saveBoard(@Valid SocialBoardDTO socialBoardDTO) {
-        Member member = memberRepository.findById(socialBoardDTO.getWriter().getId())
-                .orElseThrow(() -> new NoSuchElementException("Could not found member id : " + socialBoardDTO.getWriter().getId()));
+        Member member = memberRepository.findById(socialBoardDTO.getWriterId())
+                .orElseThrow(() -> new NoSuchElementException("Could not found member id : " + socialBoardDTO.getWriterId()));
 
 
         VoteBoard voteBoard = VoteBoard.builder()

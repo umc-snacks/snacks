@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -27,7 +29,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public abstract class SocialBoardDTO {
 
-    private Member writer;
+    private Long writerId;
 
     private String content;
 
