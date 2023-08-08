@@ -35,9 +35,6 @@ public class MemberController {
     public ResponseEntity<Boolean> save(@RequestBody MemberDTO memberDTO) {
         boolean save_check;
 
-        System.out.println("MemberController.save~!~!~!~!");
-        System.out.println("제발.. : " + memberDTO);
-
         ///창민님 코드
         // 회원가입할때
 

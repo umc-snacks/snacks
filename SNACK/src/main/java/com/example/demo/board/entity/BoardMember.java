@@ -20,7 +20,7 @@ public class BoardMember {
     private Board board;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "member_login_id")
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
 }
