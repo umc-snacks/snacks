@@ -20,7 +20,7 @@ public class UserInfoService {
          */
 
         return MyInfoResponseDto.builder()
-                .myProfileImageUrl(tempMember.getProfileimageurl())
+                .myProfileImageUrl(tempMember.getProfileImageUrl())
                 .nickname(tempMember.getNickname())
                 .articleCount(tempMember.getUserInfo().getArticleCount())
                 .followerCount(tempMember.getUserInfo().getFollowerCount())

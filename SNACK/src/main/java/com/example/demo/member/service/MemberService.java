@@ -1,8 +1,9 @@
 package com.example.demo.member.service;
 
-
+import com.example.demo.board.entity.Board;
+import com.example.demo.board.repository.BoardMemberRepository;
 import com.example.demo.config.JwtTokenProvider;
-import com.example.demo.member.dto.MemberDTO;
+import com.example.demo.member.dto.MemberRequestDTO;
 import com.example.demo.member.entity.Member;
 import com.example.demo.profile.domain.userinfo.UserInfo;
 import com.example.demo.member.repository.MemberRepository;
@@ -23,11 +24,11 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RandomPasswordService randompasswordService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final BoardMemberRepository boardMemberRepository;
 
-    public void save(MemberDTO memberDTO, UserInfo userInfo) {
-        Member member = Member.toMemberEntity(memberDTO, passwordEncoder, userInfo);
+    public void save(MemberRequestDTO memberRequestDTO, UserInfo userInfo) {
+        Member member = Member.toMemberEntity(memberRequestDTO, passwordEncoder, userInfo);
         memberRepository.save(member);
     }
 
@@ -44,7 +45,7 @@ public class MemberService {
                 List<String> roles = new ArrayList<>();
                 roles.add("user");
 
-                return  jwtTokenProvider.createToken(member.getLoginId(), roles);
+                return jwtTokenProvider.createToken(member.getId().toString(), roles);
             }
             else{
                 // 비밀번호 불일치!!(로그인 실패!)
@@ -56,35 +57,17 @@ public class MemberService {
 
     }
 
-    public String Idfind(MemberDTO memberDTO){
-        Optional<Member> findMemberId = memberRepository.findByName(memberDTO.getName());
-
-        String return_id= null ;
-
-
-        if(findMemberId.isPresent()){
-            Member member = findMemberId.get();
-            if(member.getBirth().equals((memberDTO.getBirth())) ){
-                return_id = member.getLoginId();
-
-            }
-        }
-        return return_id;
-    }
-
-
-
-    public Optional<Member> findOne_withID(String insertedUserId) {
+    public Optional<Member> findMemberByLoginId(String insertedUserId) {
         return memberRepository.findByLoginId(insertedUserId);
     }
 
-    public Optional<Member> findOne_withnickname(String nickname) {
-        return memberRepository.findByNickname(nickname);
+    public List<Board> findBoardsByMemberId(String memberId){
+        return boardMemberRepository.searchAttendingBoardsByMemberId(Long.parseLong(memberId));
     }
 
-    public String changepw(MemberDTO memberDTO) {
+    public String changePassword(MemberRequestDTO memberRequestDTO) {
 
-        Optional<Member> change_member_pw = memberRepository.findByNameAndLoginIdAndBirth(memberDTO.getName(),memberDTO.getLoginId(),memberDTO.getBirth());
+        Optional<Member> change_member_pw = memberRepository.findByNameAndLoginIdAndBirth(memberRequestDTO.getName(), memberRequestDTO.getLoginId(), memberRequestDTO.getBirth());
         String change_pw=null;
         if(change_member_pw.isPresent()){
 
@@ -97,16 +80,16 @@ public class MemberService {
             //DB 바꾸기 과정중!!!
             Member member =change_member_pw.get();
 
-            MemberDTO dto = MemberDTO.toMemberDTO_with_LongId(member);
+            MemberRequestDTO dto = MemberRequestDTO.toMemberDTOWithLongId(member);
             Member member_with_newpw = Member.toMemberEntity_with_newpw(dto,change_pw, passwordEncoder);
              memberRepository.save(member_with_newpw);
-
 
         }
 
         return change_pw;
 
     }
+
 
 
 }

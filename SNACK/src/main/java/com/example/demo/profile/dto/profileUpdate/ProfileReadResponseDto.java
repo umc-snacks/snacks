@@ -17,7 +17,7 @@ public class ProfileReadResponseDto {
 
     public ProfileReadResponseDto(Member member){
         this.nickname = member.getNickname();
-        this.profileImageUrl = member.getProfileimageurl();
+        this.profileImageUrl = member.getProfileImageUrl();
         this.introduction = member.getUserInfo().getIntroduction();
     }
 

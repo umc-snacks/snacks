@@ -53,7 +53,6 @@ public class EmailService {
             message.setText("바뀌신 비밀번호는 "+change_password+"입니다.");
             Transport.send(message);
 
-            System.out.println("이메일 전송 완료 !");
 
 
 //		      발송실패시

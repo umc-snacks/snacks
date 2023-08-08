@@ -26,7 +26,7 @@ public class MyInfoService {
          */
 
         return MyInfoResponseDto.builder()
-                .myProfileImageUrl(tempMember.getProfileimageurl())
+                .myProfileImageUrl(tempMember.getProfileImageUrl())
                 .nickname(tempMember.getNickname())
                 .articleCount(tempMember.getUserInfo().getArticleCount())
                 .followerCount(tempMember.getUserInfo().getFollowerCount())
@@ -44,7 +44,7 @@ public class MyInfoService {
     public ProfileUpdateResponseDto updateProfile(ProfileUpdateRequestDto profileUpdateRequestDto, Member member) {
         Member tempMember = memberRepository.findById(member.getId()).get();
         tempMember.setNickname(profileUpdateRequestDto.getNickname());
-        tempMember.setProfileimageurl(profileUpdateRequestDto.getProfileImageUrl());
+        tempMember.setProfileImageUrl(profileUpdateRequestDto.getProfileImageUrl());
         tempMember.getUserInfo().setIntroduction(profileUpdateRequestDto.getIntroduction());
         return new ProfileUpdateResponseDto(tempMember);
     }

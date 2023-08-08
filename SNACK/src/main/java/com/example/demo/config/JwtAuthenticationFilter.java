@@ -71,13 +71,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         //Token 꺼내기
         String token = authroization.split(" ")[1];
-        System.out.println("~~~~~\n"+authroization+"\n~~~~~\n");
-        System.out.println("현재 doFilterInternal 안 : "+token);
-
-
 
         if(JwtTokenProvider.isExpired(token,SecretKey)){
-            log.error("token 이 만료되었습니다! ");
             filterChain.doFilter(request,response);
             return ;
         }
@@ -85,7 +80,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String username=JwtTokenProvider.getUserName(token,SecretKey);
         log.info("username : ",username);
-        System.out.println("token 안에서 username 으로 뽑아낸값 "+ username);
         //String username ="";
        //권한 부여
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,null, List.of(new SimpleGrantedAuthority("user")));
