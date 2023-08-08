@@ -21,14 +21,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
-    //(08.07 수행)
+
     String secretKey =
             "c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK";
 
     // 토큰 유효시간 168 시간(7일)
     private long tokenValidTime = 1440 * 60 * 7 * 1000L;
     //private long tokenValidTime = 10;
-
 
     private final UserDetailsService userDetailsService;
 
