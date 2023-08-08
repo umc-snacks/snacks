@@ -38,6 +38,34 @@ public class UserInfo {
         this.followCount = followCount;
     }
 
+    public static class UserInfoBuilder {
+        private Long articleCount = 0L;
+        private Long followerCount = 0L;
+        private Long followCount = 0L;
+
+        UserInfoBuilder() {
+        }
+
+        public UserInfoBuilder articleCount(Long articleCount) {
+            this.articleCount = articleCount;
+            return this;
+        }
+
+        public UserInfoBuilder followerCount(Long followerCount) {
+            this.followerCount = followerCount;
+            return this;
+        }
+
+        public UserInfoBuilder followCount(Long followCount) {
+            this.followCount = followCount;
+            return this;
+        }
+
+        public UserInfo build() {
+            return new UserInfo(articleCount, followerCount, followCount);
+        }
+    }
+
     public void followerCountPlus(){
         this.followerCount += 1L;
     }
