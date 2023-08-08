@@ -1,17 +1,14 @@
 package com.example.demo.socialboard.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.comment.entity.Comment;
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import com.example.demo.socialboard.entity.SocialBoard;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @Getter
 @Setter

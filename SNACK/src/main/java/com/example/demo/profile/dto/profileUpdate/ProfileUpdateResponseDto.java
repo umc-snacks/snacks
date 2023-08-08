@@ -1,6 +1,6 @@
 package com.example.demo.profile.dto.profileUpdate;
 
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import lombok.Getter;
 
 @Getter

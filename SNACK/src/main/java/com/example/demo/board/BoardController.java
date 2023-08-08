@@ -7,7 +7,7 @@ import com.example.demo.board.entity.BoardMember;
 import com.example.demo.board.entity.BoardSearch;
 import com.example.demo.board.repository.BoardMemberRepository;
 import com.example.demo.exception.BoardSizeOverException;
-import com.example.demo.service.MemberService;
+import com.example.demo.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

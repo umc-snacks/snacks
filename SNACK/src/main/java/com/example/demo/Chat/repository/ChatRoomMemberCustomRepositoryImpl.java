@@ -16,7 +16,7 @@ public class ChatRoomMemberCustomRepositoryImpl implements ChatRoomMemberCustomR
     @Override
     public void deleteMemberToChatRoom(Long memberId, Long crmId) {
         jpaQueryFactory.delete(chatRoomMember)
-                .where(chatRoomMember.member.memberLoginId.eq(memberId)
+                .where(chatRoomMember.member.id.eq(memberId)
                         .and(chatRoomMember.chatRoom.roomId.eq(crmId)))
                 .execute();
 

@@ -1,6 +1,6 @@
 package com.example.demo.board.entity;
 
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 

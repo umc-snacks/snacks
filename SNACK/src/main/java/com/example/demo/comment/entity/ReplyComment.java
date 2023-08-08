@@ -1,7 +1,7 @@
 package com.example.demo.comment.entity;
 
 import com.example.demo.BaseTimeEntity;
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

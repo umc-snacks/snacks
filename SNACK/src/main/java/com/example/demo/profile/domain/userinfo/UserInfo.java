@@ -1,6 +1,6 @@
 package com.example.demo.profile.domain.userinfo;
 
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;

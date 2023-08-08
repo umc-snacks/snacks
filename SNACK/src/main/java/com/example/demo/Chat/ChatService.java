@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardMember;
-import com.example.demo.entity.Member;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.member.entity.Member;
+import com.example.demo.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -141,7 +141,7 @@ public class ChatService {
 		ChatRoom chatRoom = boardMember.getBoard().getChatRoom();
 		Member member = boardMember.getMember();
 
-		chatRoomMemberRepository.deleteMemberToChatRoom(member.getMemberLoginId(), chatRoom.getRoomId());
+		chatRoomMemberRepository.deleteMemberToChatRoom(member.getId(), chatRoom.getRoomId());
 	}
 
 	/*
@@ -150,7 +150,7 @@ public class ChatService {
 	private ChatRoomMember createChatRoomMember(ChatRoom chatRoom, Member member) {
 		ChatRoomMemberId crmId = new ChatRoomMemberId(
 				chatRoom.getRoomId(),
-				member.getMemberLoginId()
+				member.getId()
 		);
 
 		return ChatRoomMember.builder()
@@ -183,21 +183,6 @@ public class ChatService {
 		ChatRoomMember chatRoomMemeberCreater = createChatRoomMember(chatRoom, creator);
 		ChatRoomMember chatRoomMemeberParticipant = createChatRoomMember(chatRoom, participant);
 
-		// creator
-//		ChatRoomMember chatRoomMemeberSender = ChatRoomMember.builder()
-//				.chatRoomMemberId(new ChatRoomMemberId(creator.getMemberLoginId(), chatRoom.getRoomId()))
-//				.chatRoom(chatRoom)
-//				.member(creator)
-//				.readTime(LocalDateTime.now())
-//				.build();
-		
-		// receiver
-//		ChatRoomMember chatRoomMemeberReceiver = ChatRoomMember.builder()
-//				.chatRoomMemberId(new ChatRoomMemberId(participant.getMemberLoginId(), chatRoom.getRoomId()))
-//				.chatRoom(chatRoom)
-//				.member(participant)
-//				.readTime(LocalDateTime.now())
-//				.build();
 		
 		chatRoomMemberRepository.save(chatRoomMemeberCreater);
 		chatRoomMemberRepository.save(chatRoomMemeberParticipant);

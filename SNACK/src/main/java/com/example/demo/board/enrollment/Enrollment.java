@@ -1,7 +1,7 @@
 package com.example.demo.board.enrollment;
 
 import com.example.demo.board.entity.Board;
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

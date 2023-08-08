@@ -1,14 +1,11 @@
 package com.example.demo.board;
 
 import com.example.demo.Games;
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

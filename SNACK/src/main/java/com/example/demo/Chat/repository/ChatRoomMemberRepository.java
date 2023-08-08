@@ -32,14 +32,14 @@ public interface ChatRoomMemberRepository extends JpaRepository<ChatRoomMember, 
 			+ " IN ("
 			+ " SELECT crm2.chatRoom.roomId"
 			+ " FROM ChatRoomMember crm2"
-			+ " WHERE crm2.member.memberLoginId = :memberId"
+			+ " WHERE crm2.member.id = :memberId"
 			+ ")"
-			+ " AND crm.member.memberLoginId != :memberId")
+			+ " AND crm.member.id != :memberId")
 	List<Object[]> findMembersWithSameRoomAndReceiveTime(@Param("memberId") Long memberId);
 	
 	@Query("SELECT crm FROM ChatRoomMember crm "
 			+ "JOIN FETCH crm.member "
-			+ "WHERE crm.member.memberLoginId = :memberId "
+			+ "WHERE crm.member.id = :memberId "
 			+ "AND crm.chatRoom.roomId = :roomId")
 	ChatRoomMember findByMemberIdAndRoomId(@Param("memberId")Long memberId, @Param("roomId")Long roomId);
 	

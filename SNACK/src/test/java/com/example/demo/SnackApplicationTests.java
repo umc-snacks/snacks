@@ -1,31 +1,24 @@
 package com.example.demo;
 
-import com.example.demo.Chat.Entity.ChatRoom;
-import com.example.demo.Chat.Entity.ChatRoomMember;
 import com.example.demo.Chat.repository.ChatMessageRepository;
 import com.example.demo.Chat.repository.ChatRoomMemberRepository;
 import com.example.demo.Chat.repository.ChatRoomRepository;
 import com.example.demo.board.BoardService;
-import com.example.demo.board.entity.Board;
-import com.example.demo.board.entity.BoardMember;
 import com.example.demo.board.repository.BoardMemberRepository;
 import com.example.demo.board.repository.BoardRepository;
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import com.example.demo.profile.domain.follow.Follow;
 import com.example.demo.profile.domain.follow.FollowRepository;
 import com.example.demo.profile.domain.userinfo.UserInfo;
 import com.example.demo.profile.domain.userinfo.UserInfoRepository;
-import com.example.demo.repository.MemberRepository;
-import jakarta.transaction.Transactional;
+import com.example.demo.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 class SnackApplicationTests {

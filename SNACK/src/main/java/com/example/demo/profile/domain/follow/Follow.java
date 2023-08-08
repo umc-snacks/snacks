@@ -1,7 +1,7 @@
 package com.example.demo.profile.domain.follow;
 
 
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

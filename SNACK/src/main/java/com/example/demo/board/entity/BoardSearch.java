@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.Games;
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 
 import lombok.Getter;
 import lombok.Setter;

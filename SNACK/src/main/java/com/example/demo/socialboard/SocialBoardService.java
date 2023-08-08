@@ -1,12 +1,10 @@
 package com.example.demo.socialboard;
 
-import com.example.demo.comment.entity.Comment;
-import com.example.demo.entity.Member;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.member.entity.Member;
+import com.example.demo.member.repository.MemberRepository;
 import com.example.demo.socialboard.dto.SocialBoardDTO;
 import com.example.demo.socialboard.dto.VoteBoardDTO;
 import com.example.demo.socialboard.entity.SocialBoard;
-import com.example.demo.socialboard.entity.Vote;
 import com.example.demo.socialboard.entity.VoteBoard;
 import com.example.demo.socialboard.repository.SocialBoardRepository;
 import jakarta.validation.Valid;

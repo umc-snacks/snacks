@@ -1,13 +1,12 @@
 package com.example.demo.comment;
 
 
-import com.example.demo.comment.dto.CommentRequestDTO;
 import com.example.demo.comment.dto.ReplyRequestCommentDTO;
 import com.example.demo.comment.entity.Comment;
 import com.example.demo.comment.entity.ReplyComment;
 
-import com.example.demo.entity.Member;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.member.entity.Member;
+import com.example.demo.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;

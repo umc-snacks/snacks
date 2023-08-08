@@ -3,7 +3,7 @@ package com.example.demo.board;
 import com.example.demo.Games;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.repository.BoardRepository;
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

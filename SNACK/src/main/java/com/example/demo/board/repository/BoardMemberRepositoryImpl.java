@@ -33,7 +33,7 @@ public class BoardMemberRepositoryImpl implements  BoardMemberRepositoryCustom{
                 .from(board)
                 .join(boardMember)
                 .on(boardMember.board.id.eq(board.id))
-                .where(boardMember.member.id.eq(String.valueOf(memberId)))
+                .where(boardMember.member.id.eq(memberId))
                 .fetch();
 
         return boards;
@@ -54,7 +54,7 @@ public class BoardMemberRepositoryImpl implements  BoardMemberRepositoryCustom{
                 .from(enrollment)
                 .join(enrollment.board, board)
                 .on(enrollment.board.id.eq(board.id))
-                .where(board.writer.id.eq(String.valueOf(hostId)))
+                .where(board.writer.id.eq(hostId))
                 .fetch();
     }
 

@@ -5,13 +5,12 @@ import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardMember;
 import com.example.demo.board.repository.BoardMemberRepository;
 import com.example.demo.board.repository.BoardRepository;
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import com.example.demo.exception.BoardMemberOverlappingException;
 import com.example.demo.exception.BoardSizeOverException;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;

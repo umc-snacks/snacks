@@ -3,7 +3,7 @@ package com.example.demo.board.dto;
 import com.example.demo.Games;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardMember;
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

@@ -1,7 +1,7 @@
 package com.example.demo.socialboard.dto;
 
 import com.example.demo.comment.entity.Comment;
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

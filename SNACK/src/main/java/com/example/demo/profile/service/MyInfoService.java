@@ -1,12 +1,12 @@
 package com.example.demo.profile.service;
 
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import com.example.demo.profile.domain.userinfo.UserInfoRepository;
 import com.example.demo.profile.dto.myInfo.MyInfoResponseDto;
 import com.example.demo.profile.dto.profileUpdate.ProfileReadResponseDto;
 import com.example.demo.profile.dto.profileUpdate.ProfileUpdateRequestDto;
 import com.example.demo.profile.dto.profileUpdate.ProfileUpdateResponseDto;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

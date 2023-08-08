@@ -1,10 +1,10 @@
 package com.example.demo.profile.service;
 
 
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import com.example.demo.profile.domain.follow.Follow;
 import com.example.demo.profile.domain.follow.FollowRepository;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -3,7 +3,7 @@ package com.example.demo.board.entity;
 import com.example.demo.BaseTimeEntity;
 import com.example.demo.Chat.Entity.ChatRoom;
 import com.example.demo.Games;
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;

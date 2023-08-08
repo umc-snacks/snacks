@@ -2,7 +2,7 @@ package com.example.demo.socialboard.entity;
 
 import com.example.demo.BaseTimeEntity;
 import com.example.demo.comment.entity.Comment;
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import com.example.demo.socialboard.dto.SocialBoardResponseDTO;
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,8 +1,8 @@
 package com.example.demo.config;
 
 
-import com.example.demo.entity.Member;
-import com.example.demo.service.MemberService;
+import com.example.demo.member.entity.Member;
+import com.example.demo.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,8 +10,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
-@RequiredArgsConstructor
+
 //@Component
+
+//@Service
+@RequiredArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
 
     private final MemberService memberService;
@@ -39,7 +42,7 @@ public class MyUserDetailsService implements UserDetailsService {
         UserDetails build = null;
 
         try {
-            User.UserBuilder userBuilder = User.withUsername(member.getId()).password(member.getPw());
+            User.UserBuilder userBuilder = User.withUsername(member.getLoginId()).password(member.getPw());
             userBuilder.authorities("user");
             build = userBuilder.build();
         } catch (Exception e) {

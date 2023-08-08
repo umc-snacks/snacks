@@ -11,7 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 
 import java.util.ArrayList;
 import java.util.List;

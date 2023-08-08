@@ -1,8 +1,8 @@
 package com.example.demo.profile.service;
 
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import com.example.demo.profile.dto.myInfo.MyInfoResponseDto;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

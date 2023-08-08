@@ -2,7 +2,7 @@ package com.example.demo.socialboard.dto;
 
 
 import com.example.demo.comment.entity.Comment;
-import com.example.demo.entity.Member;
+import com.example.demo.member.entity.Member;
 import com.example.demo.socialboard.entity.SocialBoard;
 import com.example.demo.socialboard.entity.Vote;
 import com.example.demo.socialboard.entity.VoteBoard;
@@ -14,7 +14,6 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
