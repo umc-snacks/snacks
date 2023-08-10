@@ -20,10 +20,17 @@ public class ControllerAdvice {
         return new ErrorResult("BadRequest", e.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(BoardHostAuthenticationException.class)
+    public ErrorResult boardHostAuthenticationHandle(BoardHostAuthenticationException e) {
+        log.error("[exceptionHandle] ex", e);
+        return new ErrorResult("Forbidden", e.getMessage());
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NoSuchElementException.class)
     public ErrorResult noElementHandle(NoSuchElementException e) {
+
         log.error("[exceptionHandle] 해당 id의 정보가 존재하지 않습니다.", e);
         return new ErrorResult("BadRequest", e.getMessage());
     }

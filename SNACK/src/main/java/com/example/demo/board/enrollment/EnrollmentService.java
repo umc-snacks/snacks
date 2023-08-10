@@ -5,15 +5,18 @@ import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardMember;
 import com.example.demo.board.repository.BoardMemberRepository;
 import com.example.demo.board.repository.BoardRepository;
+import com.example.demo.exception.BoardHostAuthenticationException;
 import com.example.demo.member.entity.Member;
 import com.example.demo.exception.BoardMemberOverlappingException;
 import com.example.demo.exception.BoardSizeOverException;
 import com.example.demo.member.repository.MemberRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class EnrollmentService {
@@ -57,12 +60,7 @@ public class EnrollmentService {
 
 
 
-    public String acceptRequest(Long enrollmentId) throws BoardSizeOverException, BoardMemberOverlappingException {
-
-        // flag가 true인 경우, enrollment에 있는 멤버를 해당 board의 멤버로 넣어주기
-        Enrollment enrollment = enrollmentRepository.findById(enrollmentId)
-                .orElseThrow(() -> new NoSuchElementException("Invalid enrollmentId: " + enrollmentId));
-
+    public String acceptRequest(Enrollment enrollment) throws BoardSizeOverException, BoardMemberOverlappingException {
         boardSizeValidation(enrollment);
         boardMemberValidation(enrollment);
 
@@ -79,7 +77,7 @@ public class EnrollmentService {
         return "Enrollment request for board " + enrollment.getBoard().getTitle() + " successes";
     }
 
-        private void boardMemberValidation(Enrollment enrollment) throws BoardMemberOverlappingException {
+    private void boardMemberValidation(Enrollment enrollment) throws BoardMemberOverlappingException {
             List<BoardMember> boardMembers = boardMemberRepository.findBoardMembersByBoardId(enrollment.getBoard().getId());
             for (BoardMember bm : boardMembers) {
                 if (Objects.equals(bm.getMember().getId(), enrollment.getMember().getId())) throw new BoardMemberOverlappingException("이미 게시글에 등록된 회원입니다.");
@@ -93,16 +91,26 @@ public class EnrollmentService {
                 }
             }
 
-    public String denyRequest(Long enrollmentId) {
-        Enrollment enrollment = enrollmentRepository.findById(enrollmentId)
-                .orElseThrow(() -> new NoSuchElementException("Invalid enrollmentId: " + enrollmentId));
-
+    public String denyRequest(Enrollment enrollment) {
         // flag가 false인 경우, 거절 메시지를 보내기 또는 원하는 처리를 구현
         return "Enrollment request for board " + enrollment.getBoard().getTitle() + " has been rejected.";
     }
 
     public void delete(Long enrollmentId) {
         enrollmentRepository.deleteById(enrollmentId);
+    }
+
+    public void validateBoardHost(Enrollment enrollment, Authentication authentication) throws BoardHostAuthenticationException {
+        Long hostId = Long.parseLong(authentication.getName());
+        Long writerId = Optional.ofNullable(enrollment)
+                .map(Enrollment::getBoard)
+                .map(Board::getWriter)
+                .map(Member::getId).orElseThrow(() -> new NoSuchElementException("없습"));
+
+        if (hostId != writerId) {
+            throw new BoardHostAuthenticationException("게시판의 주인이 아닙니다");
+        }
+
     }
 
     // 사용자가 요청했을 때 게시판에 받아주는 메서드

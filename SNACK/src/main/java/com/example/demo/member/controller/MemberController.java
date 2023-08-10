@@ -3,6 +3,7 @@ package com.example.demo.member.controller;
 import com.example.demo.board.dto.BoardResponseDTO;
 import com.example.demo.board.entity.Board;
 import com.example.demo.member.dto.MemberRequestDTO;
+import com.example.demo.member.dto.MemberResponseDTO;
 import com.example.demo.member.entity.Member;
 
 import com.example.demo.member.service.MemberService;
@@ -13,10 +14,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -39,7 +43,7 @@ public class MemberController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<String> login(@RequestBody  Map<String, String> member) {
+    public ResponseEntity<String> login(@RequestBody Map<String, String> member) {
 
         String loginResult = memberService.login(member);
 
@@ -72,6 +76,14 @@ public class MemberController {
 
         return ResponseEntity.ok(responseDTOList);
 
+    }
+
+    @GetMapping("{memberLoginId}")
+    public ResponseEntity searchMemberId(@PathVariable String memberLoginId) {
+        Member member = memberService.findMemberByLoginId(memberLoginId)
+                .orElseThrow(() -> new NoSuchElementException("Id를 찾을 수 없습니다."));
+        MemberResponseDTO memberResponseDTO = MemberResponseDTO.toResponseEntity(member);
+        return ResponseEntity.ok().body(memberResponseDTO);
     }
 
 //
