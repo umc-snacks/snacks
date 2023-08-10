@@ -12,6 +12,7 @@ import com.example.demo.member.entity.Member;
 import com.example.demo.exception.BoardSizeOverException;
 import com.example.demo.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@Transactional
 public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardSearchRepositoryImpl boardSearchRepositoryImpl;
@@ -45,10 +47,12 @@ public class BoardService {
     }
 
     @Transactional
-    public Board buildBoard(BoardRequestDTO boardRequestDTO) throws BoardSizeOverException {
+    public Board buildBoard(BoardRequestDTO boardRequestDTO, Authentication authentication) throws BoardSizeOverException {
+        Long writerId = Long.parseLong(authentication.getName());
 
         List<BoardMember> boardMembers = new ArrayList<>();
         List<Long> memberIds = boardRequestDTO.getMemberIds();
+        memberIds.add(writerId);
 
         boardSizeCheck(boardRequestDTO, memberIds);
 
@@ -58,8 +62,6 @@ public class BoardService {
                     .orElseThrow(() -> new NoSuchElementException("Could not found member id : " + memberId)));
             boardMembers.add(boardMember);
         }
-
-        Long writerId = boardRequestDTO.getWriterId();
 
         Member writer = memberRepository.findById(writerId)
                 .orElseThrow(() -> new NoSuchElementException("Could not found writer id : " + writerId));

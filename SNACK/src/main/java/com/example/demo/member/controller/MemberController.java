@@ -31,36 +31,30 @@ public class MemberController {
     // 회원가입
     @PostMapping("save")
     public ResponseEntity<Boolean> save(@RequestBody @Valid MemberRequestDTO memberRequestDTO) {
-        ///창민님 코드
-        // 회원가입할때
-
         UserInfo emptyUserInfo = new UserInfo(0L, 0L, 0L);
         memberService.save(memberRequestDTO, emptyUserInfo);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(true);
-        // 반납할때는 true값보다 생성된 회원 id를 보내주는게 맞지않을까요?
 
     }
 
     @PostMapping("login")
     public ResponseEntity<String> login(@RequestBody  Map<String, String> member) {
+
         String loginResult = memberService.login(member);
 
         if (loginResult != null) {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(loginResult);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-
         }
 
     }
 
     //아래 만든게 회원가입할때 id 복수 체크 부분
-    @GetMapping("/save/{user_id}")
+    @GetMapping("save/{user_id}")
     public ResponseEntity<Boolean> checkIdExist(@PathVariable String user_id) {
-        Member member = memberService.findMemberByLoginId(user_id).orElse(null);
-
-        return member != null ? ResponseEntity.ok().body(true) : ResponseEntity.ok().body(false);
+        return memberService.findMemberByLoginId(user_id).isPresent() ? ResponseEntity.ok().body(true) : ResponseEntity.ok().body(false);
     }
 
 
@@ -79,6 +73,7 @@ public class MemberController {
         return ResponseEntity.ok(responseDTOList);
 
     }
+
 //
 //    // 아이디찾기
 //    // 일단은 이름과 생년월일, 이메일으로 -> 아이디 찾기 진행함!

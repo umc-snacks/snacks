@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,8 +37,9 @@ public class BoardController {
     }
 
     @PostMapping
-    public ResponseEntity create(@Valid @RequestBody BoardRequestDTO boardRequestDTO) throws BoardSizeOverException {
-        Board board = boardService.buildBoard(boardRequestDTO);
+    public ResponseEntity create(@Valid @RequestBody BoardRequestDTO boardRequestDTO, Authentication authentication) throws BoardSizeOverException {
+
+        Board board = boardService.buildBoard(boardRequestDTO, authentication);
 
         List<BoardMember> boardMembers = board.getBoardMembers();
 
