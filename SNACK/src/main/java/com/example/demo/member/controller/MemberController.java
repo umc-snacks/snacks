@@ -58,9 +58,11 @@ public class MemberController {
 
         if (loginResult != null) {
             Token token = new Token(loginResult);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(token);
+            return ResponseEntity.ok().body(token);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            Token tokenfalse = new Token(null);
+
+            return ResponseEntity.ok().body(tokenfalse);
 
         }
 
