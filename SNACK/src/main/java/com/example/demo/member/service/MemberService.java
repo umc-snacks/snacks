@@ -81,7 +81,7 @@ public class MemberService {
             Member member =change_member_pw.get();
 
             MemberRequestDTO dto = MemberRequestDTO.toMemberDTOWithLongId(member);
-            Member member_with_newpw = Member.toMemberEntity_with_newpw(dto,change_pw, passwordEncoder);
+            Member member_with_newpw = Member.toMemberEntityWithNewpw(dto,change_pw, passwordEncoder);
              memberRepository.save(member_with_newpw);
 
         }

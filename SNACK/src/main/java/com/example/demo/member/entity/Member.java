@@ -88,7 +88,7 @@ public class Member extends BaseTimeEntity {
         return member;
     }
 
-    public static Member toMemberEntity_with_newpw(MemberRequestDTO memberRequestDTO, String new_pw, PasswordEncoder passwordEncoder) {
+    public static Member toMemberEntityWithNewpw(MemberRequestDTO memberRequestDTO, String new_pw, PasswordEncoder passwordEncoder) {
         Member member = new Member();
         member.setLoginId(memberRequestDTO.getLoginId());
         member.setPw(passwordEncoder.encode(new_pw));
