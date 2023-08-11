@@ -6,6 +6,7 @@ import com.example.demo.board.entity.BoardMember;
 import com.example.demo.board.repository.BoardMemberRepository;
 import com.example.demo.board.repository.BoardRepository;
 import com.example.demo.exception.BoardHostAuthenticationException;
+import com.example.demo.exception.EnrollmentOverlappingException;
 import com.example.demo.member.entity.Member;
 import com.example.demo.exception.BoardMemberOverlappingException;
 import com.example.demo.exception.BoardSizeOverException;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -27,6 +27,7 @@ public class EnrollmentService {
     private final EnrollmentRepository enrollmentRepository;
     private final ChatService chatService;
 
+
     public EnrollmentService(BoardRepository boardRepository, MemberRepository memberRepository, BoardMemberRepository boardMemberRepository, EnrollmentRepository enrollmentRepository, ChatService chatService) {
         this.boardRepository = boardRepository;
         this.memberRepository = memberRepository;
@@ -35,34 +36,46 @@ public class EnrollmentService {
         this.chatService = chatService;
     }
 
-    public Enrollment convert(EnrollmentRequestDTO enrollment) {
-        Member member = memberRepository.findById(enrollment.getMemberId())
-                .orElseThrow(() -> new NoSuchElementException("Could not found member id : " + enrollment.getMemberId()));
+    public Enrollment convert(EnrollmentRequestDTO enrollmentRequestDTO, Authentication authentication) throws EnrollmentOverlappingException {
+        Long currentUserId = Long.parseLong(authentication.getName());
+        Long enrollmentBoardId = enrollmentRequestDTO.getBoardId();
 
-        Board board = boardRepository.findById(enrollment.getBoardId())
-                .orElseThrow(() -> new NoSuchElementException("Could not found board id : " + enrollment.getBoardId()));
+        Member member = memberRepository.findById(currentUserId)
+                .orElseThrow(() -> new NoSuchElementException("Could not found member id : " + currentUserId));
+
+        Board board = boardRepository.findById(enrollmentBoardId)
+                .orElseThrow(() -> new NoSuchElementException("Could not found board id : " + enrollmentBoardId));
+
+        validateDuplicatedRequest(currentUserId, enrollmentBoardId);
 
         return Enrollment.builder()
                 .member(member)
                 .board(board)
                 .build();
     }
+
     public List<Enrollment> readEnrollments(Long hostId) {
         List<Enrollment> enrollments = boardMemberRepository.searchHostRequestByHostId(hostId);
         return enrollments;
     }
-    public void createEnrollment(Enrollment enrollment) throws BoardSizeOverException {
-        boardSizeValidation(enrollment);
+
+    public void saveEnrollment(Enrollment enrollment) throws BoardSizeOverException, BoardMemberOverlappingException {
+        validateBoardSize(enrollment);
+        validateBoardMember(enrollment);
+
+
         enrollmentRepository.save(enrollment);
     }
 
-
-
-
+    private void validateDuplicatedRequest(Long userId, Long boardId) throws EnrollmentOverlappingException {
+        if(enrollmentRepository.findEnrollmentByMemberIdAndBoardId(userId, boardId).isPresent()){
+            throw new EnrollmentOverlappingException("중복된 요청입니다.");
+        }
+    }
 
     public String acceptRequest(Enrollment enrollment) throws BoardSizeOverException, BoardMemberOverlappingException {
-        boardSizeValidation(enrollment);
-        boardMemberValidation(enrollment);
+        validateBoardSize(enrollment);
+        validateBoardMember(enrollment);
 
         BoardMember boardMember = BoardMember.builder()
                 .board(enrollment.getBoard())
@@ -77,14 +90,26 @@ public class EnrollmentService {
         return "Enrollment request for board " + enrollment.getBoard().getTitle() + " successes";
     }
 
-    private void boardMemberValidation(Enrollment enrollment) throws BoardMemberOverlappingException {
+    private void validateBoardMember(Enrollment enrollment) throws BoardMemberOverlappingException {
             List<BoardMember> boardMembers = boardMemberRepository.findBoardMembersByBoardId(enrollment.getBoard().getId());
             for (BoardMember bm : boardMembers) {
-                if (Objects.equals(bm.getMember().getId(), enrollment.getMember().getId())) throw new BoardMemberOverlappingException("이미 게시글에 등록된 회원입니다.");
+                validateEnrollmentMember(enrollment, bm);
             }
         }
 
-        private static void boardSizeValidation(Enrollment enrollment) throws BoardSizeOverException {
+        private static void validateEnrollmentMember(Enrollment enrollment, BoardMember bm) throws BoardMemberOverlappingException {
+            Long memberId = Optional.ofNullable(bm)
+                    .map(BoardMember::getMember)
+                    .map(Member::getId).orElseThrow(() -> new NoSuchElementException("없습"));
+
+            Long enrollmentId = Optional.ofNullable(enrollment)
+                    .map(Enrollment::getMember)
+                    .map(Member::getId).orElseThrow(() -> new NoSuchElementException("없습"));
+
+            if (memberId.equals(enrollmentId)) throw new BoardMemberOverlappingException("이미 게시글에 등록된 회원입니다.");
+        }
+
+    private static void validateBoardSize(Enrollment enrollment) throws BoardSizeOverException {
                 Board board = enrollment.getBoard();
                 if (board.getBoardMembers().size() >= board.getMaxCount()) {
                     throw new BoardSizeOverException("멤버수가 초과하였습니다.");

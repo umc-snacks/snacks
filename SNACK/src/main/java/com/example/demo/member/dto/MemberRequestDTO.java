@@ -29,7 +29,7 @@ public class MemberRequestDTO {
     private String nickname;
 
     // LocalDate가 날짜만 저장!
-    @Past
+    @Past(message = "과거의 날자만 가능합니다.")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul") //날짜 포멧 바꾸기
     private LocalDate birth;
 

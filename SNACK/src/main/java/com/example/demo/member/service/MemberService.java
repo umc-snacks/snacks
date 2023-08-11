@@ -68,7 +68,7 @@ public class MemberService {
 
     public Member findMemberByLoginId(String insertedUserId) {
         return memberRepository.findByLoginId(insertedUserId)
-                .orElseThrow(() -> new NoSuchElementException("Id를 찾을 수 없습니다."));;
+                .orElseThrow(() -> new NoSuchElementException("Id를 찾을 수 없습니다."));
     }
 
     public List<Board> findBoardsByMemberId(String memberId){

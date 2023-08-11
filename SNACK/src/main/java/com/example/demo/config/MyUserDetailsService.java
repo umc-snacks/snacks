@@ -37,8 +37,7 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
         // user = new Securityuser();// 요기에 db에 갔다온 결과가 필요 합니다. 유저클래스는 DTO객체 입니다.
-        Optional<Member> findOne = memberService.findMemberByLoginId(username);
-        Member member = findOne.orElseThrow(() -> new UsernameNotFoundException("없는 회원입니다 ㅠ"));
+        Member member = memberService.findMemberByLoginId(username);
         UserDetails build = null;
 
         try {

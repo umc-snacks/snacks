@@ -29,7 +29,6 @@ public class BoardRequestDTO {
 
     private String etcTitle;
 
-    @NotNull
     private List<Long> memberIds = new ArrayList<>();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")

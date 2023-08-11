@@ -8,6 +8,7 @@ import com.example.demo.board.entity.BoardSearch;
 import com.example.demo.board.repository.BoardMemberRepository;
 import com.example.demo.board.repository.BoardRepository;
 import com.example.demo.board.repository.BoardSearchRepositoryImpl;
+import com.example.demo.exception.BoardHostAuthenticationException;
 import com.example.demo.member.entity.Member;
 import com.example.demo.exception.BoardSizeOverException;
 import com.example.demo.member.repository.MemberRepository;
@@ -46,14 +47,15 @@ public class BoardService {
         return board.getId();
     }
 
-    @Transactional
     public Board buildBoard(BoardRequestDTO boardRequestDTO, Authentication authentication) throws BoardSizeOverException {
         Long writerId = Long.parseLong(authentication.getName());
 
+        // 멤버 리스트에 본인 넣기
         List<BoardMember> boardMembers = new ArrayList<>();
         List<Long> memberIds = boardRequestDTO.getMemberIds();
         memberIds.add(writerId);
 
+        // 팀 생성보드 사이즈 확인
         boardSizeCheck(boardRequestDTO, memberIds);
 
         for (Long memberId : memberIds) {
@@ -65,13 +67,15 @@ public class BoardService {
 
         Member writer = memberRepository.findById(writerId)
                 .orElseThrow(() -> new NoSuchElementException("Could not found writer id : " + writerId));
+
         Board board = BoardRequestDTO.toEntity(boardRequestDTO, boardMembers, writer);
 
         boardMemberRepository.saveAll(boardMembers);
+
+        // board 생성시 채팅방도 함께 생성
         Board boardWithChatRoomAdded = chatService.createBoardChatRoom(board, boardMembers);
         boardRepository.save(boardWithChatRoomAdded);
 
-        // board 생성시 채팅방도 함께 생성
 
         return board;
     }
@@ -85,15 +89,19 @@ public class BoardService {
     }
 
 
-    public void updateBoard(Long boardId, BoardRequestDTO requestDTO) {
+    public Board updateBoard(Long boardId, BoardRequestDTO requestDTO, Authentication authentication) throws BoardHostAuthenticationException {
         // writerId, memberIds는 못바꿈
-        Board updatedBoard = BoardRequestDTO.toEntity(requestDTO, new ArrayList<>(), null);
         Board existingBoard = boardRepository.findById(boardId)
                         .orElseThrow(() -> new NoSuchElementException("Could not found board id : " + boardId));
+        boardOwnerCheck(existingBoard, authentication);
+
+        Board updatedBoard = BoardRequestDTO.toEntity(requestDTO, new ArrayList<>(), null);
 
         update(updatedBoard, existingBoard);
 
         boardRepository.save(existingBoard);
+
+        return existingBoard;
     }
 
     private static void update(Board updatedBoard, Board existingBoard) {
@@ -109,8 +117,11 @@ public class BoardService {
         existingBoard.setAutoCheckIn(updatedBoard.isAutoCheckIn());
     }
 
-    public void deleteBoard(Long boardId) {
-        boardRepository.deleteById(boardId);
+    public void deleteBoard(Long boardId, Authentication authentication) throws BoardHostAuthenticationException {
+        Board board = getBoard(boardId);
+        boardOwnerCheck(board, authentication);
+
+        boardRepository.delete(board);
     }
 
 
@@ -118,14 +129,18 @@ public class BoardService {
         return boardSearchRepositoryImpl.searchBoard(boardSearch);
     }
 
-
-
-
-
     private static void boardSizeCheck(BoardRequestDTO boardRequestDTO, List<Long> memberIds) throws BoardSizeOverException {
         int maxMember = boardRequestDTO.getMaxCount();
         if ( memberIds.size() > maxMember){
             throw new BoardSizeOverException("멤버수가 설정한것보다 많습니다");
+        }
+    }
+
+    public void boardOwnerCheck(Board board, Authentication authentication) throws BoardHostAuthenticationException {
+        Long currentUserId = Long.parseLong(authentication.getName());
+
+        if ( board.getId() != currentUserId ){
+            throw new BoardHostAuthenticationException("게시판의 주인이 아닙니다");
         }
     }
 

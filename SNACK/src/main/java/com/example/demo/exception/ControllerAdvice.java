@@ -55,4 +55,19 @@ public class ControllerAdvice {
         log.error("[exceptionHandle] 게시판에 중복으로 들어갈 수 없습니다.", e);
         return new ErrorResult("BadRequest", e.getMessage());
     }
+
+    @ExceptionHandler(EnrollmentRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResult enrollmentHandle(EnrollmentRequestException e) {
+        log.error("[exceptionHandle] 타인이 대신 참가요청을 보낼 수 없습니다.", e);
+        return new ErrorResult("BadRequest", e.getMessage());
+    }
+
+    @ExceptionHandler(EnrollmentOverlappingException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResult enrollmentHandle(EnrollmentOverlappingException e) {
+        log.error("[exceptionHandle] 중복된 요청입니다.", e);
+        return new ErrorResult("BadRequest", e.getMessage());
+    }
+
 }

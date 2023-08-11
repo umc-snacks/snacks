@@ -1,11 +1,9 @@
 package com.example.demo.board.enrollment;
 
-import com.example.demo.exception.BoardHostAuthenticationException;
-import com.example.demo.exception.BoardMemberOverlappingException;
-import com.example.demo.exception.BoardSizeOverException;
-import jakarta.validation.Valid;
+import com.example.demo.exception.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -27,13 +25,15 @@ public class EnrollmentController {
 
     // 유저가 방장에게 요청을 보냄
     @PostMapping
-    public ResponseEntity createRequest(@Valid @RequestBody EnrollmentRequestDTO enrollmentRequestDTO) throws BoardSizeOverException {
-        Enrollment enrollment = enrollmentService.convert(enrollmentRequestDTO);
-        enrollmentService.createEnrollment(enrollment);
+    public ResponseEntity createRequest(@Validated @RequestBody EnrollmentRequestDTO enrollmentRequestDTO
+            ,Authentication authentication) throws BoardSizeOverException, BoardMemberOverlappingException, EnrollmentOverlappingException {
+
+        Enrollment enrollment = enrollmentService.convert(enrollmentRequestDTO, authentication);
+        enrollmentService.saveEnrollment(enrollment);
 
         return ResponseEntity.ok().body(EnrollmentResponseDTO.toResponseEntity(enrollment));
     }
-    // 유저가 요청을 취소함
+
 
     // 방장이 요청을 확인하는 메서드
     @GetMapping
@@ -51,7 +51,7 @@ public class EnrollmentController {
 
     // 방장이 요청을 체크하는 메서드
     @PostMapping("/{enrollmentId}/{flag}")
-    public ResponseEntity checkRequest(@PathVariable Long enrollmentId, @PathVariable Boolean flag, Authentication authentication) throws BoardSizeOverException, BoardMemberOverlappingException, BoardHostAuthenticationException {
+    public ResponseEntity acceptRequest(@PathVariable Long enrollmentId, @PathVariable Boolean flag, Authentication authentication) throws BoardSizeOverException, BoardMemberOverlappingException, BoardHostAuthenticationException {
         String message;
         Enrollment enrollment = enrollmentRepository.findById(enrollmentId)
                 .orElseThrow(() -> new NoSuchElementException("Invalid enrollmentId: " + enrollmentId));

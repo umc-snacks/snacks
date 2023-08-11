@@ -2,6 +2,7 @@ package com.example.demo.board.enrollment;
 
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.*;
 
 @Getter
@@ -10,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class EnrollmentRequestDTO {
-    @NotNull
+    @Null
     private Long memberId;
 
     @NotNull

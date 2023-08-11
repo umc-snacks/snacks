@@ -17,12 +17,10 @@ public class MemberPublicResponse {
     private Long id;
     private String nickname;
 
-    public static MemberResponseDTO toResponseEntity(Member member){
-        return MemberResponseDTO.builder()
+    public static MemberPublicResponse toResponseEntity(Member member){
+        return MemberPublicResponse.builder()
                 .id(member.getId())
-                .name(member.getName())
                 .nickname(member.getNickname())
-                .memberBoards(member.getMemberBoards())
                 .build();
     }
 }

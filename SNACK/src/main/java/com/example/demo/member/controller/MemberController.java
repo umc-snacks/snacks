@@ -2,6 +2,7 @@ package com.example.demo.member.controller;
 
 import com.example.demo.board.dto.BoardResponseDTO;
 import com.example.demo.board.entity.Board;
+import com.example.demo.member.dto.MemberPublicResponse;
 import com.example.demo.member.dto.MemberRequestDTO;
 import com.example.demo.member.dto.MemberResponseDTO;
 import com.example.demo.member.entity.Member;
@@ -15,6 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.parameters.P;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,7 +38,11 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("save")
-    public ResponseEntity<Boolean> save(@RequestBody @Valid MemberRequestDTO memberRequestDTO) {
+    public ResponseEntity<?> save(@RequestBody @Validated MemberRequestDTO memberRequestDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = bindingResult.getAllErrors().stream().map(e -> e.getDefaultMessage()).collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        }
         UserInfo emptyUserInfo = new UserInfo(0L, 0L, 0L);
 
         memberService.save(memberRequestDTO, emptyUserInfo);
@@ -57,10 +65,11 @@ public class MemberController {
     }
 
     //아래 만든게 회원가입할때 id 복수 체크 부분
-    @GetMapping("save/{user_id}")
-    public ResponseEntity<Boolean> checkIdExist(@PathVariable String user_id) {
-        return memberService.findMemberByLoginId(user_id).isPresent() ? ResponseEntity.ok().body(true) : ResponseEntity.ok().body(false);
-    }
+//    @GetMapping("save/{user_id}")
+//    public ResponseEntity<Boolean> checkIdExist(@PathVariable String user_id) {
+//
+//        return memberService.findMemberByLoginId(user_id) == null ? ResponseEntity.ok().body(true) : ResponseEntity.ok().body(false);
+//    }
 
 
     // TODO 테스트 필요
@@ -80,15 +89,18 @@ public class MemberController {
     }
 
     @GetMapping("{memberLoginId}")
-    public ResponseEntity searchMemberId(@PathVariable String memberLoginId, Authentication authentication) {
+    public ResponseEntity<?> searchMemberId(@PathVariable String memberLoginId, Authentication authentication) {
         Member member = memberService.findMemberByLoginId(memberLoginId);
         Member authMember = memberService.findMemberById(authentication.getName());
 
         if (member.equals(authMember)) {
             MemberResponseDTO memberResponseDTO = MemberResponseDTO.toResponseEntity(member);
+            return ResponseEntity.ok().body(memberResponseDTO);
+        } else{
+            MemberPublicResponse memberPublicResponse = MemberPublicResponse.toResponseEntity(member);
+            return ResponseEntity.ok().body(memberPublicResponse);
         }
 
-        return ResponseEntity.ok().body(memberResponseDTO);
     }
 
 //
