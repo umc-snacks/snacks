@@ -12,14 +12,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor// 이게 있어야 MemberRepository 성공!
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -28,9 +27,19 @@ public class MemberService {
     private final BoardMemberRepository boardMemberRepository;
 
     public void save(MemberRequestDTO memberRequestDTO, UserInfo userInfo) {
+        validateMemberRequest(memberRequestDTO);
         Member member = Member.toMemberEntity(memberRequestDTO, passwordEncoder, userInfo);
         memberRepository.save(member);
     }
+
+        private void validateMemberRequest(MemberRequestDTO memberRequestDTO) {
+            boolean loginIdFlag = memberRepository.findByLoginId(memberRequestDTO.getPw()).isPresent();
+            boolean nicknameFlag = memberRepository.findByNickname(memberRequestDTO.getNickname()).isPresent();
+
+            if (loginIdFlag || nicknameFlag) {
+                throw new IllegalArgumentException("중복발생");
+            }
+        }
 
 
     public String login(Map<String, String> members) {
@@ -57,12 +66,19 @@ public class MemberService {
 
     }
 
-    public Optional<Member> findMemberByLoginId(String insertedUserId) {
-        return memberRepository.findByLoginId(insertedUserId);
+    public Member findMemberByLoginId(String insertedUserId) {
+        return memberRepository.findByLoginId(insertedUserId)
+                .orElseThrow(() -> new NoSuchElementException("Id를 찾을 수 없습니다."));;
     }
 
     public List<Board> findBoardsByMemberId(String memberId){
         return boardMemberRepository.searchAttendingBoardsByMemberId(Long.parseLong(memberId));
+    }
+
+    public Member findMemberById(String memberId) {
+        Long parseId = Long.parseLong(memberId);
+        return memberRepository.findById(parseId)
+                .orElseThrow(() -> new NoSuchElementException("Id를 찾을 수 없습니다."));
     }
 
     public String changePassword(MemberRequestDTO memberRequestDTO) {

@@ -36,6 +36,7 @@ public class MemberController {
     @PostMapping("save")
     public ResponseEntity<Boolean> save(@RequestBody @Valid MemberRequestDTO memberRequestDTO) {
         UserInfo emptyUserInfo = new UserInfo(0L, 0L, 0L);
+
         memberService.save(memberRequestDTO, emptyUserInfo);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(true);
@@ -79,10 +80,14 @@ public class MemberController {
     }
 
     @GetMapping("{memberLoginId}")
-    public ResponseEntity searchMemberId(@PathVariable String memberLoginId) {
-        Member member = memberService.findMemberByLoginId(memberLoginId)
-                .orElseThrow(() -> new NoSuchElementException("Id를 찾을 수 없습니다."));
-        MemberResponseDTO memberResponseDTO = MemberResponseDTO.toResponseEntity(member);
+    public ResponseEntity searchMemberId(@PathVariable String memberLoginId, Authentication authentication) {
+        Member member = memberService.findMemberByLoginId(memberLoginId);
+        Member authMember = memberService.findMemberById(authentication.getName());
+
+        if (member.equals(authMember)) {
+            MemberResponseDTO memberResponseDTO = MemberResponseDTO.toResponseEntity(member);
+        }
+
         return ResponseEntity.ok().body(memberResponseDTO);
     }
 
