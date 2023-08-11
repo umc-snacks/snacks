@@ -50,7 +50,7 @@ public class SocialBoardService {
         board.getVotes().iterator().forEachRemaining(
                 vote -> {
                     vote.setVoteBoard(voteBoard);
-//                    voteRepository.save(vote);
+                    voteRepository.save(vote);
                 }
         );
 
