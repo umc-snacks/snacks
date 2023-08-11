@@ -36,6 +36,7 @@ public class UserInfo {
         this.articleCount = articleCount;
         this.followerCount = followerCount;
         this.followCount = followCount;
+        this.introduction= "default_introduction";
     }
 
     public void followerCountPlus(){

@@ -31,7 +31,7 @@ public class UserInfoService {
         return MyInfoResponseDto.builder()
                 .myProfileImageUrl(tempMember.getProfileImageUrl())
                 .nickname(tempMember.getNickname())
-                .articleCount(tempMember.getUserInfo().getArticleCount())
+                .articleCount(Long.valueOf(socialBoardsList.size()))
                 .followerCount(tempMember.getUserInfo().getFollowerCount())
                 .followCount(tempMember.getUserInfo().getFollowCount())
                 .introduction(tempMember.getUserInfo().getIntroduction())
