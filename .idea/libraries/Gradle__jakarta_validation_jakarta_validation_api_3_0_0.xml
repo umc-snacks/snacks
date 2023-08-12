@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: jakarta.validation:jakarta.validation-api:3.0.0" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="jakarta.validation" artifactId="jakarta.validation-api" version="3.0.0" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/jakarta.validation/jakarta.validation-api/3.0.0/8c8eecc40da64037d7731356511c568d466f8480/jakarta.validation-api-3.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/jakarta.validation/jakarta.validation-api/3.0.0/fd97a7718b6b569ec495e67d1977c9943c99bd93/jakarta.validation-api-3.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

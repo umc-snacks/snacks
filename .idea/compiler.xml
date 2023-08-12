@@ -22,9 +22,9 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="umc" target="17" />
-      <module name="umc.main" target="17" />
-      <module name="umc.test" target="17" />
+      <module name="SNACK" target="17" />
+      <module name="SNACK.main" target="17" />
+      <module name="SNACK.test" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -50,43 +50,40 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final String SecretKey;
 
 
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
 
-
-
-       final String authroization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        log.info("authroization log :{}",authroization);
+        final String authroization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        log.info("authroization log :{}", authroization);
 
         // token 안보내면 block
-        if(authroization == null || !authroization.startsWith("Bearer ")){
+        if (authroization == null || !authroization.startsWith("Bearer ")) {
 
             log.error("authroization is null or not Bearer ");
-            filterChain.doFilter(request,response);
-            return ;
+            filterChain.doFilter(request, response);
+            return;
         }
 
         //Token 꺼내기
         String token = authroization.split(" ")[1];
 
-        if(JwtTokenProvider.isExpired(token,SecretKey)){
-            filterChain.doFilter(request,response);
-            return ;
+        if (JwtTokenProvider.isExpired(token, SecretKey)) {
+            filterChain.doFilter(request, response);
+            return;
         }
-        //UserName Toke 꺼내기!!
+        //UserName Token 꺼내기!!
 
-        String username=JwtTokenProvider.getUserName(token,SecretKey);
-        log.info("username : ",username);
-        //String username ="";
-       //권한 부여
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,null, List.of(new SimpleGrantedAuthority("user")));
+        String username = JwtTokenProvider.getUserName(token, SecretKey);
+        log.info("username : ", username);
+
+        //권한 부여
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, List.of(new SimpleGrantedAuthority("user")));
+
         //Detail을 넣어줍니다.
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
 
     }
 

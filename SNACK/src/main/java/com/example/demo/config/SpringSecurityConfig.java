@@ -4,7 +4,6 @@ package com.example.demo.config;
 import com.example.demo.member.service.MemberService;
 import jakarta.servlet.DispatcherType;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -62,9 +61,6 @@ public class SpringSecurityConfig{
 
     }
 
-
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -76,9 +72,16 @@ public class SpringSecurityConfig{
                 .authorizeHttpRequests(request -> request
                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
 
-                .requestMatchers("/status","/member/login","/email","/email/**", "/","/member/","/member/**","/member/save","/member/save/**","/swagger-ui/**").permitAll()
+                .requestMatchers("/status","/member/login","/email",
+                        "/email/**", "/","/member/","/member/**",
+                        "/member/save","/member/save/**","/swagger-ui/**"
+                                ).permitAll()
 
                         .requestMatchers(HttpMethod.POST,"*/**").authenticated()	// 어떠한 요청이라도 인증필요
+                        .requestMatchers(HttpMethod.GET,"*/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT,"*/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH,"*/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE,"*/**").authenticated()
 
         )
 

@@ -21,5 +21,19 @@ public class ChatRoomMemberCustomRepositoryImpl implements ChatRoomMemberCustomR
                 .execute();
 
     }
+
+//    /*
+//     * 사용자와 상대방의 채팅방이 있는지 확인하는 쿼리 있다면 ChatRoom 반환
+//     */
+//    @Override
+//    public ChatRoom findExistedChatRoom(Long creatorId, Long participantId) {
+//        List<Long> ids = Arrays.asList(creatorId, participantId);
+//
+//        return (ChatRoom) jpaQueryFactory
+//                .selectFrom(chatRoom)
+//                .join(chatRoomMember.chatRoom, chatRoom)
+//                .where(chatRoomMember.member.id.in(ids))
+//                .fetch();
+//    }
 }
 

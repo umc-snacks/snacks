@@ -48,4 +48,15 @@ public class ControllerAdvice {
         log.error("[exceptionHandle] 게시판에 중복으로 들어갈 수 없습니다.", e);
         return new ErrorResult("BadRequest", e.getMessage());
     }
+
+    /*
+     * 채팅 예외
+     * 조회를 했는데 사용자가 없거나, 채팅 내역이 없거나, 채팅방이 없거나 등등
+     */
+    @ExceptionHandler(value = RestApiException.class)
+    public ErrorResult notFoundHandle(RestApiException e) {
+        log.error("[exceptionHandle] " + e.getErrorCode().getMessage(), e);
+
+        return new ErrorResult(e.getErrorCode().getHttpStatus().toString(), e.getErrorCode().getMessage());
+    }
 }

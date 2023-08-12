@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SNACK.iml" filepath="$PROJECT_DIR$/.idea/modules/SNACK.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SNACK.main.iml" filepath="$PROJECT_DIR$/.idea/modules/SNACK.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SNACK.test.iml" filepath="$PROJECT_DIR$/.idea/modules/SNACK.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/UMC-SNACKS.iml" filepath="$PROJECT_DIR$/.idea/UMC-SNACKS.iml" />
     </modules>
   </component>

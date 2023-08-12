@@ -1,12 +1,11 @@
 package com.example.demo.Chat.Dto;
 
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 public class MessageDTO {
@@ -15,7 +14,9 @@ public class MessageDTO {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class Get {
+		@NotBlank
 		private String senderName;
+		@NotNull
 		private String content;
 	}
 	
@@ -24,8 +25,11 @@ public class MessageDTO {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class Request {
+		@Positive
 		private Long senderId;
+		@Positive
 		private Long roomId;
+		@NotNull
 		private String content;
 	}
 	
@@ -34,6 +38,7 @@ public class MessageDTO {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class Response {
+		private Long memberId;
 		private String senderName;
 		private String content;
 		private LocalDateTime time;

@@ -47,13 +47,13 @@ class SnackApplicationTests {
         for (int i = 0; i < 10; i++) {
             // (String username, String nickname, String password, UserInfo userInfo)
             Member member = Member.builder()
-                    .id("test" + i)
+                    .loginId("test" + i)
                     .pw("1234")
                     .name("test" + i)
                     .nickname("test" + i)
                     .birth(LocalDate.now())
                     .userInfo(null)
-                    .profileimageurl(null)
+                    .profileImageUrl(null)
                     .build();
 
             UserInfo userInfo = UserInfo.builder()

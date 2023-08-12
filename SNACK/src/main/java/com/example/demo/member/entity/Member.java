@@ -8,8 +8,9 @@ import com.example.demo.profile.domain.follow.Follow;
 import com.example.demo.profile.domain.userinfo.UserInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.springframework.context.annotation.Profile;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,6 +21,9 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Member extends BaseTimeEntity {
 
     /**
