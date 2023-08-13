@@ -66,4 +66,5 @@ public class Board extends BaseTimeEntity {
     @Transient
     private Integer memberCount;
 
+
 }

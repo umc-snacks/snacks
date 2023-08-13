@@ -29,9 +29,21 @@ public class EnrollmentController {
             ,Authentication authentication) throws BoardSizeOverException, BoardMemberOverlappingException, EnrollmentOverlappingException {
 
         Enrollment enrollment = enrollmentService.convert(enrollmentRequestDTO, authentication);
+
+        ResponseEntity<String> message = autoCheckIn(enrollment);
+        if (message != null) return message;
+
         enrollmentService.saveEnrollment(enrollment);
 
         return ResponseEntity.ok().body(EnrollmentResponseDTO.toResponseEntity(enrollment));
+    }
+
+    private ResponseEntity<String> autoCheckIn(Enrollment enrollment) throws BoardSizeOverException, BoardMemberOverlappingException {
+        if (enrollment.getBoard().isAutoCheckIn()) {
+            String message = enrollmentService.acceptRequest(enrollment);
+            return ResponseEntity.ok().body(message);
+        }
+        return null;
     }
 
 
