@@ -73,10 +73,10 @@ public class MemberController {
 
 
     // TODO 테스트 필요
-    @GetMapping("attending/{memberId}")
-    public ResponseEntity<List> searchAttendingBoards(@PathVariable String memberId, Authentication authentication) {
+    @GetMapping("attending")
+    public ResponseEntity<List> searchAttendingBoards(Authentication authentication) {
         // authentication  멤버 식별 번호
-        String name = authentication.getName();
+        Long memberId = Long.parseLong(authentication.getName());
 
         List<Board> boards = memberService.findBoardsByMemberId(memberId);
 

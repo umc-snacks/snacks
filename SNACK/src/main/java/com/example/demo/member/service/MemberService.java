@@ -71,8 +71,8 @@ public class MemberService {
                 .orElseThrow(() -> new NoSuchElementException("Id를 찾을 수 없습니다."));
     }
 
-    public List<Board> findBoardsByMemberId(String memberId){
-        return boardMemberRepository.searchAttendingBoardsByMemberId(Long.parseLong(memberId));
+    public List<Board> findBoardsByMemberId(Long memberId){
+        return boardMemberRepository.searchAttendingBoardsByMemberId(memberId);
     }
 
     public Member findMemberById(String memberId) {
