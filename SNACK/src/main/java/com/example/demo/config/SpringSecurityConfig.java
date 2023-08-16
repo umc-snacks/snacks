@@ -97,6 +97,8 @@ public class SpringSecurityConfig{
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(memberService, secretKey);
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
+        //ExceptionHandlerFilter 추가!
+        http.addFilterBefore(new ExceptionHandlerFilter(), JwtAuthenticationFilter.class);
 
 
         return http.build();

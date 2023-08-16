@@ -89,6 +89,10 @@ dependencies {
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 	// === QueryDsl 끝 ===
+
+
+	//jsonObject 사용하기위해 추가(Exception Handler!)
+	implementation group: 'org.json', name: 'json', version: '20230227'
 	
 	}
 
