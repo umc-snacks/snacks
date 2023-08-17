@@ -36,10 +36,10 @@ public class ChatController {
 	 */ 
 	@GetMapping("/chat")
 	public ResponseEntity<Object> getChatRoomList(Authentication authentication) {
-		log.info("[ChatController getChatRoomList] memberId : " + authentication.getName());
+//		log.info("[ChatController getChatRoomList] memberId : " + authentication.getName());
 
-		ChatRoomListDTO chatRoomListDTO = chatService.getChatList(Long.parseLong(authentication.getName()));
-//		ChatRoomListDTO chatRoomListDTO = chatService.getChatList(1L);
+//		ChatRoomListDTO chatRoomListDTO = chatService.getChatList(Long.parseLong(authentication.getName()));
+		ChatRoomListDTO chatRoomListDTO = chatService.getChatList(1L);
 
 		return new ResponseEntity<>(chatRoomListDTO, HttpStatus.OK);
 	}
@@ -49,10 +49,10 @@ public class ChatController {
 	 */
 	@PostMapping("/chat/{memberId}")
 	public ResponseEntity createChatRoom(Authentication authentication, @PathVariable("memberId") Long participantId) throws RestApiException {
-		log.info("[ChatController createChatRoom] memberId : " + authentication.getName() + " participantId : " + participantId);
+//		log.info("[ChatController createChatRoom] memberId : " + authentication.getName() + " participantId : " + participantId);
 
-		Long roomId = chatService.createPrivateChatRoom(Long.parseLong(authentication.getName()), participantId);
-//		Long roomId = chatService.createPrivateChatRoom(1L, 2L);
+//		Long roomId = chatService.createPrivateChatRoom(Long.parseLong(authentication.getName()), participantId);
+		Long roomId = chatService.createPrivateChatRoom(1L, 2L);
 
 		return new ResponseEntity<>(roomId, HttpStatus.OK);
 	}
@@ -66,9 +66,9 @@ public class ChatController {
 	 */
 	@GetMapping("/chat/{roomId}")
 	public ResponseEntity<List<MessageDTO.Response>> enterChatRoom(Authentication authentication, @PathVariable("roomId") Long roomId) {
-		log.info("[ChatController enterChatRoom] memberId : " + authentication.getName() + " roomId : " + roomId);
-		List<MessageDTO.Response> msgList = chatService.getChatMessage(Long.parseLong(authentication.getName()), roomId);
-//		List<MessageDTO.Response> msgList = chatService.getChatMessage(1L, roomId);
+//		log.info("[ChatController enterChatRoom] memberId : " + authentication.getName() + " roomId : " + roomId);
+//		List<MessageDTO.Response> msgList = chatService.getChatMessage(Long.parseLong(authentication.getName()), roomId);
+		List<MessageDTO.Response> msgList = chatService.getChatMessage(1L, roomId);
 
 		return new ResponseEntity<>(msgList, HttpStatus.OK);
 	}
@@ -81,12 +81,12 @@ public class ChatController {
 	 */
 	@MessageMapping("/chat/{roomId}") // '/pub/chat/roomId'
 	public void messageSendAndSave(Authentication authentication, @DestinationVariable Long roomId, @Valid @RequestBody MessageDTO.Get messageDTO) {
-		log.info("[ChatController messageSendAndSave] memberId : " + authentication.getName() +
-				" senderName : " + messageDTO.getSenderName() +
-				" Content: " + messageDTO.getContent());
+//		log.info("[ChatController messageSendAndSave] memberId : " + authentication.getName() +
+//				" senderName : " + messageDTO.getSenderName() +
+//				" Content: " + messageDTO.getContent());
 
-		MessageDTO.Request mdto = new MessageDTO.Request(Long.parseLong(authentication.getName()), roomId, messageDTO.getContent());
-//		MessageDTO.Request mdto = new MessageDTO.Request(1L, 1L, messageDTO.getContent());
+//		MessageDTO.Request mdto = new MessageDTO.Request(Long.parseLong(authentication.getName()), roomId, messageDTO.getContent());
+		MessageDTO.Request mdto = new MessageDTO.Request(1L, 1L, messageDTO.getContent());
 		chatService.saveMessage(mdto);
 		
 		MessageDTO.Response response = mapper.MessageDtoGetToMessageDtoResponse(messageDTO);
@@ -99,17 +99,17 @@ public class ChatController {
 	 */
 	@PatchMapping("/chat/reading")
 	public void setReadingTime(Authentication authentication, @Valid @RequestBody ChatRoomDTO.Get dto) throws MethodArgumentTypeMismatchException, RestApiException {
-		log.info("[ChatController setReadingTime] memberId : " + authentication.getName() + " roomId : " + dto.getRoomId());
+//		log.info("[ChatController setReadingTime] memberId : " + authentication.getName() + " roomId : " + dto.getRoomId());
 
-		chatService.setReadingTime(Long.parseLong(authentication.getName()), dto.getRoomId());
-//		chatService.setReadingTime(1L, dto.getRoomId());
+//		chatService.setReadingTime(Long.parseLong(authentication.getName()), dto.getRoomId());
+		chatService.setReadingTime(1L, dto.getRoomId());
 	}
 	
 	@DeleteMapping("/chat/{roomId}")
 	public void deleteChatRoom(Authentication authentication, @PathVariable("roomId") Long roomId) {
-		log.info("[ChatController deleteChatRoom] memberId : " + authentication.getName() + " roomId : " + roomId);
+//		log.info("[ChatController deleteChatRoom] memberId : " + authentication.getName() + " roomId : " + roomId);
 
-		chatService.deleteChatRoom(Long.parseLong(authentication.getName()), roomId);
-//		chatService.deleteChatRoom(1L, roomId);
+//		chatService.deleteChatRoom(Long.parseLong(authentication.getName()), roomId);
+		chatService.deleteChatRoom(1L, roomId);
 	}
 }

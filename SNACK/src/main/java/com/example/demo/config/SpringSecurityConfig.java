@@ -50,7 +50,7 @@ public class SpringSecurityConfig{
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:3001"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:3001", "https://apic.app/"));
 
         config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
         config.setAllowedHeaders(Arrays.asList("*"));
@@ -74,8 +74,8 @@ public class SpringSecurityConfig{
 
                 .requestMatchers("/status","/member/login","/email",
                         "/email/**", "/","/member/","/member/**",
-                        "/member/save","/member/save/**","/swagger-ui/**"
-                                ).permitAll()
+                        "/member/save","/member/save/**","/swagger-ui/**",
+                                "*/**").permitAll()
 
                         .requestMatchers(HttpMethod.POST,"*/**").authenticated()	// 어떠한 요청이라도 인증필요
                         .requestMatchers(HttpMethod.GET,"*/**").authenticated()
