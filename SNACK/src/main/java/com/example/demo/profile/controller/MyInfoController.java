@@ -10,7 +10,6 @@ import com.example.demo.profile.service.MyInfoService;
 import com.example.demo.profile.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -34,7 +33,7 @@ public class MyInfoController {
         return followService.followUser(userId, memberRepository.findById(Long.valueOf(authentication.getName())).get());
     }
 
-    //남이 내 프로필 봤을 때
+    //다른 사람 프로필 보기
     @GetMapping("/myinfo/{userId}")
     public MyInfoResponseDto readUserInfo(@PathVariable Long userId){
         return userInfoService.readUserInfo(userId);
