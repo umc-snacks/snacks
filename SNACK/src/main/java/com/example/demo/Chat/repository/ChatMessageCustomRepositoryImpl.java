@@ -1,9 +1,11 @@
 package com.example.demo.Chat.repository;
 
+import com.example.demo.Chat.Entity.ChatRoomMember;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.example.demo.Chat.Entity.QChatMessage.chatMessage;
 
@@ -16,4 +18,5 @@ public class ChatMessageCustomRepositoryImpl implements ChatMessageCustomReposit
         jpaQueryFactory.delete(chatMessage)
                 .where(chatMessage.sentAt.before(LocalDateTime.now().minusDays(3)));
     }
+
 }

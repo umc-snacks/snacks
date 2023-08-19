@@ -2,10 +2,16 @@ package com.example.demo.Chat.repository;
 
 // Repository에서 queryDSL 사용하는 연습을 하기위해서 생성
 
+import com.example.demo.Chat.Dto.ChatRoomMemberJoinMessageDTO;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+import static com.example.demo.Chat.Entity.QChatMessage.chatMessage;
 import static com.example.demo.Chat.Entity.QChatRoomMember.chatRoomMember;
 
 @AllArgsConstructor
@@ -20,6 +26,43 @@ public class ChatRoomMemberCustomRepositoryImpl implements ChatRoomMemberCustomR
                         .and(chatRoomMember.chatRoom.roomId.eq(crmId)))
                 .execute();
 
+    }
+
+//    @Override
+//    public List<ChatRoomMemberJoinMessageDTO> getChatRoomMemberJoinChatMessage(Long memberId) {
+//        return jpaQueryFactory
+//                .select(Projections.fields(
+//                        ChatRoomMemberJoinMessageDTO.class,
+//                        chatRoomMember,
+//                        chatMessage.content,
+//                        chatMessage.sentAt
+//                ))
+//                .from(chatRoomMember)
+//                .join(chatMessage).on(chatRoomMember.chatRoom.eq(chatMessage.chatRoom))
+//                .where(chatRoomMember.readTime.before(chatMessage.sentAt)
+//                        .and(chatRoomMember.member.id.eq(memberId)))
+//                .fetch();
+//    }
+
+    @Override
+    public List<ChatRoomMemberJoinMessageDTO> getChatRoomMemberJoinChatMessage(Long memberId) {
+        return jpaQueryFactory
+                .select(Projections.fields(ChatRoomMemberJoinMessageDTO.class,
+                        chatRoomMember.as("chatRoomMember"),
+//                        chatMessage.as("chatMessages")
+                        chatMessage.content.as("content"),
+                        chatMessage.sentAt.as("sentAt")
+                ))
+                .from(chatRoomMember)
+                .leftJoin(chatMessage).on(chatRoomMember.chatRoom.roomId.eq(chatMessage.chatRoom.roomId))
+                .where(chatRoomMember.chatRoom.roomId.in(
+                                JPAExpressions.select(chatRoomMember.chatRoom.roomId)
+                                        .from(chatRoomMember)
+                                        .where(chatRoomMember.member.id.eq(memberId)))
+                        .and(chatRoomMember.member.id.ne(memberId))
+                )
+                .groupBy(chatRoomMember)
+                .fetch();
     }
 
 //    /*

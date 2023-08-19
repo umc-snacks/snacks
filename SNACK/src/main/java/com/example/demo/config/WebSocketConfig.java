@@ -22,8 +22,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .addEndpoint("/ws/chat")    // 클라이언트가 웹 소켓 서버에 연결하는데 사용할 웹 소켓 엔드포인트
 //        		.setAllowedOrigins("http://localhost:8081")
                 .setAllowedOriginPatterns("*")
-				.addInterceptors();
-
-//        		.withSockJS();
+        		.withSockJS();
     }
 }
