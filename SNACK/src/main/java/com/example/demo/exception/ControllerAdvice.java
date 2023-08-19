@@ -20,10 +20,17 @@ public class ControllerAdvice {
         return new ErrorResult("BadRequest", e.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(BoardHostAuthenticationException.class)
+    public ErrorResult boardHostAuthenticationHandle(BoardHostAuthenticationException e) {
+        log.error("[exceptionHandle] ex", e);
+        return new ErrorResult("Forbidden", e.getMessage());
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NoSuchElementException.class)
     public ErrorResult noElementHandle(NoSuchElementException e) {
+
         log.error("[exceptionHandle] 해당 id의 정보가 존재하지 않습니다.", e);
         return new ErrorResult("BadRequest", e.getMessage());
     }
@@ -59,4 +66,19 @@ public class ControllerAdvice {
 
         return new ErrorResult(e.getErrorCode().getHttpStatus().toString(), e.getErrorCode().getMessage());
     }
+
+    @ExceptionHandler(EnrollmentRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResult enrollmentHandle(EnrollmentRequestException e) {
+        log.error("[exceptionHandle] 타인이 대신 참가요청을 보낼 수 없습니다.", e);
+        return new ErrorResult("BadRequest", e.getMessage());
+    }
+
+    @ExceptionHandler(EnrollmentOverlappingException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResult enrollmentHandle(EnrollmentOverlappingException e) {
+        log.error("[exceptionHandle] 중복된 요청입니다.", e);
+        return new ErrorResult("BadRequest", e.getMessage());
+    }
+
 }

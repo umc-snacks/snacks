@@ -6,17 +6,22 @@ import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardMember;
 import com.example.demo.board.entity.BoardSearch;
 import com.example.demo.board.repository.BoardMemberRepository;
+import com.example.demo.exception.BoardHostAuthenticationException;
 import com.example.demo.exception.BoardSizeOverException;
 import com.example.demo.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -36,8 +41,13 @@ public class BoardController {
     }
 
     @PostMapping
-    public ResponseEntity create(@Valid @RequestBody BoardRequestDTO boardRequestDTO) throws BoardSizeOverException {
-        Board board = boardService.buildBoard(boardRequestDTO);
+    public ResponseEntity create(@RequestBody @Validated BoardRequestDTO boardRequestDTO, Authentication authentication, BindingResult bindingResult) throws BoardSizeOverException {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = bindingResult.getAllErrors().stream().map(e -> e.getDefaultMessage()).collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        }
+
+        Board board = boardService.buildBoard(boardRequestDTO, authentication);
 
         List<BoardMember> boardMembers = board.getBoardMembers();
 
@@ -63,23 +73,31 @@ public class BoardController {
 
     @GetMapping
     public ResponseEntity<?> readAll() {
-        return ResponseEntity.ok().body(boardService.getBoards());
+        List<Board> boards = boardService.getBoards();
+        List<BoardResponseDTO> responseDTOList = boards.stream()
+                .map(BoardResponseDTO::getBuild)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(responseDTOList);
+
     }
 
     @PutMapping("{boardId}")
-    public void update(@Valid @RequestBody BoardRequestDTO boardRequestDTO, @PathVariable Long boardId) {
-        boardService.updateBoard(boardId, boardRequestDTO);
+    public ResponseEntity<?> update(@Valid @RequestBody BoardRequestDTO boardRequestDTO, @PathVariable Long boardId, Authentication authentication) throws BoardHostAuthenticationException {
+        Board updateBoard = boardService.updateBoard(boardId, boardRequestDTO, authentication);
+        BoardResponseDTO responseDTO = BoardResponseDTO.getBuild(updateBoard);
+
+        return ResponseEntity.ok().body(responseDTO);
     }
 
     @DeleteMapping("{boardId}")
-    public void delete(@PathVariable Long boardId) {
+    public void delete(@PathVariable Long boardId, Authentication authentication) throws BoardHostAuthenticationException {
         List<BoardMember> boardMembers = boardMemberRepository.findBoardMembersByBoardId(boardId);
         boardMembers.stream().iterator().forEachRemaining(
                 boardMemberRepository::delete
         );
 
-
-        boardService.deleteBoard(boardId);
+        boardService.deleteBoard(boardId, authentication);
     }
 
     @GetMapping("boards")

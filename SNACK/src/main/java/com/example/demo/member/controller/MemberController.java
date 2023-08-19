@@ -2,7 +2,9 @@ package com.example.demo.member.controller;
 
 import com.example.demo.board.dto.BoardResponseDTO;
 import com.example.demo.board.entity.Board;
+import com.example.demo.member.dto.MemberPublicResponse;
 import com.example.demo.member.dto.MemberRequestDTO;
+import com.example.demo.member.dto.MemberResponseDTO;
 import com.example.demo.member.entity.Member;
 
 import com.example.demo.member.service.MemberService;
@@ -16,10 +18,16 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -32,11 +40,13 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("save")
-    public ResponseEntity<Boolean> save(@RequestBody @Valid MemberRequestDTO memberRequestDTO) {
-        ///창민님 코드
-        // 회원가입할때
-
+    public ResponseEntity<?> save(@RequestBody @Validated MemberRequestDTO memberRequestDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = bindingResult.getAllErrors().stream().map(e -> e.getDefaultMessage()).collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        }
         UserInfo emptyUserInfo = new UserInfo(0L, 0L, 0L);
+
         memberService.save(memberRequestDTO, emptyUserInfo);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(true);
@@ -77,10 +87,10 @@ public class MemberController {
 
 
     // TODO 테스트 필요
-    @GetMapping("attending/{memberId}")
-    public ResponseEntity<List> searchAttendingBoards(@PathVariable String memberId, Authentication authentication) {
+    @GetMapping("attending")
+    public ResponseEntity<List> searchAttendingBoards(Authentication authentication) {
         // authentication  멤버 식별 번호
-        String name = authentication.getName();
+        Long memberId = Long.parseLong(authentication.getName());
 
         List<Board> boards = memberService.findBoardsByMemberId(memberId);
         List<BoardResponseDTO> responseDTOList = boards.stream()
@@ -90,6 +100,22 @@ public class MemberController {
         return ResponseEntity.ok(responseDTOList);
 
     }
+
+    @GetMapping("{memberLoginId}")
+    public ResponseEntity<?> searchMemberId(@PathVariable String memberLoginId, Authentication authentication) {
+        Member member = memberService.findMemberByLoginId(memberLoginId);
+        Member authMember = memberService.findMemberById(authentication.getName());
+
+        if (member.equals(authMember)) {
+            MemberResponseDTO memberResponseDTO = MemberResponseDTO.toResponseEntity(member);
+            return ResponseEntity.ok().body(memberResponseDTO);
+        } else{
+            MemberPublicResponse memberPublicResponse = MemberPublicResponse.toResponseEntity(member);
+            return ResponseEntity.ok().body(memberPublicResponse);
+        }
+
+    }
+
 //
 //    // 아이디찾기
 //    // 일단은 이름과 생년월일, 이메일으로 -> 아이디 찾기 진행함!

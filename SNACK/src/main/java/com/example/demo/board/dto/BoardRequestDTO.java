@@ -29,10 +29,6 @@ public class BoardRequestDTO {
 
     private String etcTitle;
 
-    @NotNull(message = "작성자의 Id가 필요합니다")
-    private Long writerId;
-
-    @NotNull
     private List<Long> memberIds = new ArrayList<>();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
