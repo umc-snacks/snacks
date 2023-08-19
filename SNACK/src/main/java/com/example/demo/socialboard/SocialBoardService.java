@@ -51,7 +51,6 @@ public class SocialBoardService {
                 vote -> {
                     vote.setVoteBoard(voteBoard);
                     voteRepository.save(vote);
-//                     member.hasWriteArticle();
                 }
         );
 

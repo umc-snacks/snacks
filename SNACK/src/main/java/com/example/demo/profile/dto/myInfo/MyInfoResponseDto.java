@@ -3,6 +3,9 @@ package com.example.demo.profile.dto.myInfo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 public class MyInfoResponseDto {
@@ -12,17 +15,17 @@ public class MyInfoResponseDto {
     private Long followerCount;
     private Long followCount;
     private String introduction;
-    //private List<MyInfoArticleResponseDto> myInfoArticleResponseDtoList;
+    private List<MyInfoArticleResponseDto> myInfoArticleResponseDtoList;
     //게시글 리스트도 리턴
 
     @Builder
-    public MyInfoResponseDto(String myProfileImageUrl, String nickname, Long articleCount, Long followerCount, Long followCount, String introduction) {
+    public MyInfoResponseDto(String myProfileImageUrl, String nickname, Long articleCount, Long followerCount, Long followCount, String introduction, List<MyInfoArticleResponseDto> myInfoArticleResponseDtoList) {
         this.myProfileImageUrl = myProfileImageUrl;
         this.nickname = nickname;
         this.articleCount = articleCount;
         this.followerCount = followerCount;
         this.followCount = followCount;
         this.introduction = introduction;
-        //this.myInfoArticleResponseDtoList = myInfoArticleResponseDtoList;
+        this.myInfoArticleResponseDtoList = myInfoArticleResponseDtoList;
     }
 }

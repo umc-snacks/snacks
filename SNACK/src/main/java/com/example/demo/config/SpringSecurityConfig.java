@@ -51,7 +51,7 @@ public class SpringSecurityConfig{
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:3001", "https://apic.app/"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:3001"));
 
         config.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
         config.setAllowedHeaders(Arrays.asList("*"));

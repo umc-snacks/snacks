@@ -30,7 +30,6 @@ public class MemberController {
     private final MemberService memberService;
     private final UserInfoRepository userInfoRepository;
 
-
     // 회원가입
     @PostMapping("save")
     public ResponseEntity<Boolean> save(@RequestBody @Valid MemberRequestDTO memberRequestDTO) {
@@ -84,7 +83,6 @@ public class MemberController {
         String name = authentication.getName();
 
         List<Board> boards = memberService.findBoardsByMemberId(memberId);
-
         List<BoardResponseDTO> responseDTOList = boards.stream()
                 .map(BoardResponseDTO::getBuild)
                 .collect(Collectors.toList());
