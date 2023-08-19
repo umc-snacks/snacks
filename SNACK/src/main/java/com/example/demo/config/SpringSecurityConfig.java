@@ -5,6 +5,7 @@ import com.example.demo.member.service.MemberService;
 import jakarta.servlet.DispatcherType;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,6 +62,9 @@ public class SpringSecurityConfig{
 
     }
 
+
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -74,8 +78,7 @@ public class SpringSecurityConfig{
 
                 .requestMatchers("/status","/member/login","/email",
                         "/email/**", "/","/member/","/member/**",
-                        "/member/save","/member/save/**","/swagger-ui/**",
-                                "*/**").permitAll()
+                        "/member/save","/member/save/**","/swagger-ui/**").permitAll()
 
                         .requestMatchers(HttpMethod.POST,"*/**").authenticated()	// 어떠한 요청이라도 인증필요
                         .requestMatchers(HttpMethod.GET,"*/**").authenticated()
@@ -95,6 +98,8 @@ public class SpringSecurityConfig{
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(memberService, secretKey);
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
+        //ExceptionHandlerFilter 추가!
+        http.addFilterBefore(new ExceptionHandlerFilter(), JwtAuthenticationFilter.class);
 
 
         return http.build();

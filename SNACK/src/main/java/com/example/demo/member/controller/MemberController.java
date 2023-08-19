@@ -9,7 +9,10 @@ import com.example.demo.member.service.MemberService;
 import com.example.demo.profile.domain.userinfo.UserInfo;
 import com.example.demo.profile.domain.userinfo.UserInfoRepository;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -42,14 +45,24 @@ public class MemberController {
 
     }
 
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    class Token{
+        private String token;
+    }
+
     @PostMapping("login")
-    public ResponseEntity<String> login(@RequestBody  Map<String, String> member) {
+    public ResponseEntity<Token> login(@RequestBody  Map<String, String> member) {
         String loginResult = memberService.login(member);
 
         if (loginResult != null) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(loginResult);
+            Token token = new Token(loginResult);
+            return ResponseEntity.ok().body(token);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            Token tokenfalse = new Token(null);
+
+            return ResponseEntity.ok().body(tokenfalse);
 
         }
 
