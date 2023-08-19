@@ -80,7 +80,7 @@ public class MemberController {
     //아래 만든게 회원가입할때 id 복수 체크 부분
     @GetMapping("/save/{user_id}")
     public ResponseEntity<Boolean> checkIdExist(@PathVariable String user_id) {
-        Member member = memberService.findMemberByLoginId(user_id).orElse(null);
+        Member member = memberService.findMemberByLoginId(user_id);
 
         return member != null ? ResponseEntity.ok().body(true) : ResponseEntity.ok().body(false);
     }
