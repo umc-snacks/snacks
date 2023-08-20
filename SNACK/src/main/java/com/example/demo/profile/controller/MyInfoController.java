@@ -1,5 +1,6 @@
 package com.example.demo.profile.controller;
 
+import com.example.demo.member.entity.Member;
 import com.example.demo.member.repository.MemberRepository;
 import com.example.demo.profile.UserRequestException;
 import com.example.demo.profile.dto.profileUpdate.ProfileReadResponseDto;
@@ -49,7 +50,15 @@ public class MyInfoController {
     //다른 사람 프로필 보기
     @GetMapping("/myinfo/{userId}")
     public MyInfoResponseDto readUserInfo(@PathVariable Long userId){
-        return userInfoService.readUserInfo(userId);
+        Member tempMember = memberRepository.findById(userId).orElseThrow(() -> new UserRequestException("회원이 존재하지 않습니다."));
+        return userInfoService.readUserInfo(tempMember);
+    }
+
+    //다른 사람 프로필 보기(닉네임)
+    @GetMapping("/myinfo/nickname/{nickname}")
+    public MyInfoResponseDto readUserInfo(@PathVariable String nickname){
+        Member tempMember = memberRepository.findByNickname(nickname).orElseThrow(() -> new UserRequestException("회원이 존재하지 않습니다."));
+        return userInfoService.readUserInfo(tempMember);
     }
 
     //유저 프로필 편집 페이지(닉네임, 프로필사진, 소개글)
