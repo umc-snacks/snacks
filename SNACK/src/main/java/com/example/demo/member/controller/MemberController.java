@@ -1,6 +1,7 @@
 package com.example.demo.member.controller;
 
 import com.example.demo.board.dto.BoardResponseDTO;
+import com.example.demo.board.enrollment.EnrollmentService;
 import com.example.demo.board.entity.Board;
 import com.example.demo.member.dto.MemberPublicResponse;
 import com.example.demo.member.dto.MemberRequestDTO;
@@ -36,6 +37,7 @@ import java.util.stream.Collectors;
 public class MemberController {
 
     private final MemberService memberService;
+    private final EnrollmentService enrollmentService;
     private final UserInfoRepository userInfoRepository;
 
     // 회원가입
@@ -57,12 +59,12 @@ public class MemberController {
     @AllArgsConstructor
     @Getter
     @Setter
-    class Token{
+    class Token {
         private String token;
     }
 
     @PostMapping("login")
-    public ResponseEntity<Token> login(@RequestBody  Map<String, String> member) {
+    public ResponseEntity<Token> login(@RequestBody Map<String, String> member) {
         String loginResult = memberService.login(member);
 
         if (loginResult != null) {
@@ -109,12 +111,12 @@ public class MemberController {
         if (member.equals(authMember)) {
             MemberResponseDTO memberResponseDTO = MemberResponseDTO.toResponseEntity(member);
             return ResponseEntity.ok().body(memberResponseDTO);
-        } else{
+        } else {
             MemberPublicResponse memberPublicResponse = MemberPublicResponse.toResponseEntity(member);
             return ResponseEntity.ok().body(memberPublicResponse);
         }
-
     }
+
 
 //
 //    // 아이디찾기

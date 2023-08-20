@@ -4,16 +4,26 @@
     <facet external-system-id="GRADLE" type="web" name="Web">
       <configuration>
         <webroots />
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/../../SNACK/src/main/java" />
-          <root url="file://$MODULE_DIR$/../../SNACK/src/main/resources" />
-        </sourceRoots>
       </configuration>
+    </facet>
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <setting name="provider-name" value="Hibernate" />
+        <datasource-mapping />
+        <naming-strategy-map />
+      </configuration>
+    </facet>
+    <facet type="Spring" name="Spring">
+      <configuration />
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_17">
     <output url="file://$MODULE_DIR$/../../SNACK/build/classes/java/main" />
     <exclude-output />
+    <content url="file://$MODULE_DIR$/../../SNACK/build/generated/sources/annotationProcessor/java/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../SNACK/build/generated/sources/annotationProcessor/java/main" isTestSource="false" generated="true" />
+    </content>
     <content url="file://$MODULE_DIR$/../../SNACK/src/main">
       <sourceFolder url="file://$MODULE_DIR$/../../SNACK/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../SNACK/src/main/resources" type="java-resource" />
@@ -47,6 +57,7 @@
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.14.1" level="project" />
     <orderEntry type="library" name="Gradle: jakarta.validation:jakarta.validation-api:3.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.querydsl:querydsl-jpa:jakarta:5.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.json:json:20230227" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.querydsl:querydsl-codegen:5.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-json:3.1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter:3.1.1" level="project" />
