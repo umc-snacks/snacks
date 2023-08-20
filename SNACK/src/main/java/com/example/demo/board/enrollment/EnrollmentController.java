@@ -1,5 +1,8 @@
 package com.example.demo.board.enrollment;
 
+import com.example.demo.board.BoardService;
+import com.example.demo.board.dto.BoardResponseDTO;
+import com.example.demo.board.entity.Board;
 import com.example.demo.exception.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,11 +18,13 @@ import java.util.NoSuchElementException;
 public class EnrollmentController {
 
     private final EnrollmentService enrollmentService;
+    private final BoardService boardService;
     private final EnrollmentRepository enrollmentRepository;
 
 
-    public EnrollmentController(EnrollmentService enrollmentService, EnrollmentRepository enrollmentRepository) {
+    public EnrollmentController(EnrollmentService enrollmentService, BoardService boardService, EnrollmentRepository enrollmentRepository) {
         this.enrollmentService = enrollmentService;
+        this.boardService = boardService;
         this.enrollmentRepository = enrollmentRepository;
     }
 
@@ -46,10 +51,24 @@ public class EnrollmentController {
         return null;
     }
 
+    @GetMapping("/member")
+    public ResponseEntity readMemberRequest(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+        List<BoardResponseDTO> boards = new ArrayList<>();
+        enrollmentService.readEnrollments(memberId).iterator().forEachRemaining(
+                enrollment -> {
+                    Board board = boardService.getBoard(enrollment.getId());
+                    BoardResponseDTO responseDTO = BoardResponseDTO.getBuild(board);
+                    boards.add(responseDTO);
+                }
+        );
+        return ResponseEntity.ok().body(boards);
+    }
 
     // 방장이 요청을 확인하는 메서드
     @GetMapping
     public ResponseEntity readRequest(Authentication authentication) {
+
         Long hostId = Long.parseLong(authentication.getName());
 
         List<EnrollmentResponseDTO> enrollments = new ArrayList<>();

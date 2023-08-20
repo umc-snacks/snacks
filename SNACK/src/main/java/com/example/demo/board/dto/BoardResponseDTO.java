@@ -24,7 +24,7 @@ public class BoardResponseDTO {
 
     private String etcTitle;
 
-    private List<String> boardMembers;
+    private List<Long> boardMembers;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime date;
@@ -36,10 +36,10 @@ public class BoardResponseDTO {
     private boolean autoCheckIn;
 
     public static BoardResponseDTO getBuild(Board board) {
-        ArrayList<String> memberName = new ArrayList<>();
+        ArrayList<Long> memberName = new ArrayList<>();
 
         board.getBoardMembers().iterator().forEachRemaining(
-                boardMember -> memberName.add(boardMember.getMember().getNickname())
+                boardMember -> memberName.add(boardMember.getMember().getId())
         );
         return BoardResponseDTO.builder()
                 .id(board.getId())

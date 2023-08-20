@@ -54,6 +54,7 @@ public class EnrollmentService {
                 .build();
     }
 
+
     public List<Enrollment> readEnrollments(Long hostId) {
         List<Enrollment> enrollments = boardMemberRepository.searchHostRequestByHostId(hostId);
         return enrollments;
@@ -67,11 +68,11 @@ public class EnrollmentService {
         enrollmentRepository.save(enrollment);
     }
 
-    private void validateDuplicatedRequest(Long userId, Long boardId) throws EnrollmentOverlappingException {
-        if(enrollmentRepository.findEnrollmentByMemberIdAndBoardId(userId, boardId).isPresent()){
-            throw new EnrollmentOverlappingException("중복된 요청입니다.");
+        private void validateDuplicatedRequest(Long userId, Long boardId) throws EnrollmentOverlappingException {
+            if(enrollmentRepository.findEnrollmentByMemberIdAndBoardId(userId, boardId).isPresent()){
+                throw new EnrollmentOverlappingException("중복된 요청입니다.");
+            }
         }
-    }
 
     public String acceptRequest(Enrollment enrollment) throws BoardSizeOverException, BoardMemberOverlappingException {
         validateBoardSize(enrollment);
