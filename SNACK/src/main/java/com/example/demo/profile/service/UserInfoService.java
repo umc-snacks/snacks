@@ -19,10 +19,10 @@ public class UserInfoService {
     private final MemberRepository memberRepository;
     private final SocialBoardRepository socialBoardRepository;
 
-    public MyInfoResponseDto readUserInfo(Long userId) {
-        Member tempMember = memberRepository.findById(userId).get();
+    public MyInfoResponseDto readUserInfo(Member tempMember) {
+        //Member tempMember = memberRepository.findById(userId).get();
 
-        List<SocialBoard> socialBoardsList = socialBoardRepository.findSocialBoardsByMemberId(userId);
+        List<SocialBoard> socialBoardsList = socialBoardRepository.findSocialBoardsByMemberId(tempMember.getId());
         List<MyInfoArticleResponseDto> myInfoArticleResponseDtoList = new ArrayList<>();
         for(SocialBoard article:socialBoardsList){
             myInfoArticleResponseDtoList.add(MyInfoArticleResponseDto.of(article));
