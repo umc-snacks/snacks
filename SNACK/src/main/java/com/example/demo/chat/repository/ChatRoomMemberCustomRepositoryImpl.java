@@ -1,8 +1,8 @@
-package com.example.demo.Chat.repository;
+package com.example.demo.chat.repository;
 
 // Repository에서 queryDSL 사용하는 연습을 하기위해서 생성
 
-import com.example.demo.Chat.Dto.ChatRoomMemberJoinMessageDTO;
+import com.example.demo.chat.Dto.ChatRoomMemberJoinMessageDTO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.example.demo.Chat.Entity.QChatMessage.chatMessage;
-import static com.example.demo.Chat.Entity.QChatRoomMember.chatRoomMember;
+import static com.example.demo.chat.Entity.QChatMessage.chatMessage;
+import static com.example.demo.chat.Entity.QChatRoomMember.chatRoomMember;
 
 @AllArgsConstructor
 @Repository

@@ -1,13 +1,11 @@
-package com.example.demo.Chat.repository;
+package com.example.demo.chat.repository;
 
-import com.example.demo.Chat.Entity.ChatRoomMember;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import static com.example.demo.Chat.Entity.QChatMessage.chatMessage;
+import static com.example.demo.chat.Entity.QChatMessage.chatMessage;
 
 @AllArgsConstructor
 public class ChatMessageCustomRepositoryImpl implements ChatMessageCustomRepository {

@@ -1,4 +1,4 @@
-package com.example.demo.Chat.Dto;
+package com.example.demo.chat.Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,8 +1,8 @@
-package com.example.demo.Chat;
+package com.example.demo.chat;
 
-import com.example.demo.Chat.Dto.ChatRoomDTO;
-import com.example.demo.Chat.Dto.ChatRoomListDTO;
-import com.example.demo.Chat.Dto.MessageDTO;
+import com.example.demo.chat.Dto.ChatRoomDTO;
+import com.example.demo.chat.Dto.ChatRoomListDTO;
+import com.example.demo.chat.Dto.MessageDTO;
 import com.example.demo.exception.RestApiException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

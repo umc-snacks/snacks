@@ -1,8 +1,8 @@
 package com.example.demo;
 
-import com.example.demo.Chat.repository.ChatMessageRepository;
-import com.example.demo.Chat.repository.ChatRoomMemberRepository;
-import com.example.demo.Chat.repository.ChatRoomRepository;
+import com.example.demo.chat.repository.ChatMessageRepository;
+import com.example.demo.chat.repository.ChatRoomMemberRepository;
+import com.example.demo.chat.repository.ChatRoomRepository;
 import com.example.demo.board.BoardService;
 import com.example.demo.board.repository.BoardMemberRepository;
 import com.example.demo.board.repository.BoardRepository;

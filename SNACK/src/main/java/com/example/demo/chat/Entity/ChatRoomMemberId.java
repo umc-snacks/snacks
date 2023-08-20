@@ -1,4 +1,4 @@
-package com.example.demo.Chat.Entity;
+package com.example.demo.chat.Entity;
 
 import jakarta.persistence.Embeddable;
 

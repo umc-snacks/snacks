@@ -22,11 +22,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="com.example.SNACK.main" target="17" />
-      <module name="com.example.SNACK.test" target="17" />
       <module name="SNACK" target="17" />
       <module name="SNACK.main" target="17" />
-      <module name="SNACK.querydsl" target="17" />
       <module name="SNACK.test" target="17" />
     </bytecodeTargetLevel>
   </component>

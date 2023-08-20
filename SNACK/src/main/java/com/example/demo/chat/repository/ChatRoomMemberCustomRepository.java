@@ -1,6 +1,6 @@
-package com.example.demo.Chat.repository;
+package com.example.demo.chat.repository;
 
-import com.example.demo.Chat.Dto.ChatRoomMemberJoinMessageDTO;
+import com.example.demo.chat.Dto.ChatRoomMemberJoinMessageDTO;
 
 import java.util.List;
 

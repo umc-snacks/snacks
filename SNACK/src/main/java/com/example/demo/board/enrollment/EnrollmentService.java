@@ -1,6 +1,6 @@
 package com.example.demo.board.enrollment;
 
-import com.example.demo.Chat.ChatService;
+import com.example.demo.chat.ChatService;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardMember;
 import com.example.demo.board.repository.BoardMemberRepository;

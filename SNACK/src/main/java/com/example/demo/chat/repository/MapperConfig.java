@@ -1,9 +1,9 @@
-package com.example.demo.Chat.repository;
+package com.example.demo.chat.repository;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.Chat.Mapper;
+import com.example.demo.chat.Mapper;
 
 @Component
 public class MapperConfig {

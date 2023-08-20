@@ -1,6 +1,6 @@
-package com.example.demo.Chat.Dto;
+package com.example.demo.chat.Dto;
 
-import com.example.demo.Chat.Entity.ChatRoomMember;
+import com.example.demo.chat.Entity.ChatRoomMember;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

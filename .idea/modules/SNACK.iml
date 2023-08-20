@@ -2,11 +2,8 @@
 <module external.linked.project.id="SNACK" external.linked.project.path="$MODULE_DIR$/../../SNACK" external.root.project.path="$MODULE_DIR$/../../SNACK" external.system.id="GRADLE" external.system.module.group="com.example" external.system.module.version="0.0.1-SNACK" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_17" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../SNACK">
-      <excludeFolder url="file://$MODULE_DIR$/../../SNACK/.gradle" />
-      <excludeFolder url="file://$MODULE_DIR$/../../SNACK/build" />
-      <excludeFolder url="file://$MODULE_DIR$/../../SNACK/out" />
-    </content>
+    <content url="file://$MODULE_DIR$/../../SNACK" />
+    <content url="file://$MODULE_DIR$/../../SNACK" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

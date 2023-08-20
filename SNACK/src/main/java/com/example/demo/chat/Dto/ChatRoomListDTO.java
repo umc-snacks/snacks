@@ -1,8 +1,6 @@
-package com.example.demo.Chat.Dto;
+package com.example.demo.chat.Dto;
 
 import java.util.List;
-
-import com.example.demo.profile.dto.profileUpdate.ProfileReadResponseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

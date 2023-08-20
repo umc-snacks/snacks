@@ -1,4 +1,4 @@
-package com.example.demo.Chat.Entity;
+package com.example.demo.chat.Entity;
 
 import com.example.demo.BaseTimeEntity;
 import com.example.demo.member.entity.Member;

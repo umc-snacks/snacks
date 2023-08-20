@@ -1,14 +1,14 @@
-package com.example.demo.Chat;
+package com.example.demo.chat;
 
-import com.example.demo.Chat.Dto.*;
-import com.example.demo.Chat.Dto.ChatRoomDTO.Get;
-import com.example.demo.Chat.Entity.ChatMessage;
-import com.example.demo.Chat.Entity.ChatRoom;
-import com.example.demo.Chat.Entity.ChatRoomMember;
-import com.example.demo.Chat.Entity.ChatRoomMemberId;
-import com.example.demo.Chat.repository.ChatMessageRepository;
-import com.example.demo.Chat.repository.ChatRoomMemberRepository;
-import com.example.demo.Chat.repository.ChatRoomRepository;
+import com.example.demo.chat.Dto.*;
+import com.example.demo.chat.Dto.ChatRoomDTO.Get;
+import com.example.demo.chat.Entity.ChatMessage;
+import com.example.demo.chat.Entity.ChatRoom;
+import com.example.demo.chat.Entity.ChatRoomMember;
+import com.example.demo.chat.Entity.ChatRoomMemberId;
+import com.example.demo.chat.repository.ChatMessageRepository;
+import com.example.demo.chat.repository.ChatRoomMemberRepository;
+import com.example.demo.chat.repository.ChatRoomRepository;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardMember;
 import com.example.demo.exception.ErrorCode;

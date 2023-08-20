@@ -1,4 +1,4 @@
-package com.example.demo.Chat.repository;
+package com.example.demo.chat.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.Chat.Entity.ChatRoom;
-import com.example.demo.Chat.Entity.ChatRoomMember;
+import com.example.demo.chat.Entity.ChatRoom;
+import com.example.demo.chat.Entity.ChatRoomMember;
 
 @Repository
 public interface ChatRoomMemberRepository extends JpaRepository<ChatRoomMember, Long>, ChatRoomMemberCustomRepository {

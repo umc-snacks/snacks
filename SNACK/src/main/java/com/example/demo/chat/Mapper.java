@@ -1,8 +1,8 @@
-package com.example.demo.Chat;
+package com.example.demo.chat;
 
-import com.example.demo.Chat.Dto.MemberSearchDTO;
-import com.example.demo.Chat.Dto.MessageDTO;
-import com.example.demo.Chat.Entity.ChatMessage;
+import com.example.demo.chat.Dto.MemberSearchDTO;
+import com.example.demo.chat.Dto.MessageDTO;
+import com.example.demo.chat.Entity.ChatMessage;
 import com.example.demo.member.entity.Member;
 import lombok.NoArgsConstructor;
 

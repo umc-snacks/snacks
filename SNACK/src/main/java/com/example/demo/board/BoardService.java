@@ -1,6 +1,6 @@
 package com.example.demo.board;
 
-import com.example.demo.Chat.ChatService;
+import com.example.demo.chat.ChatService;
 import com.example.demo.board.dto.BoardRequestDTO;
 import com.example.demo.board.entity.Board;
 import com.example.demo.board.entity.BoardMember;
